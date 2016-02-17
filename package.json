@@ -11,8 +11,9 @@
   "license": "CC0-1.0",
   "dependencies": {
     "botkit": "0.0.5",
-    "dateformat": "^1.0.12",
     "dotenv": "^2.0.0",
+    "moment": "^2.11.2",
+    "node-schedule": "^1.0.0",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.19.2"
