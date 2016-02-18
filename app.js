@@ -69,7 +69,7 @@ var j = schedule.scheduleJob('* * * * *', function() {
         // Begin a Slack message for this channel
         // https://api.slack.com/docs/attachments
         var report = {
-          text: 'Todays standup for <#'+channel.name+'>:',
+          text: '<!here> Todays standup for <#'+channel.name+'>:',
           attachments: [],
           channel: channel.name
         };
