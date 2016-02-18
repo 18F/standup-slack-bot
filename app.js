@@ -35,7 +35,7 @@ controller.spawn({
       // {name, id, team_id}
 
       // Set up cron job to check every minute for channels that need a standup report
-      schedule.scheduleJob('* * * * *', require('./lib/runReports')(bot));
+      schedule.scheduleJob('* * * * *', require('./lib/bot-runReports')(bot));
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
@@ -45,10 +45,10 @@ controller.spawn({
       require('./lib/bot-joinChannel')(controller, identity.name);
 
       // Create a standup in a channel
-      require('./lib/createStandup')(controller);
+      require('./lib/bot-createStandup')(controller);
 
       // Add or change a standup message for today in a DM with the bot
-      require('./lib/getUserStandupInfo')(controller);
+      require('./lib/bot-getUserStandupInfo')(controller);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
