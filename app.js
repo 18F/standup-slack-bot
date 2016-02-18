@@ -1,10 +1,7 @@
 'use strict';
 
 var Botkit = require('botkit');
-var moment = require('moment');
 var schedule = require('node-schedule');
-var un = require('underscore');
-var async = require('async');
 require('dotenv').config();
 
 // Database setup
@@ -46,7 +43,7 @@ controller.spawn({
 });
 
 // Set up cron job to check every minute for channels that need a standup report
-var j = schedule.scheduleJob('* * * * *', require("./lib/runReports"));
+schedule.scheduleJob('* * * * *', require('./lib/runReports')(anytimeBot));
 
 // TODO: method to set standup frequency
 // TODO: add usage messages
