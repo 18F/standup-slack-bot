@@ -28,9 +28,7 @@ controller.spawn({
   if (err) {
     throw new Error(err);
   } else {
-    //anytimeBot = bot;
     bot.identifyBot(function(err,identity) {
-      //me = identity.name;
       // identity contains...
       // {name, id, team_id}
 
