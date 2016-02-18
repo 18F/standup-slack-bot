@@ -2,6 +2,9 @@
 
 var Botkit = require('botkit');
 var moment = require('moment');
+var schedule = require('node-schedule');
+var un = require('underscore');
+var async = require('async');
 require('dotenv').config();
 
 // Database setup
@@ -11,6 +14,7 @@ models.sequelize.sync(
   {force: false}
 );
 
+// Check for a Slack token
 if (!process.env.SLACK_TOKEN) {
   console.log('Error: Specify token in environment');
   process.exit(1);
@@ -20,13 +24,19 @@ var controller = Botkit.slackbot({
   debug: false
 });
 
+// Set these two variables so that we can access bot functions outside of a controller
+// function, for example when calling bot.say() without a message trigger
 var me = '';
+var anytimeBot = {};
+
+// Initialize the bot
 controller.spawn({
   token: process.env.SLACK_TOKEN
 }).startRTM(function(err, bot) {
   if (err) {
     throw new Error(err);
   } else {
+    anytimeBot = bot;
     bot.identifyBot(function(err,identity) {
       me = identity.name;
       // identity contains...
@@ -35,19 +45,100 @@ controller.spawn({
   }
 });
 
-// TODO: post standup report to channel at set time
+// Set up cron job to check every minute for channels that need a standup report
+var j = schedule.scheduleJob('* * * * *', function() {
+  var time = moment().format('HHmm');
+  var date = moment().format('YYYY-MM-DD');
+
+  // Find channels that want a report at this minute
+  models.Channel.findAll({
+    where: {
+      frequency: 'daily',
+      time: time
+    }
+  }).then(function (channels) {
+    // Iterate over the channels
+    un.each(channels, function(channel) {
+      // Find standup messages for that channel & for today
+      models.Standup.findAll({
+        where: {
+          channel: channel.name,
+          date: date
+        }
+      }).then(function (standups) {
+        // Begin a Slack message for this channel
+        // https://api.slack.com/docs/attachments
+        var report = {
+          text: 'Todays standup for <#'+channel.name+'>:',
+          attachments: [],
+          channel: channel.name
+        };
+        var attachments = [];
+        async.series([
+          // Iterate over this channels standup messages
+          function(callback) {
+            un.each(standups, function (standup) {
+              var fields = [];
+              if (standup.yesterday) {
+                fields.push({
+                    title: 'Yesterday',
+                    value: standup.yesterday,
+                    short: false
+                });
+              }
+              if (standup.today) {
+                fields.push({
+                  title: 'Today',
+                  value: standup.today,
+                  short: false
+                });
+              }
+              if (standup.blockers) {
+                fields.push({
+                  title: 'Blockers',
+                  value: standup.blockers,
+                  short: false
+                });
+              }
+              if (standup.goal) {
+                fields.push({
+                  title: 'Goal',
+                  value: standup.goal,
+                  short: false
+                });
+              }
+              attachments.push({
+                title: '<@'+standup.user+'>',
+                fields: fields
+              });
+            });
+            callback(null);
+          },
+          // Send that report off to Slack
+          function(callback) {
+            report.attachments = attachments;
+            anytimeBot.say(report);
+            callback(null);
+          }
+        ]);
+      });
+    });
+  });
+});
+
 // TODO: method to set standup frequency
 // TODO: add usage messages
 // TODO: remind people to do standup?
 
+// Message for when the bot is added to a channel
 controller.on('bot_channel_join', function (bot, message) {
   return bot.reply(message, {
     text: 'Hi! To set up a standup, say `@'+me+' create standup [daily/weekly] [time]`'
   });
 });
 
+// Create a standup in a channel
 controller.hears(['(schedule|create) standup (.*)'],['direct_mention'], function (bot, message) {
-  // fields = message.match[2].split(' ');
   var frequency = '';
   var weekday = '';
   var time = message.match[2].match(/(\d+|:)*(\s)?((a|p)m)/gi);
@@ -63,8 +154,6 @@ controller.hears(['(schedule|create) standup (.*)'],['direct_mention'], function
       name: message.channel
     }
   }).then(function () {
-    console.log('channel created');
-    console.log(time);
     models.Channel.update(
       {
         frequency: frequency,
@@ -83,15 +172,17 @@ controller.hears(['(schedule|create) standup (.*)'],['direct_mention'], function
   });
 });
 
-// Add or change a standup message in a DM with the bot
+// Add or change a standup message for today in a DM with the bot
 // TODO: allow multiple ways to separate messages (i.e. \n or ; or |)
 // TODO: update reports when edited
 // TODO: parse standup messages
-controller.hears(['standup (\\S*)((.|\n)*)'],['direct_message'], function (bot, message) {
+controller.hears(['standup <#(\\S*)>((.|\n)*)'],['direct_message'], function (bot, message) {
   var standupChannel = message.match[1];
   var content = message.match[2];
   models.Channel.findOne({
-    where: {name: standupChannel}
+    where: {
+      name: standupChannel
+    }
   }).then(function (channel) {
     if (channel) {
       models.Standup.findOrCreate({
@@ -101,7 +192,6 @@ controller.hears(['standup (\\S*)((.|\n)*)'],['direct_message'], function (bot, 
           user: message.user
         }
       }).then(function (standup) {
-        // console.log(standup);
         var notes = content.split(/\n/);
         var yesterday = standup.yesterday;
         var today = standup.today;
@@ -139,10 +229,11 @@ controller.hears(['standup (\\S*)((.|\n)*)'],['direct_message'], function (bot, 
               date: moment().format('YYYY-MM-DD'),
               user: message.user
             }
+          }).then(function (standup) {
+            bot.reply(message,'Thanks! Your standup for '+standupChannel+' is recorded');
           });
         }
       );
-      return bot.reply(message, 'that channel exists');
     } else {
       return bot.reply(message,
         'The '+standupChannel+' channel doesn\'t have any standups set'
