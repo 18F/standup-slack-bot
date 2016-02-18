@@ -11,7 +11,7 @@ require('dotenv').config();
 var models = require('./models');
 models.sequelize.sync(
   // Set to true to reset db on load
-  {force: false}
+  {force: true}
 );
 
 // Check for a Slack token
@@ -139,37 +139,41 @@ controller.on('bot_channel_join', function (bot, message) {
 
 // Create a standup in a channel
 controller.hears(['(schedule|create) standup (.*)'],['direct_mention'], function (bot, message) {
-  var frequency = '';
-  var weekday = '';
-  var time = message.match[2].match(/(\d+|:)*(\s)?((a|p)m)/gi);
-  time = moment(time[0], ['h:mm a','hmm a','hmma','HHmm','hha','hh a']);
-  if (message.match[2].match(/daily/)) {
-    frequency = 'daily';
-  } else if (message.match[2].match(/weekly/)) {
-    frequency = 'weekly';
-    weekday = message.match[2].match(/(\w)*day/i);
-  }
-  models.Channel.findOrCreate({
-    where: {
-      name: message.channel
+  if (message.channel[0] == 'C') {
+    var frequency = '';
+    var weekday = '';
+    var time = message.match[2].match(/(\d+|:)*(\s)?((a|p)m)/gi);
+    time = moment(time[0], ['h:mm a','hmm a','hmma','HHmm','hha','hh a']);
+    if (message.match[2].match(/daily/)) {
+      frequency = 'daily';
+    } else if (message.match[2].match(/weekly/)) {
+      frequency = 'weekly';
+      weekday = message.match[2].match(/(\w)*day/i);
     }
-  }).then(function () {
-    models.Channel.update(
-      {
-        frequency: frequency,
-        day: weekday,
-        time: moment(time).format('HHmm')
-      },
-      {
-        where: {
-          name: message.channel
-        }
+    models.Channel.findOrCreate({
+      where: {
+        name: message.channel
       }
-    );
-    return bot.reply(message,
-      'Got it. Standup scheduled '+frequency+' at '+moment(time).format('hh:mm a')+' '+weekday
-    );
-  });
+    }).then(function () {
+      models.Channel.update(
+        {
+          frequency: frequency,
+          day: weekday,
+          time: moment(time).format('HHmm')
+        },
+        {
+          where: {
+            name: message.channel
+          }
+        }
+      );
+      return bot.reply(message,
+        'Got it. Standup scheduled '+frequency+' at '+moment(time).format('hh:mm a')+' '+weekday
+      );
+    });
+  } else {
+    return bot.reply(message, 'I can only work with public channels. Sorry!');
+  }
 });
 
 // Add or change a standup message for today in a DM with the bot
@@ -179,67 +183,71 @@ controller.hears(['(schedule|create) standup (.*)'],['direct_mention'], function
 controller.hears(['standup <#(\\S*)>((.|\n)*)'],['direct_message'], function (bot, message) {
   var standupChannel = message.match[1];
   var content = message.match[2];
-  models.Channel.findOne({
-    where: {
-      name: standupChannel
-    }
-  }).then(function (channel) {
-    if (channel) {
-      models.Standup.findOrCreate({
-        where: {
-          channel: standupChannel,
-          date: moment().format('YYYY-MM-DD'),
-          user: message.user
-        }
-      }).then(function (standup) {
-        var notes = content.split(/\n/);
-        var yesterday = standup.yesterday;
-        var today = standup.today;
-        var blockers = standup.blockers;
-        var goal = standup.goal;
-        for (var note in notes) {
-          var item = notes[note].replace(/\n/g,'');
-          switch (item[0]) {
-            case 'y':
-            yesterday = item;
-            break;
-            case 't':
-            today = item;
-            break;
-            case 'b':
-            blockers = item;
-            break;
-            case 'g':
-            goal = item;
-            break;
-            default:
-            console.log('no match for '+item);
+  if (standupChannel[0] == 'C'){
+    models.Channel.findOne({
+      where: {
+        name: standupChannel
+      }
+    }).then(function (channel) {
+      if (channel) {
+        models.Standup.findOrCreate({
+          where: {
+            channel: standupChannel,
+            date: moment().format('YYYY-MM-DD'),
+            user: message.user
           }
-        }
-        models.Standup.update(
-          {
-            yesterday: yesterday,
-            today: today,
-            blockers: blockers,
-            goal: goal
-          },
-          {
-            where: {
-              channel: standupChannel,
-              date: moment().format('YYYY-MM-DD'),
-              user: message.user
+        }).then(function (standup) {
+          var notes = content.split(/\n/);
+          var yesterday = standup.yesterday;
+          var today = standup.today;
+          var blockers = standup.blockers;
+          var goal = standup.goal;
+          for (var note in notes) {
+            var item = notes[note].replace(/\n/g,'');
+            switch (item[0]) {
+              case 'y':
+              yesterday = item;
+              break;
+              case 't':
+              today = item;
+              break;
+              case 'b':
+              blockers = item;
+              break;
+              case 'g':
+              goal = item;
+              break;
+              default:
+              console.log('no match for '+item);
             }
-          }).then(function (standup) {
-            bot.reply(message,'Thanks! Your standup for '+standupChannel+' is recorded');
-          });
-        }
-      );
-    } else {
-      return bot.reply(message,
-        'The '+standupChannel+' channel doesn\'t have any standups set'
-      );
-    }
-  });
+          }
+          models.Standup.update(
+            {
+              yesterday: yesterday,
+              today: today,
+              blockers: blockers,
+              goal: goal
+            },
+            {
+              where: {
+                channel: standupChannel,
+                date: moment().format('YYYY-MM-DD'),
+                user: message.user
+              }
+            }).then(function (standup) {
+              bot.reply(message,'Thanks! Your standup for '+standupChannel+' is recorded');
+            });
+          }
+        );
+      } else {
+        return bot.reply(message,
+          'The '+standupChannel+' channel doesn\'t have any standups set'
+        );
+      }
+    });
+  } else {
+    return bot.reply(message, 'I can only work with public channels. Sorry!');
+  }
 });
 
 // I think that these aren't necessary because channel & user are stored as
