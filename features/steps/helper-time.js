@@ -2,21 +2,49 @@ var timeHelper = require('../../lib/helper-time');
 
 module.exports = function() {
   var _timeString = '';
-  var _createdValue = '';
+  var _parsedValue = '';
+  var _baseTime = null;
+  var _formattedTime = '';
 
   this.Given(/^the string (.*)$/, function(timeString) {
     _timeString = timeString;
   });
 
-  this.When("I try to parse it", function() {
-    _createdValue = timeHelper.getTimeFromString(_timeString);
+  this.Given(/^the input time (.*)$/, function(time) {
+    if(time != '') {
+      _baseTime = timeHelper.getTimeFromString(time);
+    } else {
+      _baseTime = new Date();
+    }
+  });
+
+  this.When('I try to parse it', function() {
+    _parsedValue = timeHelper.getTimeFromString(_timeString);
+  });
+
+  this.When('I ask for the schedule format', function() {
+    _formattedTime = timeHelper.getScheduleFormat(_baseTime);
+  });
+
+  this.When('I ask for the report format', function() {
+    _formattedTime = timeHelper.getReportFormat(_baseTime);
+  });
+
+  this.When('I ask for the display format', function() {
+    _formattedTime = timeHelper.getDisplayFormat(_baseTime);
   });
 
   this.Then(/^the time should( not)? parse$/, function(not) {
-    if((_createdValue !== '' && !not) || (_createdValue === '' && not)) {
+    if((_parsedValue !== '' && !not) || (_parsedValue === '' && not)) {
       return true;
     } else {
       throw new Error('Time failed to parse');
+    }
+  });
+
+  this.Then(/^the result matches (.*)$/, function(pattern) {
+    if(!_formattedTime.match(new RegExp(pattern))) {
+      throw new Error('Formatted time did not match pattern');
     }
   });
 };
