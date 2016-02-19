@@ -1,3 +1,5 @@
+'use strict';
+
 var timeHelper = require('../../lib/helper-time');
 
 module.exports = function() {
@@ -11,7 +13,7 @@ module.exports = function() {
   });
 
   this.Given(/^the input time (.*)$/, function(time) {
-    if(time != '') {
+    if(time !== '') {
       _baseTime = timeHelper.getTimeFromString(time);
     } else {
       _baseTime = new Date();
