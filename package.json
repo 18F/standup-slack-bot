@@ -6,7 +6,7 @@
   "scripts": {
     "lint": "jshint --config .jshintrc --exclude ./node_modules .",
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cucumberjs"
   },
   "author": "",
   "license": "CC0-1.0",
@@ -22,6 +22,7 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "cucumber": "^0.9.5",
     "jshint": "^2.9.1"
   }
 }
