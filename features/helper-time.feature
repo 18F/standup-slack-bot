@@ -15,6 +15,17 @@ Feature: Time Helper, parsing a string
       | 830 am      | should     |
       | 0830        | should     |
 
+  # The following scenarios match patterns instead of values
+  # known ahead of time.  To match a pattern, they use a
+  # "regular expression" to define what they expect.  A good
+  # primer on regular expression is available at:
+  # http://www.agillo.net/regex-primer-part-1/
+  #
+  # In a nutshell, these mostly match to digits, using the
+  # \d metacharacter.  \d means "one digit", and curly
+  # braces indicate a number of times one digit should
+  # occur.  So, \d{4} means four digits.
+
   Scenario Outline: Getting the time in a database-friendly schedule format
     Given the input time <time>
       When I ask for the schedule format
