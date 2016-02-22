@@ -34,7 +34,7 @@ controller.spawn({
       // {name, id, team_id}
 
       // Set up cron job to check every minute for channels that need a standup report
-      schedule.scheduleJob('* * * * *', botLib.runReports(bot));
+      schedule.scheduleJob('* * * * *', botLib.getReportRunner(bot));
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
