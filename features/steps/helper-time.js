@@ -1,6 +1,6 @@
 'use strict';
 
-var timeHelper = require('../../lib/helper-time');
+var timeHelper = require('../../lib/helpers').time;
 
 module.exports = function() {
   var _timeString = '';
