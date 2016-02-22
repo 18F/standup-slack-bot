@@ -2,6 +2,7 @@
 
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
+var botLib = require('./lib/bot');
 require('dotenv').config();
 
 // Database setup
@@ -33,20 +34,20 @@ controller.spawn({
       // {name, id, team_id}
 
       // Set up cron job to check every minute for channels that need a standup report
-      schedule.scheduleJob('* * * * *', require('./lib/bot-runReports')(bot));
+      schedule.scheduleJob('* * * * *', botLib.runReports(bot));
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
       // TODO: remind people to do standup?
 
       // Message for when the bot is added to a channel
-      require('./lib/bot-joinChannel')(controller, identity.name);
+      botLib.joinChannel(controller, identity.name);
 
       // Create a standup in a channel
-      require('./lib/bot-createStandup')(controller);
+      botLib.createStandup(controller);
 
       // Add or change a standup message for today in a DM with the bot
-      require('./lib/bot-getUserStandupInfo')(controller);
+      botLib.getUserStandupInfo(controller);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
