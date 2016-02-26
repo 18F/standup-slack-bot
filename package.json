@@ -2,6 +2,10 @@
   "name": "standup-bot",
   "version": "0.0.1",
   "description": "a bot to handle periodic standup meetings in Slack",
+  "repository": {
+    "type":"git",
+    "url":"git+https://github.com/18f/standup-bot.git"
+  },
   "main": "app.js",
   "scripts": {
     "lint": "jshint --config .jshintrc --exclude ./node_modules .",
