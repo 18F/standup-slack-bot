@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "description": "a bot to handle periodic standup meetings in Slack",
   "repository": {
-    "type":"git",
-    "url":"git+https://github.com/18f/standup-bot.git"
+    "type": "git",
+    "url": "git+https://github.com/18f/standup-bot.git"
   },
   "main": "app.js",
   "scripts": {
@@ -19,6 +19,7 @@
     "botkit": "0.0.5",
     "dotenv": "^2.0.0",
     "moment": "^2.11.2",
+    "moment-business-days": "0.0.10",
     "node-schedule": "^1.0.0",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
