@@ -15,6 +15,7 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
+    "@18f/us-federal-holidays": "^1.1.0",
     "async": "^1.5.2",
     "botkit": "0.0.5",
     "dotenv": "^2.0.0",
