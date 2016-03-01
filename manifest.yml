@@ -1,0 +1,8 @@
+---
+applications:
+- name: standup-bot
+  memory: 512M
+  instances: 1
+  no-route: true
+  services:
+  - standup-bot-db

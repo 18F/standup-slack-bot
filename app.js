@@ -9,7 +9,7 @@ require('dotenv').config();
 var models = require('./models');
 models.sequelize.sync(
   // Set to true to reset db on load
-  {force: true}
+  {force: false}
 );
 
 // Check for a Slack token
@@ -34,7 +34,7 @@ controller.spawn({
       // {name, id, team_id}
 
       // Set up cron job to check every minute for channels that need a standup report
-      schedule.scheduleJob('* * * * *', botLib.getReportRunner(bot));
+      schedule.scheduleJob('* * * * 1-5', botLib.getReportRunner(bot));
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
