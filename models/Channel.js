@@ -5,9 +5,6 @@ module.exports = function (sequelize, DataTypes) {
     name: {
       type: DataTypes.STRING
     },
-    day: {
-      type: DataTypes.STRING
-    },
     time: {
       // military time
       type: DataTypes.INTEGER
