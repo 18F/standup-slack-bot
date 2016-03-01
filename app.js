@@ -9,7 +9,7 @@ require('dotenv').config();
 var models = require('./models');
 models.sequelize.sync(
   // Set to true to reset db on load
-  {force: true}
+  {force: false}
 );
 
 // Check for a Slack token
