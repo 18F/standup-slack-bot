@@ -50,5 +50,5 @@ Feature: Time Helper, parsing a string
       Then the result matches <pattern>
     Examples:
     | time    | pattern           |
-    |         | \d{2}:\d{2} [ap]m |
-    | 0830    | 08:30 am          |
+    |         | \d{1,2}:\d{2} [ap]m |
+    | 0830    | 8:30 am          |
