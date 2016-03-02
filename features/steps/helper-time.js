@@ -46,7 +46,7 @@ module.exports = function() {
 
   this.Then(/^the result matches (.*)$/, function(pattern) {
     if(!_formattedTime.match(new RegExp(pattern))) {
-      throw new Error('Formatted time did not match pattern');
+      throw new Error('Expected "' + _formattedTime + '" to match "' + pattern + '"');
     }
   });
 };
