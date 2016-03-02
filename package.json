@@ -2,22 +2,34 @@
   "name": "standup-bot",
   "version": "0.0.1",
   "description": "a bot to handle periodic standup meetings in Slack",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/18f/standup-bot.git"
+  },
   "main": "app.js",
   "scripts": {
+    "lint": "jshint --config .jshintrc --exclude ./node_modules .",
     "start": "node app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "cucumberjs"
   },
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
+    "@18f/us-federal-holidays": "^1.1.0",
     "async": "^1.5.2",
     "botkit": "0.0.5",
     "dotenv": "^2.0.0",
     "moment": "^2.11.2",
+    "moment-timezone": "^0.5.1",
     "node-schedule": "^1.0.0",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
     "sequelize": "^3.19.2",
     "underscore": "^1.8.3"
+  },
+  "devDependencies": {
+    "cucumber": "^0.9.5",
+    "jshint": "^2.9.1",
+    "sinon": "^1.17.3"
   }
 }

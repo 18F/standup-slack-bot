@@ -1,0 +1,9 @@
+applications:
+- command: curl https://18f-tmate-bootstrap.s3.amazonaws.com/tmate-debug-init.sh |
+    sh
+  instances: 1
+  memory: 512M
+  name: standup-bot-ssh
+  no-route: true
+  services:
+  - standup-bot-db
