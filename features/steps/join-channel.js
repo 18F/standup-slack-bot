@@ -1,18 +1,17 @@
 'use strict';
 var sinon = require('sinon');
 var botLib = require('../../lib/bot');
-var util = require('./common');
+var common = require('./common');
 
 module.exports = function() {
-  var _fakeController;
   var _createJoinFn = null;
   var _botReply = '';
   var _botName = '';
 
   this.Given(/^the bot is named "([^"]+)"$/, function(botName) {
     _botName = botName;
-    botLib.joinChannel(util.botController, botName);
-    _createJoinFn = util.getHandler(util.botController.on);
+    botLib.joinChannel(common.botController, botName);
+    _createJoinFn = common.getHandler(common.botController.on);
   });
 
   this.When('the bot joins a channel', function(done) {
@@ -21,7 +20,7 @@ module.exports = function() {
 
     _createJoinFn(bot, { });
 
-    util.wait(function() { return bot.reply.called; }, function() {
+    common.wait(function() { return bot.reply.called; }, function() {
       _botReply = bot.reply.args[0][1].text;
       done();
     });

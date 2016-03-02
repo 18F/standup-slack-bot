@@ -1,7 +1,7 @@
 'use strict';
 var sinon = require('sinon');
 var botLib = require('../../lib/bot');
-var util = require('./common');
+var common = require('./common');
 
 module.exports = function() {
   var _message = { };
@@ -9,8 +9,8 @@ module.exports = function() {
   var _botReply = '';
 
   this.Given('I am in a room with the bot', function() {
-    botLib.createStandup(util.botController);
-    _createStandupFn = util.getHandler(util.botController.hears);
+    botLib.createStandup(common.botController);
+    _createStandupFn = common.getHandler(common.botController.hears);
     _message.channel = 'CSomethingSaySomething';
   });
 
@@ -28,7 +28,7 @@ module.exports = function() {
     };
     _createStandupFn(bot, _message);
 
-    util.wait(function() { return bot.reply.called; }, function() {
+    common.wait(function() { return bot.reply.called; }, function() {
       _botReply = bot.reply.args[0][1];
       done();
     });
