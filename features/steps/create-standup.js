@@ -14,7 +14,8 @@ module.exports = function() {
     _message.channel = 'CSomethingSaySomething';
   });
 
-  this.When(/I say "@bot ((create|schedule) (standup .*))"/, function(message, triggerWord, rest, done) {
+  this.When(/I say "@bot ((create|schedule) (standup .*))"/,
+    function(message, triggerWord, rest, done) {
     _message.type = 'message';
     _message.text = message;
     _message.match = [

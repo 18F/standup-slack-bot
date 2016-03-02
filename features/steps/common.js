@@ -7,7 +7,7 @@ module.exports = function() {
     module.exports.botController.hears = sinon.spy();
     module.exports.botController.on = sinon.spy();
   });
-}
+};
 
 module.exports.botController = null;
 
@@ -23,4 +23,4 @@ module.exports.wait = function(until, done) {
       module.exports.wait(until, done);
     }, 10);
   }
-}
+};
