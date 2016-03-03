@@ -16,7 +16,7 @@ module.exports = function() {
     if(time !== '') {
       _baseTime = timeHelper.getTimeFromString(time);
     } else {
-      _baseTime = new Date();
+      _baseTime = null;
     }
   });
 

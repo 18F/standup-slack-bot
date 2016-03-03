@@ -57,6 +57,6 @@ Feature: Time Helper, parsing a string
       When I ask for the display format
       Then the result matches <pattern>
     Examples:
-    | time    | pattern           |
+    | time    | pattern                    |
     |         | \d{1,2}:\d{2} [ap]m E[SD]T |
-    | 0830    | 8:30 am E[SD]T         |
+    | 0830    | 8:30 am E[SD]T             |
