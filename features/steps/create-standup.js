@@ -16,23 +16,23 @@ module.exports = function() {
 
   this.When(/I say "@bot ((create|schedule) (standup .*))"/,
     function(message, triggerWord, rest, done) {
-    _message.type = 'message';
-    _message.text = message;
-    _message.match = [
-      message,
-      triggerWord,
-      rest
-    ];
+      _message.type = 'message';
+      _message.text = message;
+      _message.match = [
+        message,
+        triggerWord,
+        rest
+      ];
 
-    var bot = {
-      reply: sinon.spy()
-    };
-    _createStandupFn(bot, _message);
+      var bot = {
+        reply: sinon.spy()
+      };
+      _createStandupFn(bot, _message);
 
-    common.wait(function() { return bot.reply.called; }, function() {
-      _botReply = bot.reply.args[0][1];
-      done();
-    });
+      common.wait(function() { return bot.reply.called; }, function() {
+        _botReply = bot.reply.args[0][1];
+        done();
+      });
   });
 
   this.Then('the bot should respond "Got it"', function() {

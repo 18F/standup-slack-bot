@@ -1,6 +1,5 @@
 'use strict';
 var sinon = require('sinon');
-require('sinon-as-promised');
 
 var common = require('./common');
 var time = require('./time');
