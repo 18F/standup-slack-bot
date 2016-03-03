@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "jshint --config .jshintrc --exclude ./node_modules .",
     "start": "node app.js",
-    "test": "cucumberjs"
+    "test": "istanbul cover cucumberjs && codecov"
   },
   "author": "",
   "license": "CC0-1.0",
@@ -28,7 +28,9 @@
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "codecov": "^1.0.1",
     "cucumber": "^0.9.5",
+    "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
     "mock-require": "^1.2.1",
     "sinon": "^1.17.3",
