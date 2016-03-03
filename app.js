@@ -38,6 +38,8 @@ controller.spawn({
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
+      botLib.giveHelp(controller);
+
       // TODO: remind people to do standup?
 
       // Message for when the bot is added to a channel
