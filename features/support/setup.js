@@ -19,7 +19,8 @@ mockRequire('sequelize', function() {
         name: path.basename(filepath),
         findOrCreate: noop,
         update: noop,
-        findAll: noop
+        findAll: noop,
+        findOne: noop
       };
     }
   };
