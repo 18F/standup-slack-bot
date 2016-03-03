@@ -26,7 +26,7 @@ module.exports = function() {
       yesterday: 'In the past',
       today: 'Now',
       blockers: 'Barricades',
-      goals: 'Accomplishments-to-be'
+      goal: 'Accomplishments-to-be'
     }]);
 
     // Also stub the bot
