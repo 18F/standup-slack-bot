@@ -42,11 +42,11 @@ module.exports = function() {
   });
 
   this.Then(/the bot should respond "([^"]+)"/, function(responseStart) {
-    if(_botReply.startsWith(responseStart)) {
+    if(_botReply.indexOf(responseStart) >= 0) {
       return true;
     } else {
       console.log(_botReply)
-      throw new Error('Bot reply did not start with "' + responseStart + '"');
+      throw new Error('Bot reply did not contain "' + responseStart + '"');
     }
   });
 };
