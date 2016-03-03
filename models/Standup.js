@@ -12,16 +12,16 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.STRING
         },
         yesterday: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         today: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         blockers: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         goal: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         }
     });
 
