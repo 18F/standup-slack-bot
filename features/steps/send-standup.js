@@ -15,7 +15,7 @@ module.exports = function() {
     if(visibility === 'public') {
       _message.channel = 'CSomethingSaySomething';
     } else {
-      _message.channel = 'PnutButterJellyTime'
+      _message.channel = 'PnutButterJellyTime';
     }
   });
 

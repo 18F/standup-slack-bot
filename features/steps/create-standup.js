@@ -45,7 +45,7 @@ module.exports = function() {
     if(_botReply.indexOf(responseStart) >= 0) {
       return true;
     } else {
-      console.log(_botReply)
+      console.log(_botReply);
       throw new Error('Bot reply did not contain "' + responseStart + '"');
     }
   });

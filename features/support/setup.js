@@ -1,7 +1,6 @@
 'use strict';
 
 // Add .resolves to sinon stubs
-var sinon = require('sinon');
 require('sinon-as-promised');
 
 // Mock sequelize
