@@ -1,6 +1,9 @@
 'use strict';
 
+var log = require('../getLogger')('Standup model');
+
 module.exports = function (sequelize, DataTypes) {
+  log.verbose('Initializing');
     var Standup = sequelize.define('Standup', {
         channel: {
           type: DataTypes.STRING
