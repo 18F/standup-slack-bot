@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/18F/standup-bot.svg?branch=master)](https://travis-ci.org/18F/standup-bot)
+[![codecov.io](https://codecov.io/github/18F/standup-bot/coverage.svg?branch=develop)](https://codecov.io/github/18F/standup-bot?branch=develop)
+
 # standup-bot
 
 A Slack bot to streamline team standup without disturbing the overall flow of conversation.
