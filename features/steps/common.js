@@ -1,6 +1,5 @@
 'use strict';
 var sinon = require('sinon');
-var botLib = require('../../lib/bot');
 
 module.exports = function() {
   this.Given('the bot is running', function() {
@@ -10,7 +9,7 @@ module.exports = function() {
   });
 
   this.Given('I am in a room with the bot', function() {
-    botLib.createStandup(module.exports.botController);
+
   });
 
   this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {

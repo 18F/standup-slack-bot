@@ -7,7 +7,6 @@ var common = require('./common');
 module.exports = function() {
   var _message = { };
   var _getUserStandupFn = null;
-  var _botReply = '';
   var _findOneStub;
   var _findOrCreateStub;
 
