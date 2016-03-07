@@ -10,9 +10,9 @@ Feature: Send standup to the bot
       T: today
       B: blockers
       G: goal
-      
+
       """
-    Then the bot should respond with "<response>"
+    Then the bot should respond "<response>"
 
     Examples:
       | visibility | status   | response |
