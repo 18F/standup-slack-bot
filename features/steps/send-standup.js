@@ -35,6 +35,7 @@ module.exports = function() {
         '<#' + _message.channel + '> ' + message, // whole message
         '', // optionally the word 'standup'
         _message.channel,
+        '', // iOS channel tag has '|channelName' on the end
         message
       ];
 
