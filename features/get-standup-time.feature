@@ -4,8 +4,8 @@ Feature: Find out when the next standup is
     Given the bot is running
     And I am in a room with the bot
     And the standup is scheduled for <utc-time>
-    When I say "@bot standup time"
-    Then the bot should respond "The next standup is scheduled for <est-time> EST"
+    When I say "@bot when"
+    Then the bot should respond "There's a standup scheduled for <est-time> EST"
 
     Examples:
       | utc-time | est-time |
@@ -18,5 +18,5 @@ Feature: Find out when the next standup is
     Given the bot is running
     And I am in a room with the bot
     And no standup is scheduled
-    When I say "@bot standup time"
-    Then the bot should respond "No standup currently scheduled"
+    When I say "@bot when"
+    Then the bot should respond "There's no standup scheduled yet."

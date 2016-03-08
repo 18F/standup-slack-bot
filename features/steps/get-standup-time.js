@@ -18,8 +18,8 @@ module.exports = function() {
     _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(null);
   });
 
-  this.When(/I say "@bot standup time"/, function(done) {
-    botLib.getStandupTime(common.botController);
+  this.When(/I say "@bot when"/, function(done) {
+    botLib.getStandupInfo(common.botController);
 
     var message = {
       type: 'message',
