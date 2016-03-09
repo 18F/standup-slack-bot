@@ -23,6 +23,7 @@ module.exports = function() {
     _findAllStandupsStub = sinon.stub(models.Standup, 'findAll');
     _findAllStandupsStub.resolves([{
       user: 'U00000000',
+      userRealName: 'Bob the Tester',
       yesterday: 'In the past',
       today: 'Now',
       blockers: 'Barricades',

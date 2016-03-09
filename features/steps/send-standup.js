@@ -8,8 +8,9 @@ var common = require('./common');
 module.exports = function() {
   var _message = { };
   var _getUserStandupFn = null;
-  var _findOneStub;
+  var _findOneChannelStub;
   var _findOrCreateStub;
+  var _findOneStandupStub;
   var _getUserStub;
 
   this.Given(/I want to send a standup for a ([^>]+) channel/, function(visibility) {
@@ -22,8 +23,16 @@ module.exports = function() {
 
   this.Given(/^the channel (.+) have a standup/, function(status) {
     if(status === 'does') {
-      _findOneStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '130' });
+      _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '130' });
       _findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
+      _findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
+        user: 'U00000000',
+        userRealName: 'Bob the Tester',
+        yesterday: 'In the past',
+        today: 'Now',
+        blockers: 'Barricades',
+        goal: 'Accomplishments-to-be'
+      });
     }
   });
 
@@ -45,13 +54,17 @@ module.exports = function() {
   });
 
   this.After(function() {
-    if(_findOneStub) {
-      _findOneStub.restore();
-      _findOneStub = null;
+    if(_findOneChannelStub) {
+      _findOneChannelStub.restore();
+      _findOneChannelStub = null;
     }
     if(_findOrCreateStub) {
       _findOrCreateStub.restore();
       _findOrCreateStub = null;
+    }
+    if(_findOneStandupStub) {
+      _findOneStandupStub.restore();
+      _findOneStandupStub = null;
     }
     if(_getUserStub) {
       _getUserStub.restore();
