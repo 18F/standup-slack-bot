@@ -6,23 +6,19 @@ var helpers = require('../../lib/helpers');
 
 module.exports = function() {
   var _seen = false;
+  var _validUser = true;
   var _fullUser;
   var _requestPostMock;
 
-  this.Given(/^the user has( not)? been seen before$/, function(not) {
-    if(not) {
-      _seen = false;
-    } else {
-      _seen = true;
-    }
-  });
+  var _postErr = null
+  var _postBody = null;
 
   this.Given(/^the network is (up|down)$/, function(status) {
-    var err = null;
-    var body = null;
+    _postErr = null;
+    _postBody = null;
 
     if(status === 'up') {
-      body = JSON.stringify({
+      _postBody = {
         ok: true,
         user: {
           id: 'id',
@@ -30,12 +26,29 @@ module.exports = function() {
           name: 'screen name',
           real_name: 'Real Name™'
         }
-      })
+      };
     } else {
-      err = new Error('Some network error');
+      _postErr = new Error('Some network error');
     }
 
-    _requestPostMock = sinon.stub(request, 'post').yieldsAsync(err, null, body);
+    _requestPostMock = sinon.stub(request, 'post').yieldsAsync(_postErr, null, JSON.stringify(_postBody));
+  });
+
+  this.Given(/^I have a(n invalid| valid) user ID$/, function(valid) {
+    if(valid === ' valid') {
+
+    } else {
+      _postBody.ok = false;
+      delete _postBody.user;
+      console.log(_postBody);
+      _requestPostMock.yieldsAsync(_postErr, null, JSON.stringify(_postBody));
+    }
+  });
+
+  this.Given(/^the user has( not)? been seen before$/, function(not) {
+    if(!not) {
+      helpers.getUser('some-id');
+    }
   });
 
   this.When('I ask for the full user', function(done) {
@@ -44,13 +57,7 @@ module.exports = function() {
       done();
     };
 
-    helpers.getUser('some-id').then(function(fullUser) {
-      if(_seen) {
-        helpers.getUser('some-id').then(fin);
-      } else {
-        fin(fullUser);
-      }
-    }).catch(function() {
+    helpers.getUser('some-id').then(fin).catch(function() {
       fin('Error');
     });
   });
