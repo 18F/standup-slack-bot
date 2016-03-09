@@ -35,19 +35,22 @@ module.exports = function() {
   });
 
   this.Given(/^I have a(n invalid| valid) user ID$/, function(valid) {
-    if(valid === ' valid') {
-
-    } else {
+    if(valid !== ' valid') {
       _postBody.ok = false;
       delete _postBody.user;
-      console.log(_postBody);
       _requestPostMock.yieldsAsync(_postErr, null, JSON.stringify(_postBody));
     }
   });
 
-  this.Given(/^the user has( not)? been seen before$/, function(not) {
+  this.Given(/^the user has( not)? been seen before$/, function(not, done) {
     if(!not) {
-      helpers.getUser('some-id');
+      helpers.getUser('some-id').then(function() {
+        done();
+      }).catch(function() {
+        done();
+      });
+    } else {
+      done();
     }
   });
 
