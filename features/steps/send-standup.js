@@ -1,5 +1,6 @@
 'use strict';
 var sinon = require('sinon');
+var helpers = require('../../lib/helpers')
 var botLib = require('../../lib/bot');
 var models = require('../../models');
 var common = require('./common');
@@ -9,6 +10,7 @@ module.exports = function() {
   var _getUserStandupFn = null;
   var _findOneStub;
   var _findOrCreateStub;
+  var _getUserStub;
 
   this.Given(/I want to send a standup for a ([^>]+) channel/, function(visibility) {
     if(visibility === 'public') {
@@ -28,6 +30,7 @@ module.exports = function() {
   this.When(/^I DM the bot with standup$/, function(message, done) {
       botLib.getUserStandupInfo(common.botController);
       _getUserStandupFn = common.getHandler(common.botController.hears);
+      _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
 
       _message.user = 'me';
       _message.match = [
@@ -49,6 +52,10 @@ module.exports = function() {
     if(_findOrCreateStub) {
       _findOrCreateStub.restore();
       _findOrCreateStub = null;
+    }
+    if(_getUserStub) {
+      _getUserStub.restore();
+      _getUserStub = null;
     }
   });
 };
