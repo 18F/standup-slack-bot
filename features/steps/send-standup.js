@@ -7,7 +7,6 @@ var common = require('./common');
 module.exports = function() {
   var _message = { };
   var _getUserStandupFn = null;
-  var _botReply = '';
   var _findOneStub;
   var _findOrCreateStub;
 
@@ -39,23 +38,7 @@ module.exports = function() {
         message
       ];
 
-      var bot = {
-        reply: sinon.spy()
-      };
-      _getUserStandupFn(bot, _message);
-
-      common.wait(function() { return bot.reply.called; }, function() {
-        _botReply = bot.reply.args[0][1];
-        done();
-      });
-  });
-
-  this.Then(/the bot should respond with "([^"]+)"/, function(responseStart) {
-    if(_botReply.indexOf(responseStart) >= 0) {
-      return true;
-    } else {
-      throw new Error('Bot reply did not contain "' + responseStart + '"');
-    }
+      common.botRepliesToHearing(_message, done);
   });
 
   this.After(function() {

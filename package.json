@@ -8,7 +8,7 @@
   },
   "main": "app.js",
   "scripts": {
-    "lint": "jshint --config .jshintrc --exclude ./node_modules .",
+    "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
     "start": "node app.js",
     "test": "LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
   },
