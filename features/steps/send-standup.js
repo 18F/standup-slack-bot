@@ -6,7 +6,6 @@ var common = require('./common');
 
 module.exports = function() {
   var _message = { };
-  var _getUserStandupFn = null;
   var _findOneStub;
   var _findOrCreateStub;
 
@@ -27,7 +26,6 @@ module.exports = function() {
 
   this.When(/^I DM the bot with standup$/, function(message, done) {
       botLib.getUserStandupInfo(common.botController);
-      _getUserStandupFn = common.getHandler(common.botController.hears);
 
       _message.user = 'me';
       _message.match = [
@@ -39,6 +37,32 @@ module.exports = function() {
       ];
 
       common.botRepliesToHearing(_message, done);
+  });
+
+  this.When('I edit a DM to the bot to say', function(message, done) {
+    botLib.getUserStandupInfo(common.botController);
+
+    common.botRepliesToHearing({
+      type: 'message',
+      message: {
+        type: 'message',
+        user: 'U00000000',
+        text: '<#' + _message.channel + '> ' + message,
+        edited: { user: 'U00000000', ts: '1234567890.000000' },
+        ts: '1234567890.000000'
+      },
+      subtype: 'message_changed',
+      hidden: true,
+      channel: 'Dchannel',
+      'previous_message': {
+        type: 'message',
+        user: 'U00000000',
+        text: 'Not really relevant...',
+        ts: '1234567890.000000'
+      },
+      'event_ts': '1234567890.000000',
+      ts: '1234567890.000000'
+    }, common.botController.on, done);
   });
 
   this.After(function() {

@@ -6,6 +6,13 @@ module.exports = function() {
     module.exports.botController = { };
     module.exports.botController.hears = sinon.spy();
     module.exports.botController.on = sinon.spy();
+
+    var bot = {
+      reply: sinon.spy()
+    };
+
+    module.exports.botController.hears.__bot = bot;
+    module.exports.botController.on.__bot = bot;
   });
 
   this.Given('I am in a room with the bot', function() {
@@ -13,8 +20,7 @@ module.exports = function() {
   });
 
   this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {
-    var fn = module.exports.getHandler(module.exports.botController.hears);
-    var botReply = fn.__bot.reply.args[0][1];
+    var botReply = module.exports.botController.hears.__bot.reply.args[0][1];
     if(botReply.indexOf(responseContains) >= 0) {
       return true;
     } else {
@@ -30,17 +36,16 @@ module.exports.getHandler = function(fn) {
   return fn.args[0][fn.args[0].length - 1];
 };
 
-module.exports.botRepliesToHearing = function(message, done) {
-  var bot = {
-    reply: sinon.spy()
-  };
+module.exports.botRepliesToHearing = function(message, method, done) {
+  if(!done && typeof method === 'function') {
+    done = method;
+    method = module.exports.botController.hears;
+  }
 
-  var fn = module.exports.getHandler(module.exports.botController.hears);
-  fn.__bot = bot;
+  var fn = module.exports.getHandler(method);
+  fn(method.__bot, message);
 
-  fn(bot, message);
-
-  module.exports.wait(function() { return bot.reply.called; }, function() {
+  module.exports.wait(function() { return method.__bot.reply.called; }, function() {
     done();
   });
 };
