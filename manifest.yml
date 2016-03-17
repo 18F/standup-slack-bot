@@ -6,3 +6,4 @@ applications:
   no-route: true
   services:
   - standup-bot-db
+  - standup-bot-cups
