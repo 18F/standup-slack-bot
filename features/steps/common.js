@@ -21,6 +21,11 @@ module.exports = function() {
 
   this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {
     var botReply = module.exports.botController.hears.__bot.reply.args[0][1];
+
+    if(typeof botReply === 'object' && botReply.text) {
+      botReply = botReply.text;
+    }
+
     if(botReply.indexOf(responseContains) >= 0) {
       return true;
     } else {

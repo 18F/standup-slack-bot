@@ -25,6 +25,7 @@
     "node-schedule": "^1.0.0",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
+    "request": "^2.69.0",
     "sequelize": "^3.19.2",
     "underscore": "^1.8.3"
   },

@@ -14,6 +14,9 @@ module.exports = function (sequelize, DataTypes) {
         user: {
             type: DataTypes.STRING
         },
+        userRealName: {
+            type: DataTypes.STRING
+        },
         yesterday: {
             type: DataTypes.STRING(1000)
         },
