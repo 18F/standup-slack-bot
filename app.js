@@ -88,6 +88,9 @@ controller.spawn({
       // Add or change a standup message for today in a DM with the bot
       botLib.getUserStandupInfo(controller);
 
+      // Remove a standup
+      botLib.removeStandup(controller);
+
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
       // TODO: update channel name if it changes
