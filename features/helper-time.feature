@@ -19,12 +19,20 @@ Feature: Time Helper, parsing a string
   # known ahead of time.  To match a pattern, they use a
   # "regular expression" to define what they expect.  A good
   # primer on regular expression is available at:
+  #
   # http://www.agillo.net/regex-primer-part-1/
   #
   # In a nutshell, these mostly match to digits, using the
   # \d metacharacter.  \d means "one digit", and curly
   # braces indicate a number of times one digit should
   # occur.  So, \d{4} means four digits.
+  #
+  # Because the database-friendly format is UTC, 9:30 pm
+  # should come back as either 0130 during standard
+  # time or 0230 during daylight savings time.  The
+  # square brackets mean "any one of these characters",
+  # so [12] means to match either a 1 or a 2, so this
+  # pattern matches 0130 and 0230.
 
   Scenario Outline: Getting the time in a database-friendly schedule format
     Given the input time <time>
@@ -33,7 +41,7 @@ Feature: Time Helper, parsing a string
     Examples:
     | time    | pattern |
     |         | \d{4}   |
-    | 8:30 pm | 2030    |
+    | 9:30 pm | 0[12]30 |
 
   Scenario Outline: Getting the time in a report-friendly format
     Given the input time <time>
@@ -49,6 +57,6 @@ Feature: Time Helper, parsing a string
       When I ask for the display format
       Then the result matches <pattern>
     Examples:
-    | time    | pattern           |
-    |         | \d{1,2}:\d{2} [ap]m |
-    | 0830    | 8:30 am          |
+    | time    | pattern                    |
+    |         | \d{1,2}:\d{2} [ap]m E[SD]T |
+    | 0830    | 8:30 am E[SD]T             |

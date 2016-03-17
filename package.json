@@ -8,28 +8,34 @@
   },
   "main": "app.js",
   "scripts": {
-    "lint": "jshint --config .jshintrc --exclude ./node_modules .",
+    "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
     "start": "node app.js",
-    "test": "cucumberjs"
+    "test": "LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
   },
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
     "@18f/us-federal-holidays": "^1.1.0",
+    "@erdc-itl/simple-logger": "^1.1.0",
     "async": "^1.5.2",
-    "botkit": "0.0.5",
+    "botkit": "0.0.7",
     "dotenv": "^2.0.0",
     "moment": "^2.11.2",
     "moment-timezone": "^0.5.1",
     "node-schedule": "^1.0.0",
     "pg": "^4.4.4",
     "pg-hstore": "^2.3.2",
+    "request": "^2.69.0",
     "sequelize": "^3.19.2",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
+    "codecov": "^1.0.1",
     "cucumber": "^0.9.5",
+    "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
-    "sinon": "^1.17.3"
+    "mock-require": "^1.2.1",
+    "sinon": "^1.17.3",
+    "sinon-as-promised": "^4.0.0"
   }
 }

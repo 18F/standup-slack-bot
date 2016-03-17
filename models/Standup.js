@@ -1,6 +1,9 @@
 'use strict';
 
+var log = require('../getLogger')('Standup model');
+
 module.exports = function (sequelize, DataTypes) {
+  log.verbose('Initializing');
     var Standup = sequelize.define('Standup', {
         channel: {
           type: DataTypes.STRING
@@ -11,17 +14,20 @@ module.exports = function (sequelize, DataTypes) {
         user: {
             type: DataTypes.STRING
         },
-        yesterday: {
+        userRealName: {
             type: DataTypes.STRING
+        },
+        yesterday: {
+            type: DataTypes.STRING(1000)
         },
         today: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         blockers: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         },
         goal: {
-            type: DataTypes.STRING
+            type: DataTypes.STRING(1000)
         }
     });
 
