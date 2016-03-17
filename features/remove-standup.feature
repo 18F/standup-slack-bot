@@ -1,6 +1,6 @@
 Feature: Remove scheduled standup meetings
 
-  Scenario Outline: I try to remove a standup that exists
+  Scenario Outline: I try to remove a standup
     Given the bot is running
     And I am in a room with the bot
     And the channel <status> have a standup
@@ -9,5 +9,5 @@ Feature: Remove scheduled standup meetings
 
     Examples:
       | status   | response                                      |
-      | does     | Standup removed :thumbs-up:                   |
+      | does     | Standup removed :thumbsup:                    |
       | does not | This channel doesn't have a standup scheduled |
