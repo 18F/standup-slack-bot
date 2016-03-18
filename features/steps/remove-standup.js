@@ -5,9 +5,9 @@ var common = require('./common');
 module.exports = function() {
   var _message = { };
 
-  this.When(/I say "@bot ((remove|delete) (standup( .*)?))"/,
+  this.When(/I say "@bot ((remove|delete) (standup))"/,
     function(message, triggerWord, rest, done) {
-      botLib.createStandup(common.botController);
+      botLib.removeStandup(common.botController);
 
       _message.type = 'message';
       _message.text = message;
