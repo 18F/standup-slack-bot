@@ -60,3 +60,12 @@ Feature: Time Helper, parsing a string
     | time    | pattern                    |
     |         | \d{1,2}:\d{2} [ap]m E[SD]T |
     | 0830    | 8:30 am E[SD]T             |
+
+  Scenario Outline: Calculating the reminder time
+    Given the input time <time>
+      When I set a reminder for <number> minutes
+      Then the result is <result>
+    Examples:
+    | time | number | result |
+    | 1230 | 15     | 1215   |
+    | 0830 | 45     | 0745   |

@@ -76,6 +76,7 @@ controller.spawn({
       botLib.giveHelp(controller);
 
       // TODO: remind people to do standup?
+      botLib.setReminder(controller);
 
       // Message for when the bot is added to a channel
       botLib.joinChannel(controller, identity.name);

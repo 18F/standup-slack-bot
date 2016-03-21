@@ -11,7 +11,17 @@ module.exports = function (sequelize, DataTypes) {
     },
     time: {
       // military time
-      type: DataTypes.INTEGER
+      type: DataTypes.INTEGER,
+      defaultValue: null
+    },
+    reminderMinutes: {
+      // in minutes
+      type: DataTypes.INTEGER,
+      defaultValue: null
+    },
+    reminderTime: {
+      type: DataTypes.INTEGER,
+      defaultValue: null
     }
   });
 
