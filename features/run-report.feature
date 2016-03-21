@@ -10,7 +10,7 @@ Feature: Report standups
     Then the bot should report
 
   Scenario: It is a weekend
-  
+
   Scenario: It is a holiday
     Given the bot is running
     And it is a holiday
