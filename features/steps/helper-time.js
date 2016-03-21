@@ -21,6 +21,14 @@ module.exports = function() {
     }
   });
 
+  this.Given(/^the database time (.*)$/, function(time) {
+    if(time !== '') {
+      _baseTime = time;
+    } else {
+      _baseTime = null;
+    }
+  });
+
   this.When('I try to parse it', function() {
     _parsedValue = timeHelper.getTimeFromString(_timeString);
   });

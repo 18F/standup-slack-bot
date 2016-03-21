@@ -62,7 +62,7 @@ Feature: Time Helper, parsing a string
     | 0830    | 8:30 am E[SD]T             |
 
   Scenario Outline: Calculating the reminder time
-    Given the input time <time>
+    Given the database time <time>
       When I set a reminder for <number> minutes
       Then the result is <result>
     Examples:
