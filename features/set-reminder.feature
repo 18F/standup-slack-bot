@@ -18,9 +18,3 @@ Feature: Set standup meeting reminders
     And no standup is scheduled
     When I say "@bot reminder 15"
     Then the bot should respond "There's no standup scheduled yet."
-
-  Scenario: It is time for a reminder
-    Given the bot is running
-    And it is not a holiday
-    When the reminder time comes
-    Then the bot should send a reminder
