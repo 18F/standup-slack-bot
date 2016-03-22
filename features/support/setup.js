@@ -19,7 +19,8 @@ mockRequire('sequelize', function() {
         findOrCreate: noop,
         update: noop,
         findAll: noop,
-        findOne: noop
+        findOne: noop,
+        upsert: noop
       };
     }
   };
