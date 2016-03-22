@@ -88,6 +88,9 @@ controller.spawn({
       // Add or change a standup message for today in a DM with the bot
       botLib.getUserStandupInfo(controller);
 
+      // DM a user when they react to a reminder DM
+      botLib.startDmEmoji(controller, identity.id);
+
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
       // TODO: update channel name if it changes
