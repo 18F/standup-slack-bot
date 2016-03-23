@@ -8,9 +8,9 @@ Feature: Set standup meeting reminders
     Then the bot should respond "Got it."
 
     Examples:
-      | utc-time | time |
-      | 9:30 am  | 15   |
-      | 10:30 am | 45   |
+      | utc-time | time | result  |
+      | 9:30 am  | 15   | 9:15 am |
+      | 10:30 am | 45   | 9:45 am |
 
   Scenario: I try to set a standup reminder in a channel without a standup
     Given the bot is running
