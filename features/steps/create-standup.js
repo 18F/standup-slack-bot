@@ -26,7 +26,7 @@ module.exports = function() {
         rest
       ];
 
-      _channelFindOrCreateStub = sinon.stub(models.Channel, 'findOrCreate').resolves({ name: message.channel });
+      _channelFindOrCreateStub = sinon.stub(models.Channel, 'findOrCreate').resolves([{ name: message.channel }]);
       common.botRepliesToHearing(_message, done);
   });
 
