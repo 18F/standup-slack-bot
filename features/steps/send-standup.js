@@ -23,7 +23,9 @@ module.exports = function() {
 
   this.Given(/^the channel (.+) have a standup/, function(status) {
     if(status === 'does') {
-      _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '130' });
+      _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
+        time: '130', name: 'CSomethingSaySomething'
+      });
       _findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
       _findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
         user: 'U00000000',

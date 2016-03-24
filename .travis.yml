@@ -3,3 +3,21 @@ node_js:
   - "0.12"
   - "4.4"
   - "5.8"
+env:
+  global:
+  - CF_USERNAME=18f-acq_deployer
+  - secure: "C7WZsev2RfK17s/PkP9z40k3HaJTlE9SBAe/DKDLTaAlcydBd21C8m+wzN8sTACS8rx2gKpKARTxlcuuLtj2u5qHcmG72N7j3xcQqJNghHOKZgpYwy3CyGLwhxdZPstaFB3vI5DXQNEkELgELySYhSbVTTvI9Q4zc55+9yqlIO3lbyYjiTc1aURju9wYAMPmMtX8reafcJAM8lGEdWgZY0w9MUC7sCbq0ZPgd+U2RWttHlGYPL0j7Ne2ih7yTGYzomB4zISK5xpuQ97Vp79ZtUbkpSUxvMHewxYRkIvpvASKB1zx2AvXn/sWPpAcOPDRQJc0Aqa+cMuVN8sqJfhEGZj/jcipMI6m3u5ZlaAunNQNdUNuGXyDQzi5c3f/1pnrHQVBS7coG0q2O4zUQ9SF+xMuhesqcT2afoQqnWh1I4oD8BSr9ISwZOliDfzjaaT6+HLKyTIYzrttEwmVk532tpKY6XuuNPnt9l/1efc8M8pPIvNOp/fg/eN1KEnbc63uRNJTBMM15Vxvfa8nZVgYEXDItLwkUyoHmZAaXEAI0gA8Err6n3eQ9ac92ixuHug6wZxBZzggEfynQwnHLIyDe6RxgnRS0FgmjT7q8NNemUwyLmur/qNT5P+ZmfpeMOFFwT0abcE2rD4SSYktrnVYQAlWKvz/xUXEZgVNFtWCquM="
+before_deploy:
+- export PATH=$HOME:$PATH
+- travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
+- tar xzvf $HOME/cf.tgz -C $HOME
+- mkdir -p ${HOME}/Godeps/_workspace
+- export GOPATH=${HOME}/Godeps/_workspace
+- go get github.com/concourse/autopilot
+- cf install-plugin -f $GOPATH/bin/autopilot
+deploy:
+- provider: script
+  script: "./deploy.sh production"
+  skip_cleanup: true
+  on:
+    branch: release
