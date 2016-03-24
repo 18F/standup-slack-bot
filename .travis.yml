@@ -6,7 +6,7 @@ node_js:
 env:
   global:
   - CF_USERNAME=18f-acq_deployer
-  - secure: "C7WZsev2RfK17s/PkP9z40k3HaJTlE9SBAe/DKDLTaAlcydBd21C8m+wzN8sTACS8rx2gKpKARTxlcuuLtj2u5qHcmG72N7j3xcQqJNghHOKZgpYwy3CyGLwhxdZPstaFB3vI5DXQNEkELgELySYhSbVTTvI9Q4zc55+9yqlIO3lbyYjiTc1aURju9wYAMPmMtX8reafcJAM8lGEdWgZY0w9MUC7sCbq0ZPgd+U2RWttHlGYPL0j7Ne2ih7yTGYzomB4zISK5xpuQ97Vp79ZtUbkpSUxvMHewxYRkIvpvASKB1zx2AvXn/sWPpAcOPDRQJc0Aqa+cMuVN8sqJfhEGZj/jcipMI6m3u5ZlaAunNQNdUNuGXyDQzi5c3f/1pnrHQVBS7coG0q2O4zUQ9SF+xMuhesqcT2afoQqnWh1I4oD8BSr9ISwZOliDfzjaaT6+HLKyTIYzrttEwmVk532tpKY6XuuNPnt9l/1efc8M8pPIvNOp/fg/eN1KEnbc63uRNJTBMM15Vxvfa8nZVgYEXDItLwkUyoHmZAaXEAI0gA8Err6n3eQ9ac92ixuHug6wZxBZzggEfynQwnHLIyDe6RxgnRS0FgmjT7q8NNemUwyLmur/qNT5P+ZmfpeMOFFwT0abcE2rD4SSYktrnVYQAlWKvz/xUXEZgVNFtWCquM="
+  - secure: "ESH3DS+NDRLLsHUJ1KWT2iGexzmdaEiMbcJdWxTLkhXNHeIP6aaRLKonpd3WzH+/I26wyOFqhfk8X+SvyQuCHMYZAAsbqLP/hAsWyt6KbQuaBAtlK/O1+UyoIDPR+scJbxBvaECvYoQfHde9tJmBHI2/SlB7+kfIO4V8vPfbpl2lUB75DgAqJZg4yHvpO4I6kvmrfXuACJf2Wt6QiEKPhqT1g+MjrGsWvsifKV251s5fPHKmOZ68U0SmCV1YXlAhTU2cym1rt2s08B+FAovrHL/zbeurOmeWvLTptVvbrFQ6M90okdI6lA/lmvN0bf6QZwdon0bKjCqb00pQUOInycFMZws1BhOYDMkG53B3IRRVfY3qT7Fb0EwAllY05c/y92uMQDS4U9Gj+1+eK1K1Extazq4xCB5Qe0my8IyzhdTCAXIJUta1En3rb460wkSuUVMNNJjNZU1t+J9HKmHKT9xBmQ0HhUmsUMamKhwPPUPdKR9AcWldifVkuGOvEUZr0dn4gPYPHQ8LAi3MBybEFZVdSnVu9gCZq7vD2DkXoVwvc+fEgg5+/7oXkGWSQv/9AvxyvWR8LBgbiyznBxxipFb9EsmwjIJnyUuGos6pDvle2x5G8366Y2vHUO1CTyjWjx+gq6ChjPyMrupq4foCiop585LzjaICd5GswykVo0w="
 before_deploy:
 - export PATH=$HOME:$PATH
 - travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
@@ -21,3 +21,4 @@ deploy:
   skip_cleanup: true
   on:
     branch: release
+    node: '0.12'
