@@ -8,7 +8,13 @@ module.exports = function() {
     module.exports.botController.on = sinon.spy();
 
     var bot = {
-      reply: sinon.spy()
+      reply: sinon.spy(),
+      startPrivateConversation: sinon.spy(),
+      api: {
+        users: {
+          info: sinon.stub().resolves({ real_name: 'Bob the Tester' })
+        }
+      }
     };
 
     module.exports.botController.hears.__bot = bot;
@@ -33,6 +39,24 @@ module.exports = function() {
       throw new Error('Bot reply did not contain "' + responseContains + '"');
     }
   });
+
+  this.Then(/the bot should start a private message with "([^"]+)"/, function(responseContains) {
+    var convo = {
+      say: sinon.spy(),
+      ask: sinon.spy(),
+      on: sinon.spy()
+    };
+
+    var DmReply = module.exports.botController.on.__bot.startPrivateConversation.args[0][1];
+    DmReply('nothing', convo);
+    DmReply = convo.say.args[0][0];
+    console.log(DmReply);
+    if(DmReply.indexOf(responseContains) >= 0) {
+      return true;
+    } else {
+      throw new Error('Bot reply did not contain "' + responseContains + '"');
+    }
+  });
 };
 
 module.exports.botController = null;
@@ -51,6 +75,20 @@ module.exports.botRepliesToHearing = function(message, method, done) {
   fn(method.__bot, message);
 
   module.exports.wait(function() { return method.__bot.reply.called; }, function() {
+    done();
+  });
+};
+
+module.exports.botStartsConvoWith = function(message, method, done) {
+  if(!done && typeof method === 'function') {
+    done = method;
+    method = module.exports.botController.on;
+  }
+
+  var fn = module.exports.getHandler(method);
+  fn(method.__bot, message);
+
+  module.exports.wait(function() { return method.__bot.startPrivateConversation.called; }, function() {
     done();
   });
 };

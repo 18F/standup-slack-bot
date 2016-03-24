@@ -7,6 +7,7 @@ module.exports = function() {
   var _parsedValue = '';
   var _baseTime = null;
   var _formattedTime = '';
+  var _convertedTime = '';
 
   this.Given(/^the string (.*)$/, function(timeString) {
     _timeString = timeString;
@@ -15,6 +16,14 @@ module.exports = function() {
   this.Given(/^the input time (.*)$/, function(time) {
     if(time !== '') {
       _baseTime = timeHelper.getTimeFromString(time);
+    } else {
+      _baseTime = null;
+    }
+  });
+
+  this.Given(/^the database time (.*)$/, function(time) {
+    if(time !== '') {
+      _baseTime = time;
     } else {
       _baseTime = null;
     }
@@ -36,6 +45,10 @@ module.exports = function() {
     _formattedTime = timeHelper.getDisplayFormat(_baseTime);
   });
 
+  this.When(/I set a reminder for (\S*) minutes/, function(minutes) {
+    _convertedTime = timeHelper.getReminderFormat(_baseTime, minutes);
+  });
+
   this.Then(/^the time should( not)? parse$/, function(not) {
     if((_parsedValue !== '' && !not) || (_parsedValue === '' && not)) {
       return true;
@@ -47,6 +60,12 @@ module.exports = function() {
   this.Then(/^the result matches (.*)$/, function(pattern) {
     if(!_formattedTime.match(new RegExp(pattern))) {
       throw new Error('Expected "' + _formattedTime + '" to match "' + pattern + '"');
+    }
+  });
+
+  this.Then(/^the result is (.*)$/, function(pattern) {
+    if (_convertedTime !== pattern) {
+      throw new Error('Expected "' + _convertedTime + '" to match "' + pattern + '"');
     }
   });
 };

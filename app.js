@@ -70,6 +70,7 @@ controller.spawn({
 
       // Set up cron job to check every minute for channels that need a standup report
       schedule.scheduleJob('* * * * 1-5', botLib.getReportRunner(bot));
+      schedule.scheduleJob('* * * * 1-5', botLib.getReminderRunner(bot));
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
@@ -78,6 +79,7 @@ controller.spawn({
       botLib.getStandupInfo(controller);
 
       // TODO: remind people to do standup?
+      botLib.setReminder(controller);
 
       // Message for when the bot is added to a channel
       botLib.joinChannel(controller, identity.name);
@@ -87,6 +89,9 @@ controller.spawn({
 
       // Add or change a standup message for today in a DM with the bot
       botLib.getUserStandupInfo(controller);
+
+      // DM a user when they react to a reminder DM
+      botLib.startDmEmoji(controller, identity.id);
 
       // Remove a standup
       botLib.removeStandup(controller);
