@@ -7,9 +7,9 @@ Feature: Create standup meetings on a recurring basis
     Then the bot should respond "<response-start>"
 
     Examples:
-      | time | response-start                            |
-      | 0830 | Got it                                    |
-      | 130  | Sorry, I couldn't understand that message |
+      | time | response-start                                |
+      | 0830 | Got it                                        |
+      | 130  | :x: Sorry, I couldn't understand that message |
 
   Scenario Outline: I try to create a standup
     Given the bot is running

@@ -20,7 +20,8 @@ mockRequire('sequelize', function() {
         update: noop,
         findAll: noop,
         findOne: noop,
-        upsert: noop
+        upsert: noop,
+        destroy: noop
       };
     }
   };

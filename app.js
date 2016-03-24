@@ -76,6 +76,8 @@ controller.spawn({
       // TODO: add usage messages
       botLib.giveHelp(controller);
 
+      botLib.getStandupInfo(controller);
+
       // TODO: remind people to do standup?
       botLib.setReminder(controller);
 
@@ -90,6 +92,9 @@ controller.spawn({
 
       // DM a user when they react to a reminder DM
       botLib.startDmEmoji(controller, identity.id);
+
+      // Remove a standup
+      botLib.removeStandup(controller);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
