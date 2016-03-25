@@ -20,10 +20,10 @@ else
 fi
 
 # Gather information from manifest
-if [[ $1 = "production" ]]; then
+if [[ $SPACE = "production" ]]; then
   MANIFEST="manifest.yml"
 else
-  MANIFEST="manifest-${1}.yml"
+  MANIFEST="manifest-${SPACE}.yml"
 fi
 echo "Using ${MANIFEST} for deploy"
 
