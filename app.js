@@ -5,6 +5,9 @@ var log = require('./getLogger')('app');
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var botLib = require('./lib/bot');
+var cfenv = require('cfenv');
+
+var appEnv = cfenv.getAppEnv();
 
 // Database setup
 var models = require('./models');
@@ -19,8 +22,9 @@ var SLACK_TOKEN = '';
 if (process.env.SLACK_TOKEN) {
   SLACK_TOKEN = process.env.SLACK_TOKEN;
 } else {
-  if (process.env.VCAP_SERVICES['user-provided'].credentials.SLACK_TOKEN) {
-    SLACK_TOKEN = process.env.VCAP_SERVICES['user-provided'].credentials.SLACK_TOKEN;
+  if (appEnv.getServices()) {
+    // If running on Cloud Foundry
+    SLACK_TOKEN = appEnv.getServiceCreds('standup-bot-cups').SLACK_TOKEN;
   } else {
     log.error('SLACK_TOKEN not set in environment.');
     process.exit(1);
