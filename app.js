@@ -13,10 +13,18 @@ models.sequelize.sync(
   {force: false}
 );
 
+var SLACK_TOKEN = '';
+
 // Check for a Slack token
-if (!process.env.SLACK_TOKEN) {
-  log.error('SLACK_TOKEN not set in environment.');
-  process.exit(1);
+if (process.env.SLACK_TOKEN) {
+  SLACK_TOKEN = process.env.SLACK_TOKEN;
+} else {
+  if (process.env.VCAP_SERVICES['user-provided'].credentials.SLACK_TOKEN) {
+    SLACK_TOKEN = process.env.VCAP_SERVICES['user-provided'].credentials.SLACK_TOKEN;
+  } else {
+    log.error('SLACK_TOKEN not set in environment.');
+    process.exit(1);
+  }
 }
 
 var bkLogger = require('./getLogger')('botkit');
@@ -56,7 +64,7 @@ var controller = Botkit.slackbot({
 
 // Initialize the bot
 controller.spawn({
-  token: process.env.SLACK_TOKEN
+  token: SLACK_TOKEN
 }).startRTM(function(err, bot) {
   if (err) {
     log.error(err);
