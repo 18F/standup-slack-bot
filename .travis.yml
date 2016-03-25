@@ -17,7 +17,7 @@ before_deploy:
 - cf install-plugin -f $GOPATH/bin/autopilot
 deploy:
 - provider: script
-  script: "./deploy.sh production"
+  script: "./scripts/deploy.sh production"
   skip_cleanup: true
   on:
     branch: develop

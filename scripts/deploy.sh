@@ -1,4 +1,6 @@
-set -ev
+#! /usr/bin/env bash
+
+set -e
 
 API="https://api.cloud.gov"
 ORG="18F-ACQ"
