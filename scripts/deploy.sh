@@ -25,6 +25,7 @@ if [[ $1 = "production" ]]; then
 else
   MANIFEST="manifest-${1}.yml"
 fi
+echo "Using ${MANIFEST} for deploy"
 
 if [[ -e $MANIFEST ]]; then
   NAME=$(cat $MANIFEST | grep name | cut -d':' -f2 | tr -d ' ')
@@ -41,5 +42,6 @@ else
   exit 1
 fi
 
+echo "Deploying to the $SPACE space in the $ORG org"
 cf login -a $API -u $CF_USERNAME -p $CF_PASSWORD -o $ORG -s $SPACE
 cf zero-downtime-push $NAME -f $MANIFEST

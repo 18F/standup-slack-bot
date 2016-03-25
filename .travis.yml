@@ -20,5 +20,5 @@ deploy:
   script: "./deploy.sh production"
   skip_cleanup: true
   on:
-    branch: release
+    branch: develop
     node: '0.12'
