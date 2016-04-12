@@ -117,3 +117,10 @@ controller.spawn({
     });
   }
 });
+
+controller.on('rtm_close', function() {
+  log.warning('RTM connection to Slack is closed');
+  // If this wasn't caused by the app closing (would have to
+  // catch the process close event to check, I think), then
+  // perhaps it could just start a new connection here?
+});
