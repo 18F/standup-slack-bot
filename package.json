@@ -9,6 +9,7 @@
   "main": "app.js",
   "scripts": {
     "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
+    "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
     "test": "LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
   },
@@ -28,6 +29,7 @@
     "pg-hstore": "^2.3.2",
     "request": "^2.69.0",
     "sequelize": "^3.19.2",
+    "sequelize-cli": "^2.3.1",
     "underscore": "^1.8.3"
   },
   "devDependencies": {
