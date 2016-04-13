@@ -86,7 +86,7 @@ controller.spawn({
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
-      botLib.giveHelp(controller);
+      botLib.giveHelp(controller, identity.name);
 
       botLib.getStandupInfo(controller);
 
