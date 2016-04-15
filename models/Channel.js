@@ -27,7 +27,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       defaultValue: null
     },
-    userGroup: {
+    audience: {
       type: DataTypes.STRING,
       defaultValue: null
     }

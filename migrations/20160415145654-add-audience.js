@@ -11,12 +11,12 @@ module.exports = {
     */
     return queryInterface.addColumn(
       'Channels',
-      'latestReport',
+      'audience',
       {
         type: Sequelize.STRING,
         defaultValue: null
       }
-    )
+    );
   },
 
   down: function (queryInterface, Sequelize) {
