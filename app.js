@@ -108,6 +108,9 @@ controller.spawn({
       // Remove a standup
       botLib.removeStandup(controller);
 
+      // Set a standup audience to a user group
+      botLib.setUserGroup(controller);
+
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
       // TODO: update channel name if it changes

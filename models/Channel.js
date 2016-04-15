@@ -26,6 +26,10 @@ module.exports = function (sequelize, DataTypes) {
     latestReport: {
       type: DataTypes.STRING,
       defaultValue: null
+    },
+    userGroup: {
+      type: DataTypes.STRING,
+      defaultValue: null
     }
   });
 
