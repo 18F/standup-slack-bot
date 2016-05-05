@@ -38,7 +38,7 @@ module.exports = function() {
     _message.user = 'U7654321';
     _message.reaction = 'thumbsup';
 
-    _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', channel: _message.item.channel });
+    _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: _message.item.channel, audience: null });
     common.botStartsConvoWith(_message, common.botController.on, done);
   });
 
