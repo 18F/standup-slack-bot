@@ -17,7 +17,8 @@ module.exports = function() {
     // about database contents.
     _findAllChannelsStub = sinon.stub(models.Channel, 'findAll');
     _findAllChannelsStub.resolves([{
-      name: 'Test Channel'
+      name: 'Test Channel',
+      audience: null
     }]);
 
     _findAllStandupsStub = sinon.stub(models.Standup, 'findAll');
