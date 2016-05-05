@@ -13,6 +13,9 @@ module.exports = function() {
       api: {
         users: {
           info: sinon.stub().yields(null, { user: { real_name: 'Bob the Tester', profile: { image_72: 'thumbnail.png' }}})
+        },
+        team: {
+          info: sinon.stub().yields(null, { team: { name: 'CSomethingSaySomething' }})
         }
       }
     };
