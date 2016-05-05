@@ -49,9 +49,9 @@ module.exports = function() {
     common.wait(function() {
       return _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called;
     }, function() {
-      // If the bot sent text and attachments, it tried to
+      // If the bot sent attachments, it tried to
       // report correctly.
-      if(_bot.say.args[0][0].text && _bot.say.args[0][0].attachments.length) {
+      if(_bot.say.args[0][0].attachments.length) {
         done();
       } else {
         done(new Error('Expected bot to report with text and attachments'));
