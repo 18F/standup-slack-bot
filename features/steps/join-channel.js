@@ -26,7 +26,7 @@ module.exports = function() {
     });
   });
 
-  this.Then(/^the bot says "(.+)"$/, function(message) {
+  this.Then(/^the bot says$/, function(message) {
     var expected = message.replace(/@<(bot-name)>/, '@' + _botName);
 
     if(expected === _botReply) {

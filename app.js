@@ -5,6 +5,9 @@ var log = require('./getLogger')('app');
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var botLib = require('./lib/bot');
+var cfenv = require('cfenv');
+
+var appEnv = cfenv.getAppEnv();
 
 // Database setup
 var models = require('./models');
@@ -13,10 +16,19 @@ models.sequelize.sync(
   {force: false}
 );
 
+var SLACK_TOKEN = '';
+
 // Check for a Slack token
-if (!process.env.SLACK_TOKEN) {
-  log.error('SLACK_TOKEN not set in environment.');
-  process.exit(1);
+if (process.env.SLACK_TOKEN) {
+  SLACK_TOKEN = process.env.SLACK_TOKEN;
+} else {
+  if (appEnv.getServices()) {
+    // If running on Cloud Foundry
+    SLACK_TOKEN = appEnv.getServiceCreds('standup-bot-cups').SLACK_TOKEN;
+  } else {
+    log.error('SLACK_TOKEN not set in environment.');
+    process.exit(1);
+  }
 }
 
 var bkLogger = require('./getLogger')('botkit');
@@ -56,7 +68,8 @@ var controller = Botkit.slackbot({
 
 // Initialize the bot
 controller.spawn({
-  token: process.env.SLACK_TOKEN
+  token: SLACK_TOKEN,
+  retry: 5
 }).startRTM(function(err, bot) {
   if (err) {
     log.error(err);
@@ -74,7 +87,7 @@ controller.spawn({
 
       // TODO: method to set standup frequency
       // TODO: add usage messages
-      botLib.giveHelp(controller);
+      botLib.giveHelp(controller, identity.name);
 
       botLib.getStandupInfo(controller);
 
@@ -95,6 +108,9 @@ controller.spawn({
 
       // Remove a standup
       botLib.removeStandup(controller);
+
+      // Set a standup audience to a user group
+      botLib.setAudience(controller);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name

@@ -17,6 +17,9 @@ module.exports = function (sequelize, DataTypes) {
         userRealName: {
             type: DataTypes.STRING
         },
+        thumbUrl: {
+            type: DataTypes.STRING
+        },
         yesterday: {
             type: DataTypes.STRING(1000)
         },

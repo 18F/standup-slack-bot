@@ -11,4 +11,4 @@ Feature: Start a DM convo when user emoji-reacts to reminder message
     Examples:
       | on-time | response     |
       | is      | Hey there!   |
-      | is not  | Sorry,       |
+      | is not  | Hey there!   |

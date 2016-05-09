@@ -12,7 +12,10 @@ module.exports = function() {
       startPrivateConversation: sinon.spy(),
       api: {
         users: {
-          info: sinon.stub().resolves({ real_name: 'Bob the Tester' })
+          info: sinon.stub().yields(null, { user: { real_name: 'Bob the Tester', profile: { image_72: 'thumbnail.png' }}})
+        },
+        team: {
+          info: sinon.stub().yields(null, { team: { name: 'CSomethingSaySomething' }})
         }
       }
     };

@@ -22,6 +22,14 @@ module.exports = function (sequelize, DataTypes) {
     reminderTime: {
       type: DataTypes.INTEGER,
       defaultValue: null
+    },
+    latestReport: {
+      type: DataTypes.STRING,
+      defaultValue: null
+    },
+    audience: {
+      type: DataTypes.STRING,
+      defaultValue: null
     }
   });
 

@@ -14,6 +14,7 @@ module.exports = function() {
   this.When('the reminder time comes', function() {
     _findAllChannelsStub = sinon.stub(models.Channel, 'findAll').resolves([{
       name: 'Test Channel',
+      audience: null
     }]);
 
     // Also stub the bot

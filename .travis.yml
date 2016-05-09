@@ -2,7 +2,8 @@ language: node_js
 node_js:
   - "0.12"
   - "4.4"
-  - "5.8"
+  - "5.11"
+  - "6.0"
 env:
   global:
   - CF_USERNAME=18f-acq_deployer
@@ -17,8 +18,8 @@ before_deploy:
 - cf install-plugin -f $GOPATH/bin/autopilot
 deploy:
 - provider: script
-  script: "./deploy.sh production"
+  script: "./scripts/deploy.sh production"
   skip_cleanup: true
   on:
-    branch: release
+    branch: develop
     node: '0.12'

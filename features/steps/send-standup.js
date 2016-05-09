@@ -1,6 +1,6 @@
 'use strict';
 var sinon = require('sinon');
-var helpers = require('../../lib/helpers')
+var helpers = require('../../lib/helpers');
 var botLib = require('../../lib/bot');
 var models = require('../../models');
 var common = require('./common');
@@ -12,6 +12,7 @@ module.exports = function() {
   var _findOrCreateStub;
   var _findOneStandupStub;
   var _getUserStub;
+  var _updateStandupStub;
 
   this.Given(/I want to send a standup for a ([^>]+) channel/, function(visibility) {
     if(visibility === 'public') {
@@ -24,7 +25,7 @@ module.exports = function() {
   this.Given(/^the channel (.+) have a standup/, function(status) {
     if(status === 'does') {
       _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
-        time: '130', name: 'CSomethingSaySomething'
+        time: '130', name: 'CSomethingSaySomething', audience: null
       });
       _findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
       _findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
@@ -40,9 +41,11 @@ module.exports = function() {
 
   this.When(/^I DM the bot with standup$/, function(message, done) {
       botLib.getUserStandupInfo(common.botController);
-      _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
 
-      _message.user = 'me';
+      // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+      _updateStandupStub = sinon.stub(models.Standup, 'update').resolves({ });
+
+      _message.user = 'U7654321';
       _message.match = [
         '<#' + _message.channel + '> ' + message, // whole message
         '', // optionally the word 'standup'
@@ -56,7 +59,7 @@ module.exports = function() {
 
   this.When('I edit a DM to the bot to say', function(message, done) {
     botLib.getUserStandupInfo(common.botController);
-    _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+    // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
 
     common.botRepliesToHearing({
       type: 'message',
@@ -93,6 +96,10 @@ module.exports = function() {
     if(_findOneStandupStub) {
       _findOneStandupStub.restore();
       _findOneStandupStub = null;
+    }
+    if(_updateStandupStub) {
+      _updateStandupStub.restore();
+      _updateStandupStub = null;
     }
     if(_getUserStub) {
       _getUserStub.restore();
