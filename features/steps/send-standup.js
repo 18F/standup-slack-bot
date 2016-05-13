@@ -13,6 +13,7 @@ module.exports = function() {
   var _findOneStandupStub;
   var _getUserStub;
   var _updateStandupStub;
+  var _updateChannelStub;
 
   this.Given(/I want to send a standup for a ([^>]+) channel/, function(visibility) {
     if(visibility === 'public') {
@@ -25,7 +26,7 @@ module.exports = function() {
   this.Given(/^the channel (.+) have a standup/, function(status) {
     if(status === 'does') {
       _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
-        time: '130', name: 'CSomethingSaySomething', audience: null
+        time: '130', name: 'CSomethingSaySomething', audience: null, latestReport: '123467.01'
       });
       _findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
       _findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
@@ -60,6 +61,7 @@ module.exports = function() {
   this.When('I edit a DM to the bot to say', function(message, done) {
     botLib.getUserStandupInfo(common.botController);
     // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+    _updateChannelStub = sinon.stub(models.Channel, 'update').resolves({ });
 
     common.botRepliesToHearing({
       type: 'message',
@@ -104,6 +106,10 @@ module.exports = function() {
     if(_getUserStub) {
       _getUserStub.restore();
       _getUserStub = null;
+    }
+    if(_updateChannelStub) {
+      _updateChannelStub.restore();
+      _updateChannelStub = null;
     }
   });
 };

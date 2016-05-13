@@ -10,12 +10,19 @@ module.exports = function() {
     var bot = {
       reply: sinon.spy(),
       startPrivateConversation: sinon.spy(),
+      say: sinon.spy(),
       api: {
         users: {
           info: sinon.stub().yields(null, { user: { real_name: 'Bob the Tester', profile: { image_72: 'thumbnail.png' }}})
         },
         team: {
           info: sinon.stub().yields(null, { team: { name: 'CSomethingSaySomething' }})
+        },
+        chat: {
+          update: sinon.stub().yields(null, {})
+        },
+        channels: {
+          info: sinon.stub().yields(null, { channel: { name: 'CSomethingSaySomething'}})
         }
       }
     };
