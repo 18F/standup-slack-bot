@@ -12,6 +12,10 @@ module.exports = function() {
       reply: sinon.spy(),
       startPrivateConversation: sinon.spy(),
       say: sinon.spy(),
+      utterances: {
+        yes: '',
+        no: ''
+      },
       api: {
         users: {
           info: sinon.stub().yields(null, { user: { real_name: 'Bob the Tester', profile: { image_72: 'thumbnail.png' }}})
