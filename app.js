@@ -103,7 +103,9 @@ controller.spawn({
       // Add or change a standup message for today in a DM with the bot
       botLib.getUserStandupInfo(controller);
 
-      // DM a user when they react to a reminder DM
+      // DM a user when they ask to be interviewed or
+      // they react to a reminder DM
+      botLib.startInterview(controller);
       botLib.startDmEmoji(controller, identity.id);
 
       // Remove a standup
