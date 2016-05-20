@@ -58,6 +58,25 @@ module.exports = function() {
       common.botRepliesToHearing(_message, done);
   });
 
+  this.When(/^I DM the bot with (valid|invalid) standup edit$/, function(valid, done) {
+      botLib.getUserStandupInfo(common.botController);
+
+      _message.user = 'U7654321';
+      _message.match = [
+        '<#' + _message.channel + '> edit today',
+        '', // optionally the word 'standup'
+        _message.channel,
+        '', // iOS channel tag has '|channelName' on the end
+        'edit today'
+      ];
+
+      if(valid === 'valid') {
+        common.botStartsConvoWith(_message, common.botController.hears, done);
+      } else {
+        common.botRepliesToHearing(_message, done);
+      }
+  });
+
   this.When('I edit a DM to the bot to say', function(message, done) {
     botLib.getUserStandupInfo(common.botController);
     // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
