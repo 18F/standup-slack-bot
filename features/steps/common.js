@@ -1,5 +1,6 @@
 'use strict';
 var sinon = require('sinon');
+var models = require('../../models');
 
 module.exports = function() {
   this.Given('the bot is running', function() {
@@ -10,12 +11,23 @@ module.exports = function() {
     var bot = {
       reply: sinon.spy(),
       startPrivateConversation: sinon.spy(),
+      say: sinon.spy(),
+      utterances: {
+        yes: '',
+        no: ''
+      },
       api: {
         users: {
           info: sinon.stub().yields(null, { user: { real_name: 'Bob the Tester', profile: { image_72: 'thumbnail.png' }}})
         },
         team: {
           info: sinon.stub().yields(null, { team: { name: 'CSomethingSaySomething' }})
+        },
+        chat: {
+          update: sinon.stub().yields(null, {})
+        },
+        channels: {
+          info: sinon.stub().yields(null, { channel: { name: 'CSomethingSaySomething'}})
         }
       }
     };
@@ -31,8 +43,8 @@ module.exports = function() {
   this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {
     var botReply = module.exports.botController.hears.__bot.reply.args[0][1];
 
-    if(typeof botReply === 'object' && botReply.text) {
-      botReply = botReply.text;
+    if(typeof botReply === 'object' && (botReply.text || botReply.attachments[0].fallback)) {
+      botReply = botReply.text || botReply.attachments[0].fallback;
     }
 
     if(botReply.indexOf(responseContains) >= 0) {
@@ -52,12 +64,48 @@ module.exports = function() {
 
     var DmReply = module.exports.botController.on.__bot.startPrivateConversation.args[0][1];
     DmReply('nothing', convo);
-    DmReply = convo.say.args[0][0];
-    console.log(DmReply);
+
+    var botResponse = convo.say.called ? convo.say : convo.ask;
+    DmReply = botResponse.args[0][0];
     if(DmReply.indexOf(responseContains) >= 0) {
       return true;
     } else {
       throw new Error('Bot reply did not contain "' + responseContains + '"');
+    }
+  });
+
+  var _standupFindStub;
+  this.Given(/I( do not)? have previous standups/, function(dont) {
+    var todayDate = new Date();
+    var yesterdayDate = new Date(new Date() - 24 * 60 * 60 * 1000);
+
+    _standupFindStub = sinon.stub(models.Standup, 'findAll');
+    if(dont) {
+      _standupFindStub.resolves([ ]);
+    } else {
+      _standupFindStub.resolves([
+        {
+          date: todayDate.toISOString(),
+          yesterday: 'Did a thing',
+          today: 'Doing a thing',
+          blockers: 'Nothing',
+          goals: 'Something'
+        },
+        {
+          date: yesterdayDate.toISOString(),
+          yesterday: 'Did a different thing',
+          today: 'Doing another thing',
+          blockers: 'Something',
+          goals: 'Everything'
+        }
+      ]);
+    }
+  });
+
+  this.After(function() {
+    if(_standupFindStub) {
+      _standupFindStub.restore();
+      _standupFindStub = null;
     }
   });
 };

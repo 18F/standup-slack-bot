@@ -8,6 +8,7 @@ var reportRunner = require('../../lib/bot/getReportRunner');
 
 module.exports = function() {
   var _findAllChannelsStub;
+  var _findOneChannelStub;
   var _findAllStandupsStub;
   var _bot;
 
@@ -20,6 +21,12 @@ module.exports = function() {
       name: 'Test Channel',
       audience: null
     }]);
+
+    _findOneChannelStub = sinon.stub(models.Channel, 'findOne');
+    _findOneChannelStub.resolves({
+      name: 'Test Channel',
+      audience: null
+    });
 
     _findAllStandupsStub = sinon.stub(models.Standup, 'findAll');
     _findAllStandupsStub.resolves([{
@@ -77,6 +84,9 @@ module.exports = function() {
   this.After(function() {
     if(_findAllChannelsStub) {
       _findAllChannelsStub.restore();
+    }
+    if(_findOneChannelStub) {
+      _findOneChannelStub.restore();
     }
     if(_findAllStandupsStub) {
       _findAllStandupsStub.restore();
