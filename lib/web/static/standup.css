@@ -1,4 +1,37 @@
+body {
+  background-image: url(standup-bot.png);
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: -210px 0%;
+}
+
 div.usa-accordion-content ul {
   list-style: disc;
   margin: 0 0 0 2rem;
+}
+
+.usa-accordion>ul>li, .usa-accordion-bordered>ul>li {
+    background-color: rgba(0,0,0,0);
+}
+
+.usa-accordion-bordered .usa-accordion-content {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+a.doc-link {
+  position: absolute;
+  padding: 5px;
+  margin: 5px;
+}
+
+pre, code {
+  padding: 5px;
+  background: #e1f3f8;
+  border: 1px dashed #00a6d2;
+}
+
+pre > code {
+  padding: 0;
+  background: transparent;
+  border: 0;
 }
