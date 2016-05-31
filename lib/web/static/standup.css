@@ -5,6 +5,10 @@ body {
   background-position: -210px 0%;
 }
 
+h1.page-title {
+  text-align: center;
+}
+
 div.usa-accordion-content ul {
   list-style: disc;
   margin: 0 0 0 2rem;
