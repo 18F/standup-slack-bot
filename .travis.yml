@@ -14,8 +14,7 @@ before_deploy:
 - tar xzvf $HOME/cf.tgz -C $HOME
 - mkdir -p ${HOME}/Godeps/_workspace
 - export GOPATH=${HOME}/Godeps/_workspace
-- go get github.com/concourse/autopilot
-- cf install-plugin -f $GOPATH/bin/autopilot
+- cf install-plugin autopilot -f -r CF-Community
 deploy:
 - provider: script
   script: "./scripts/deploy.sh production"
