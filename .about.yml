@@ -2,14 +2,14 @@
 # .about.yml project metadata
 #
 # Short name that acts as the project identifier (required)
-name:
+name: standup-slack-bot
 
 # Full proper name of the project (required)
-full_name:
+full_name: Standup Bot
 
 # The type of content in the repo
 # values: app, docs, policy
-type:
+type: app
 
 # Describes whether a project team, working group/guild, etc. owns the repo (required)
 # values: guild, working-group, project
@@ -20,18 +20,18 @@ parent:
 
 # Maturity stage of the project (required)
 # values: discovery, alpha, beta, live, sunset, transfer, end
-stage:
+stage: beta
 
 # Description of the project
-description:
+description: A Slack bot to streamline team standup without disturbing the overall flow of conversation.
 
 # Tags that describe the project or aspects of the project
 tags:
-- 
+-
 
 # Should this repo have automated tests? If so, set to `true`. (required)
 # values: true, false
-testable:
+testable: true
 
 # Team members contributing to the project (required)
 # Items:
@@ -39,26 +39,33 @@ testable:
 #   id: Internal team identifier/user name
 #   role: Team member's role; leads should be designated as 'lead'
 team:
-- 
+- github: stvnrlly
+  id:
+  role:
+- github: mgwalker
+  id:
+  role:
 
 # Partners for whom the project is developed
 partners:
-- 
+-
 
 # Organizations or individuals who have adopted the project for their own use
 # Items:
 # - id: The name of the organization or individual
 #   url: A URL to the user's version of the project
 users:
-- 
+-
 
 # Brief descriptions of significant project developments
 milestones:
-- 
+-
 
 # Technologies used to build the project
 stack:
-- 
+- Node.JS
+- Botkit
+- PostgreSQL
 
 # Brief description of the project's outcomes
 impact:
@@ -70,7 +77,7 @@ impact:
 #   url: URL for detailed information
 #   badge: URL for the status badge
 services:
-- 
+-
 
 # Licenses that apply to the project and/or its components (required)
 # Items by property name pattern:
@@ -82,7 +89,7 @@ licenses:
 
 # Tag to use when blogging about this project
 blogTag:
-- 
+-
 
 # Links to project artifacts
 # Items:
@@ -90,11 +97,12 @@ blogTag:
 #   text: Anchor text for the link
 #   category: Type of the link
 links:
-- 
+-
 
 # URIs for points-of-contact
 # Items:
 # - url: URL for the link
 #   text: Anchor text for the link
 contact:
-- 
+- url: https://github.com/18F/standup-slack-bot/issues
+  text: Issues
