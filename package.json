@@ -27,10 +27,10 @@
     "moment-timezone": "^0.5.1",
     "mustache": "^2.2.1",
     "node-schedule": "^1.0.0",
-    "pg": "^4.4.4",
+    "pg": "^4.5.6",
     "pg-hstore": "^2.3.2",
     "request": "^2.69.0",
-    "sequelize": "^3.19.2",
+    "sequelize": "^3.24.3",
     "sequelize-cli": "^2.3.1",
     "underscore": "^1.8.3"
   },

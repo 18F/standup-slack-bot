@@ -1,6 +1,6 @@
 ---
 applications:
-- name: standup-bot
+- name: standup-slack-bot
   memory: 512M
   instances: 1
   services:
