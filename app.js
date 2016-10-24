@@ -64,7 +64,10 @@ function bkLog(level) {
 
 var controller = Botkit.slackbot({
   debug: false,
-  logger: { log: bkLog }
+  logger: { log: bkLog },
+  webserver: {
+    static_dir: __dirname + '/lib/web/static'
+  }
 });
 
 // Initialize the bot
