@@ -1,9 +1,8 @@
 language: node_js
 node_js:
-- '0.12'
-- '4.4'
-- '5.11'
-- '6.0'
+- '4.6'
+- '5.12'
+- '6.7'
 env:
   global:
   - CF_USERNAME=18f-acq_deployer
