@@ -15,7 +15,7 @@ module.exports = function() {
 
   this.Given(/^the input time (.*)$/, function(time) {
     if(time !== '') {
-      _baseTime = timeHelper.getTimeFromString(time);
+      _baseTime = timeHelper.getTimeFromString(time).time;
     } else {
       _baseTime = null;
     }
@@ -50,7 +50,7 @@ module.exports = function() {
   });
 
   this.Then(/^the time should( not)? parse$/, function(not) {
-    if((_parsedValue !== '' && !not) || (_parsedValue === '' && not)) {
+    if((_parsedValue !== false && !not) || (_parsedValue === false && not)) {
       return true;
     } else {
       throw new Error('Time failed to parse');
