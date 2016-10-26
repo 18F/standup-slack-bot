@@ -31,6 +31,21 @@ module.exports = function (sequelize, DataTypes) {
         },
         goal: {
             type: DataTypes.STRING(1000)
+        },
+        monday: {
+          type: DataTypes.BOOLEAN
+        },
+        tuesday: {
+          type: DataTypes.BOOLEAN
+        },
+        wednesday: {
+          type: DataTypes.BOOLEAN
+        },
+        thursday: {
+          type: DataTypes.BOOLEAN
+        },
+        friday: {
+          type: DataTypes.BOOLEAN
         }
     });
 
