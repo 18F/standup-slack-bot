@@ -5,6 +5,7 @@ var log = require('./getLogger')('app');
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
 var botLib = require('./lib/bot');
+var startWebServer = require('./lib/web/start');
 var cfenv = require('cfenv');
 
 var appEnv = cfenv.getAppEnv();
@@ -63,7 +64,10 @@ function bkLog(level) {
 
 var controller = Botkit.slackbot({
   debug: false,
-  logger: { log: bkLog }
+  logger: { log: bkLog },
+  webserver: {
+    static_dir: __dirname + '/lib/web/static'
+  }
 });
 
 // Initialize the bot
@@ -124,5 +128,7 @@ controller.spawn({
 
       log.verbose('All bot functions initialized');
     });
+
+    startWebServer(controller);
   }
 });

@@ -1,21 +1,20 @@
 language: node_js
 node_js:
-  - "0.12"
-  - "4.4"
-  - "5.11"
-  - "6.0"
+- '0.12'
+- '4.4'
+- '5.11'
+- '6.0'
 env:
   global:
   - CF_USERNAME=18f-acq_deployer
-  - secure: "ESH3DS+NDRLLsHUJ1KWT2iGexzmdaEiMbcJdWxTLkhXNHeIP6aaRLKonpd3WzH+/I26wyOFqhfk8X+SvyQuCHMYZAAsbqLP/hAsWyt6KbQuaBAtlK/O1+UyoIDPR+scJbxBvaECvYoQfHde9tJmBHI2/SlB7+kfIO4V8vPfbpl2lUB75DgAqJZg4yHvpO4I6kvmrfXuACJf2Wt6QiEKPhqT1g+MjrGsWvsifKV251s5fPHKmOZ68U0SmCV1YXlAhTU2cym1rt2s08B+FAovrHL/zbeurOmeWvLTptVvbrFQ6M90okdI6lA/lmvN0bf6QZwdon0bKjCqb00pQUOInycFMZws1BhOYDMkG53B3IRRVfY3qT7Fb0EwAllY05c/y92uMQDS4U9Gj+1+eK1K1Extazq4xCB5Qe0my8IyzhdTCAXIJUta1En3rb460wkSuUVMNNJjNZU1t+J9HKmHKT9xBmQ0HhUmsUMamKhwPPUPdKR9AcWldifVkuGOvEUZr0dn4gPYPHQ8LAi3MBybEFZVdSnVu9gCZq7vD2DkXoVwvc+fEgg5+/7oXkGWSQv/9AvxyvWR8LBgbiyznBxxipFb9EsmwjIJnyUuGos6pDvle2x5G8366Y2vHUO1CTyjWjx+gq6ChjPyMrupq4foCiop585LzjaICd5GswykVo0w="
+  - secure: kdrXWKFX5OYrOaub/iUorhO7ZoHCQ0GEXfCvG3J/shzpAQbdmmas8xG+dS2CD9ecP16ZLeSaR/Di9S98x4eaNIh9At66n/QLPrgCVhXNWdB0yKJLZRN2QBlrhkloj144uaIcdg8LfpKbW/TXOI0cs3dfu1+ji+HhEmFSrJI+d4+z2hoV788S1BeWqJfgRS1ZHiM+Rq8EL8Anhuz6+DG+KkpLaUTJD9LOYsf1uofyIRPytCsdlNKZHO03+7mItogX7zB5+/seJvzy0JZtboj6b6E93o7I5hvbiEOmdU5r1EbjZekwbA3EabSqRHtvcbLdFP/Btb1iRAdi5xsbq6061LQlN0wMiRgk/EI0GKEws9zmBbh2WRQhBaEZ8AX9kMQMXk2UZJZMseu9Q2Wq/zE3jlHTK13kteowjI4Luju2MCRN9YqEp45rLkAmp7Z2UhHH+xfXaSbQ8wuj/Vkv7qyxRNpOEdjZh+Fe2eqeiHIRKWrds42V8JWxsqRzbVUGkZN4ro7J/VgL7NYDKeN2ydOpFx6s1gpziHWyng+J0De35zdprsQrGezEYpn0NjpnfRJApRuSfPr6exRTDrByqAZIpBZcRp+pX9xySspGiqtdFhk8hfzComL7KeTX2XeaA0/9v1zpqi9XzHFmSnsUsuOQ5wWYMDu+Lu9gXjg6FRW19/o=
 before_deploy:
 - export PATH=$HOME:$PATH
 - travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
 - tar xzvf $HOME/cf.tgz -C $HOME
 - mkdir -p ${HOME}/Godeps/_workspace
 - export GOPATH=${HOME}/Godeps/_workspace
-- go get github.com/concourse/autopilot
-- cf install-plugin -f $GOPATH/bin/autopilot
+- cf install-plugin autopilot -f -r CF-Community
 deploy:
 - provider: script
   script: "./scripts/deploy.sh production"
