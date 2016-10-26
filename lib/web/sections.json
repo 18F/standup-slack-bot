@@ -1,3 +1,7 @@
 [
+  { "name": "Administering standups", "markdown": "admin.md" },
+  { "name": "Interacting with the bot", "markdown": "interaction.md" },
+  { "name": "Standup Reports", "markdown": "reports.md" },
+  { "name": "Installation", "markdown": "installation.md" },
   { "name": "Glossary", "markdown": "glossary.md" }
 ]

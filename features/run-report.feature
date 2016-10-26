@@ -4,7 +4,6 @@ Feature: Report standups
 
   Scenario: It is not a holiday or weekend
     Given the bot is running
-    #And it is a weekday
     And it is not a holiday
     When the scheduled time comes
     Then the bot should report
