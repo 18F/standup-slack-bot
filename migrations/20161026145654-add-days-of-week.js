@@ -16,35 +16,43 @@ module.exports = {
         type: Sequelize.BOOLEAN,
         defaultValue: true
       }
-    ).then(() => queryInterface.addColumn(
-      'Channels',
-      'tuesday',
-      {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
-    )).then(() => queryInterface.addColumn(
-      'Channels',
-      'wednesday',
-      {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
-    )).then(() => queryInterface.addColumn(
-      'Channels',
-      'thursday',
-      {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
-    )).then(() => queryInterface.addColumn(
-      'Channels',
-      'friday',
-      {
-        type: Sequelize.BOOLEAN,
-        defaultValue: true
-      }
-    ));
+    ).then(function() {
+      return queryInterface.addColumn(
+        'Channels',
+        'tuesday',
+        {
+          type: Sequelize.BOOLEAN,
+          defaultValue: true
+        }
+      );
+    }).then(function() {
+      return queryInterface.addColumn(
+        'Channels',
+        'wednesday',
+        {
+          type: Sequelize.BOOLEAN,
+          defaultValue: true
+        }
+      );
+    }).then(function() {
+      return queryInterface.addColumn(
+        'Channels',
+        'thursday',
+        {
+          type: Sequelize.BOOLEAN,
+          defaultValue: true
+        }
+      );
+    }).then(function() {
+      return queryInterface.addColumn(
+        'Channels',
+        'friday',
+        {
+          type: Sequelize.BOOLEAN,
+          defaultValue: true
+        }
+      );
+    });
   },
 
   down: function (queryInterface, Sequelize) {
