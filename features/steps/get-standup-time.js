@@ -6,13 +6,29 @@ var models = require('../../models');
 
 module.exports = function() {
   var _channelFindStub = null;
+  var _channelFindResolves = { get: function(dayName) {
+    return false;
+  }};
 
   // TODO: move these functions to common.js
   this.Given(/the standup is scheduled for ([1-2]?\d:[0-5]\d [ap]m)/, function(time) {
     var plus12 = time.substr(-2, 2) === 'pm' ? 1200 : 0;
     var utcTime = Number(time.replace(':', '').substr(0, 4).trim()) + plus12;
 
-    _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves({ time: utcTime });
+    _channelFindResolves.time = utcTime;
+    if(!_channelFindStub) {
+      _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(_channelFindResolves);
+    }
+  });
+
+  this.Given(/the standup is scheduled on (.*)/, function(days) {
+    days = days.split(' ').map(day => day.toLowerCase());
+    _channelFindResolves.get = function(dayName) {
+      return days.indexOf(dayName.toLowerCase()) >= 0;
+    }
+    if(!_channelFindStub) {
+      _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(_channelFindResolves);
+    }
   });
 
   // TODO: move these functions to common.js

@@ -14,6 +14,7 @@ Feature: Time Helper, parsing a string
       | 830am       | should     |
       | 830 am      | should     |
       | 0830        | should     |
+      | 0830 M W F  | should     |
 
   # The following scenarios match patterns instead of values
   # known ahead of time.  To match a pattern, they use a

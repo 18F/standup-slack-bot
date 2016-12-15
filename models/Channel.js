@@ -30,6 +30,21 @@ module.exports = function (sequelize, DataTypes) {
     audience: {
       type: DataTypes.STRING,
       defaultValue: null
+    },
+    monday: {
+      type: DataTypes.BOOLEAN
+    },
+    tuesday: {
+      type: DataTypes.BOOLEAN
+    },
+    wednesday: {
+      type: DataTypes.BOOLEAN
+    },
+    thursday: {
+      type: DataTypes.BOOLEAN
+    },
+    friday: {
+      type: DataTypes.BOOLEAN
     }
   });
 

@@ -6,11 +6,16 @@ To create a new standup or reschedule one, first ensure that the standup-bot is 
 
 `@standup-bot schedule standup for 10am`
 
+Additionally, you can schedule the standups for just certain days of the week:
+
+`@standup-bot schedule standup for 10am M W F`
+
 Some things to note:
 
 - The standup bot can only work in public channels
 - All times are assumed to be in Eastern time
 - The time indicates what time the bot will report
+- Days of the week are accepted as M, Mo, T, Tu, W, We, Th, F, and Fr
 - You can also say "create" or "move" instead of "schedule"
 
 ## Setting a standup reminder
