@@ -42,5 +42,8 @@ else
   exit 1
 fi
 
+# Shrinkwrap dependencies to the versions that were actually tested
+npm shrinkwrap
+
 cf login -a $API -u $CF_USERNAME -p $CF_PASSWORD -o $ORG -s standup-bot
 cf zero-downtime-push $NAME -f $MANIFEST
