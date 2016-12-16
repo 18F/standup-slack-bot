@@ -19,5 +19,5 @@ deploy:
   script: "./scripts/deploy.sh production"
   skip_cleanup: true
   on:
-    branch: continuous-deploy-govcloud
+    branch: release
     node: '6.7'
