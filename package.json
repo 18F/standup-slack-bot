@@ -19,6 +19,7 @@
     "@18f/us-federal-holidays": "^1.1.0",
     "@erdc-itl/simple-logger": "^1.1.0",
     "async": "^1.5.2",
+    "better-queue": "^3.8.4",
     "botkit": "^0.4.0",
     "cfenv": "^1.0.3",
     "dotenv": "^2.0.0",
