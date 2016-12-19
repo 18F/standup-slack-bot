@@ -58,17 +58,32 @@ module.exports = function() {
   });
 
   this.Then(/the bot should start a private message with "([^"]+)"/, function(responseContains) {
+    const bot = module.exports.botController.on.__bot;
+
+    if(bot.say.called) {
+      const msg = bot.say.args[bot.say.args.length - 1][0];
+      if(msg.channel[0] == 'U') {
+        if(msg.text.indexOf(responseContains) >= 0) {
+          return true;
+        } else {
+          console.log(msg.text);
+          throw new Error('Bot reply did not contain "' + responseContains + '"');
+        }
+      }
+    }
+
     var convo = {
       say: sinon.spy(),
       ask: sinon.spy(),
       on: sinon.spy()
     };
 
-    var DmReply = module.exports.botController.on.__bot.startPrivateConversation.args[0][1];
+    var DmReply = bot.startPrivateConversation.args[0][1];
     DmReply('nothing', convo);
 
     var botResponse = convo.say.called ? convo.say : convo.ask;
     DmReply = botResponse.args[0][0];
+
     if(DmReply.indexOf(responseContains) >= 0) {
       return true;
     } else {
