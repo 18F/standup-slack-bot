@@ -8,6 +8,8 @@ module.exports = function() {
     module.exports.botController.hears = sinon.spy();
     module.exports.botController.on = sinon.spy();
 
+    require('../../lib/helpers/doInterview').flush();
+
     var bot = {
       reply: sinon.spy(),
       startPrivateConversation: sinon.spy(),
