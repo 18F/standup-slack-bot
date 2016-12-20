@@ -23,6 +23,6 @@ Feature: Start a DM convo when user emoji-reacts to reminder message
     Then the bot should start a private message with "<response>"
 
     Examples:
-      | on-time | response |
-      | is      | > I see  |
-      | is not  | > I see  |
+      | on-time | response           |
+      | is      | > :thumbsup: I see |
+      | is not  | > :thumbsup: I see |
