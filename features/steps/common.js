@@ -60,8 +60,11 @@ module.exports = function() {
   this.Then(/the bot should start a private message with "([^"]+)"/, function(responseContains) {
     const bot = module.exports.botController.on.__bot;
 
+    // First check if bot.say was called.  If it was, then the bot may have
+    // sent a DM.  Check for that.
     if(bot.say.called) {
       const msg = bot.say.args[bot.say.args.length - 1][0];
+      // If the target channel is a user, then it's a DM
       if(msg.channel[0] == 'U') {
         if(msg.text.indexOf(responseContains) >= 0) {
           return true;
@@ -71,6 +74,9 @@ module.exports = function() {
         }
       }
     }
+
+    // If the bot didn't send a DM, then we should check if it started a
+    // private conversation and sent a message that way.
 
     var convo = {
       say: sinon.spy(),
