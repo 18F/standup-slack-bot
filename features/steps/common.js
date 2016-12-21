@@ -8,6 +8,8 @@ module.exports = function() {
     module.exports.botController.hears = sinon.spy();
     module.exports.botController.on = sinon.spy();
 
+    require('../../lib/helpers/doInterview').flush();
+
     var bot = {
       reply: sinon.spy(),
       startPrivateConversation: sinon.spy(),
@@ -56,17 +58,38 @@ module.exports = function() {
   });
 
   this.Then(/the bot should start a private message with "([^"]+)"/, function(responseContains) {
+    const bot = module.exports.botController.on.__bot;
+
+    // First check if bot.say was called.  If it was, then the bot may have
+    // sent a DM.  Check for that.
+    if(bot.say.called) {
+      const msg = bot.say.args[bot.say.args.length - 1][0];
+      // If the target channel is a user, then it's a DM
+      if(msg.channel[0] == 'U') {
+        if(msg.text.indexOf(responseContains) >= 0) {
+          return true;
+        } else {
+          console.log(msg.text);
+          throw new Error('Bot reply did not contain "' + responseContains + '"');
+        }
+      }
+    }
+
+    // If the bot didn't send a DM, then we should check if it started a
+    // private conversation and sent a message that way.
+
     var convo = {
       say: sinon.spy(),
       ask: sinon.spy(),
       on: sinon.spy()
     };
 
-    var DmReply = module.exports.botController.on.__bot.startPrivateConversation.args[0][1];
+    var DmReply = bot.startPrivateConversation.args[0][1];
     DmReply('nothing', convo);
 
     var botResponse = convo.say.called ? convo.say : convo.ask;
     DmReply = botResponse.args[0][0];
+
     if(DmReply.indexOf(responseContains) >= 0) {
       return true;
     } else {
