@@ -47,7 +47,7 @@ module.exports = function() {
       botReply = botReply.text || botReply.attachments[0].fallback;
     }
 
-    if(botReply.indexOf(responseContains) >= 0) {
+    if(botReply.match(RegExp(responseContains))) {
       return true;
     } else {
       console.log(botReply);
