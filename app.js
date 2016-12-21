@@ -26,6 +26,7 @@ if (process.env.SLACK_TOKEN) {
   if (appEnv.getServices()) {
     // If running on Cloud Foundry
     SLACK_TOKEN = appEnv.getServiceCreds('standup-bot-cups').SLACK_TOKEN;
+    process.env.TIMEZONE = appEnv.getServiceCreds('standup-bot-cups').TIMEZONE;
   } else {
     log.error('SLACK_TOKEN not set in environment.');
     process.exit(1);
