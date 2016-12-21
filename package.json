@@ -11,7 +11,7 @@
     "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
     "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
-    "test": "LOG_LEVEL=100 istanbul cover cucumberjs -- --tags ~@daylight-savings-time && codecov"
+    "test": "LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
   },
   "author": "",
   "license": "CC0-1.0",

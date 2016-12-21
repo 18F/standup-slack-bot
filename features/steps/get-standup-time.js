@@ -13,9 +13,9 @@ module.exports = function() {
   // TODO: move these functions to common.js
   this.Given(/the standup is scheduled for ([1-2]?\d:[0-5]\d [ap]m)/, function(time) {
     var plus12 = time.substr(-2, 2) === 'pm' ? 1200 : 0;
-    var utcTime = Number(time.replace(':', '').substr(0, 4).trim()) + plus12;
+    var scheduledTime = Number(time.replace(':', '').substr(0, 4).trim()) + plus12;
 
-    _channelFindResolves.time = utcTime;
+    _channelFindResolves.time = scheduledTime;
     if(!_channelFindStub) {
       _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(_channelFindResolves);
     }
