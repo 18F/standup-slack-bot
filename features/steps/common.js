@@ -97,6 +97,24 @@ module.exports = function() {
     }
   });
 
+  this.Then(/the bot should start a private message with an attachment saying "([^"]+)"/, function(responseContains) {
+    const bot = module.exports.botController.on.__bot;
+
+    if(bot.say.called) {
+      const msg = bot.say.args[bot.say.args.length - 1][0];
+      if(msg.attachments && Array.isArray(msg.attachments)) {
+        for(let attachment of msg.attachments) {
+          for(let field of attachment.fields) {
+            if(field.value.indexOf(responseContains) >= 0) {
+              return true;
+            }
+          }
+        }
+      }
+    }
+    throw new Error(`Bot reply did not contain an attachment saying "${responseContains}"`);
+  });
+
   var _standupFindStub;
   this.Given(/I( do not)? have previous standups/, function(dont) {
     var todayDate = new Date();
