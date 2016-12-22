@@ -20,9 +20,9 @@ Feature: Start a DM convo when user emoji-reacts to reminder message
     And it <on-time> before the standup report has run for the day
     And I am already being interviewed for another channel
     When I say "@bot interview me"
-    Then the bot should start a private message with "<response>"
+    Then the bot should start a private message with an attachment saying "<response>"
 
     Examples:
-      | on-time | response           |
-      | is      | > :thumbsup: I see |
-      | is not  | > :thumbsup: I see |
+      | on-time | response         |
+      | is      | :thumbsup: I see |
+      | is not  | :thumbsup: I see |
