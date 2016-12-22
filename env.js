@@ -6,6 +6,7 @@ const appEnv = cfenv.getAppEnv();
 
 const knownEnvs = [
   'SLACK_TOKEN',
+  'TIMEZONE',
   'URL'
 ];
 
