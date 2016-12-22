@@ -1,3 +1,5 @@
+"use strict";
+
 const shrinkwrap = require('../npm-shrinkwrap.json');
 const failed = [ ];
 
