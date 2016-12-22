@@ -3,4 +3,3 @@ node_modules
 coverage
 cf-ssh.yml
 npm-debug.log
-npm-shrinkwrap.json
