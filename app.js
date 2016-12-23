@@ -94,6 +94,11 @@ controller.spawn({
       // TODO: add usage messages
       botLib.giveHelp(controller, identity.name);
 
+      // Set yourself OOO for some time.  Put this above getStandupInfo
+      // because getStandupInfo catches anything that starts with "#channel",
+      // so catch the more precise 
+      botLib.setOutOfOffice(controller);
+
       botLib.getStandupInfo(controller);
 
       // TODO: remind people to do standup?
@@ -118,9 +123,6 @@ controller.spawn({
 
       // Set a standup audience to a user group
       botLib.setAudience(controller);
-
-      // Set yourself OOO for some time
-      botLib.setOutOfOffice(controller);
 
       // Get a weekly user report
       botLib.userReport(controller);
