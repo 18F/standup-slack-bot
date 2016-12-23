@@ -40,6 +40,28 @@ If you sent your standup as block text, you can edit that message to edit your s
 
 Finally, you can send the bot another block text DM.  Any sections you supply in the new standup block text will overwrite the previous standup.
 
+## Setting yourself out-of-office
+
+If you know you'll be out of the office for a few days and would like the bot to automatically post standups on your behalf while you're away, you can tell it you'll be gone.  To do that, you can either tell the bot in the channel that you want to automatically report in:
+
+```
+@standup-bot I'll be out of the office for 3 days
+```
+
+Or you can send the bot a DM and tell it which channel to automatically report in:
+
+```
+#channel out of the office for 3 days
+```
+
+The bot understands over variations of these messages.  Here are some examples:
+
+```
+@standup-bot out of office 3 days
+@standup-bot out of office 3
+@standup-bot ooo 3
+```
+
 ## Get help
 
 The bot can provide a quick reference to using it.  To trigger the bot's in-Slack help, just say `help` in a DM or `@standup-bot help` in any channel the bot is in.
