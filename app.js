@@ -1,6 +1,6 @@
 'use strict';
 
-require('dotenv').config();
+require('./env');
 var log = require('./getLogger')('app');
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
@@ -17,19 +17,9 @@ models.sequelize.sync(
   {force: false}
 );
 
-var SLACK_TOKEN = '';
-
-// Check for a Slack token
-if (process.env.SLACK_TOKEN) {
-  SLACK_TOKEN = process.env.SLACK_TOKEN;
-} else {
-  if (appEnv.getServices()) {
-    // If running on Cloud Foundry
-    SLACK_TOKEN = appEnv.getServiceCreds('standup-bot-cups').SLACK_TOKEN;
-  } else {
-    log.error('SLACK_TOKEN not set in environment.');
-    process.exit(1);
-  }
+if (!process.env.SLACK_TOKEN) {
+  log.error('SLACK_TOKEN not set in environment.');
+  process.exit(1);
 }
 
 var bkLogger = require('./getLogger')('botkit');
@@ -72,7 +62,7 @@ var controller = Botkit.slackbot({
 
 // Initialize the bot
 controller.spawn({
-  token: SLACK_TOKEN,
+  token: process.env.SLACK_TOKEN,
   retry: 5
 }).startRTM(function(err, bot) {
   if (err) {
@@ -92,6 +82,11 @@ controller.spawn({
       // TODO: method to set standup frequency
       // TODO: add usage messages
       botLib.giveHelp(controller, identity.name);
+
+      // Set yourself OOO for some time.  Put this above getStandupInfo
+      // because getStandupInfo catches anything that starts with "#channel",
+      // so catch the more precise 
+      botLib.setOutOfOffice(controller);
 
       botLib.getStandupInfo(controller);
 

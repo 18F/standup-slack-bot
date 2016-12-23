@@ -2,8 +2,8 @@
 
 set -e
 
-API="https://api.cloud.gov"
-ORG="18F-ACQ"
+API="https://api.fr.cloud.gov"
+ORG="gsa-acq-proto"
 TYPE=$1
 
 if [ $# -ne 1 ]; then
@@ -42,5 +42,8 @@ else
   exit 1
 fi
 
-cf login -a $API -u $CF_USERNAME -p $CF_PASSWORD -o $ORG -s tools
+# Shrinkwrap dependencies to the versions that were actually tested
+npm shrinkwrap
+
+cf login -a $API -u $CF_USERNAME -p $CF_PASSWORD -o $ORG -s standup-bot
 cf zero-downtime-push $NAME -f $MANIFEST

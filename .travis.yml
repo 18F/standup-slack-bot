@@ -5,8 +5,8 @@ node_js:
 - '6.7'
 env:
   global:
-  - CF_USERNAME=18f-acq_deployer
-  - secure: kdrXWKFX5OYrOaub/iUorhO7ZoHCQ0GEXfCvG3J/shzpAQbdmmas8xG+dS2CD9ecP16ZLeSaR/Di9S98x4eaNIh9At66n/QLPrgCVhXNWdB0yKJLZRN2QBlrhkloj144uaIcdg8LfpKbW/TXOI0cs3dfu1+ji+HhEmFSrJI+d4+z2hoV788S1BeWqJfgRS1ZHiM+Rq8EL8Anhuz6+DG+KkpLaUTJD9LOYsf1uofyIRPytCsdlNKZHO03+7mItogX7zB5+/seJvzy0JZtboj6b6E93o7I5hvbiEOmdU5r1EbjZekwbA3EabSqRHtvcbLdFP/Btb1iRAdi5xsbq6061LQlN0wMiRgk/EI0GKEws9zmBbh2WRQhBaEZ8AX9kMQMXk2UZJZMseu9Q2Wq/zE3jlHTK13kteowjI4Luju2MCRN9YqEp45rLkAmp7Z2UhHH+xfXaSbQ8wuj/Vkv7qyxRNpOEdjZh+Fe2eqeiHIRKWrds42V8JWxsqRzbVUGkZN4ro7J/VgL7NYDKeN2ydOpFx6s1gpziHWyng+J0De35zdprsQrGezEYpn0NjpnfRJApRuSfPr6exRTDrByqAZIpBZcRp+pX9xySspGiqtdFhk8hfzComL7KeTX2XeaA0/9v1zpqi9XzHFmSnsUsuOQ5wWYMDu+Lu9gXjg6FRW19/o=
+  - CF_USERNAME=121b2bf1-b49f-4483-8687-d445a1138b2f
+  - secure: M5l5q5X4n/qY5m/jtNmvg3SugX1iUeA8CD4/TgsXMD9295GDW6KYW1xswqnESfZ/I91JjPErHj9YyOTU/vk9zvsuB9qw3tXmsA1wPpP9NEBJq+BLpJagBz3NXgfQKX2JXnRYshLK+ua3fml6JqQiXrur/Di54Kuk8ldDcN+0m6GenhgL0uU+e74IQNBLlQ7+wfRbYMU8MdcN9EauF67k2M8MmDGs3Mt/qyZS+Y3e/zr0SJWMADb41uJiuOVt0AxLABYeOGhPQyjVFvQD8KyZhtMtfMAGmr5qmXkg8NGXcmRWM4+uh7a5G/I+AexerOHG2fL3nXAxpp7ydL/b9UcaNfVl++Zk5fDwwpg1uvAx5kS999xud+pP3DzcPQWOce+H1XJ+56IkLQNs8mtRw8/o36s0DT896Oy6gyS2+1KDIyYaBPPa/NKFmX5WU92yBpGo8jI4ULEuGoe9D/5y01L1PPY1NZCAmK+4Y1Qd4SRHDHmgLfDMxlpGnQ1TiI4n02/Cnmr8mKpHJWheW/k8Ebp/4nPqP9ENlb1V2TEb2+yY8Z2JPKEfzwbpC4Ozzfz3VY5G1hpQOm7kfQLTxxHYhheqq579hjhIPLMxHo08V4o02ethonGAy1rlYr1odlG/cn1i4sgNhAbzg2+16eHjJ7eL3ursDG/w8fpXLb1rcVpTYng=
 before_deploy:
 - export PATH=$HOME:$PATH
 - travis_retry curl -L -o $HOME/cf.tgz "https://cli.run.pivotal.io/stable?release=linux64-binary&version=6.15.0"
@@ -20,4 +20,4 @@ deploy:
   skip_cleanup: true
   on:
     branch: release
-    node: '0.12'
+    node: '6.7'

@@ -42,7 +42,8 @@ Feature: Time Helper, parsing a string
     Examples:
     | time    | pattern |
     |         | \d{4}   |
-    | 9:30 pm | 0[12]30 |
+    | 9:30 am | 0930    |
+    | 9:30 pm | 2130    |
 
   Scenario Outline: Getting the time in a report-friendly format
     Given the input time <time>
