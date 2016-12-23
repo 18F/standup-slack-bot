@@ -119,6 +119,9 @@ controller.spawn({
       // Set a standup audience to a user group
       botLib.setAudience(controller);
 
+      // Set yourself OOO for some time
+      botLib.setOutOfOffice(controller);
+
       // Get a weekly user report
       botLib.userReport(controller);
 
