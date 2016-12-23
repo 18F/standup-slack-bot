@@ -8,19 +8,20 @@
   },
   "main": "app.js",
   "scripts": {
+    "check-shrinkwrap": "node scripts/test-shrinkwrap.js",
     "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
     "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
-    "test": "LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
+    "test": "npm run check-shrinkwrap && LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
   },
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
     "@18f/us-federal-holidays": "^1.1.0",
     "@erdc-itl/simple-logger": "^1.1.0",
-    "async": "^1.5.2",
+    "async": "^2.1.4",
     "better-queue": "^3.8.4",
-    "botkit": "^0.4.0",
+    "botkit": "^0.4.2",
     "cfenv": "^1.0.3",
     "dotenv": "^2.0.0",
     "marked": "^0.3.5",
@@ -28,7 +29,7 @@
     "moment-timezone": "^0.5.1",
     "mustache": "^2.2.1",
     "node-schedule": "^1.0.0",
-    "pg": "^4.5.6",
+    "pg": "^6.1.2",
     "pg-hstore": "^2.3.2",
     "request": "^2.69.0",
     "sequelize": "^3.24.3",
@@ -37,10 +38,10 @@
   },
   "devDependencies": {
     "codecov": "^1.0.1",
-    "cucumber": "^0.9.5",
+    "cucumber": "^1.3.1",
     "istanbul": "^0.4.2",
     "jshint": "^2.9.1",
-    "mock-require": "^1.2.1",
+    "mock-require": "^2.0.0",
     "sinon": "^1.17.3",
     "sinon-as-promised": "^4.0.0"
   },
