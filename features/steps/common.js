@@ -30,6 +30,9 @@ module.exports = function() {
         },
         channels: {
           info: sinon.stub().yields(null, { channel: { name: 'CSomethingSaySomething'}})
+        },
+        files: {
+          upload: sinon.stub().yields(null, {})
         }
       }
     };
@@ -113,6 +116,21 @@ module.exports = function() {
       }
     }
     throw new Error(`Bot reply did not contain an attachment saying "${responseContains}"`);
+  });
+
+  this.Then('the bot should upload a post', function() {
+    const bot = module.exports.botController.on.__bot;
+
+    if(bot.api.files.upload.called && bot.api.files.upload.args.length > 0) {
+      const file = bot.api.files.upload.args[0][0];
+      if(file && file.filetype === 'post') {
+        return true;
+      } else {
+        throw new Error('Bot did not upload a post');
+      }
+    }
+
+    throw new Error('Bot did not upload anything');
   });
 
   var _standupFindStub;
