@@ -1,13 +1,14 @@
 {{full_help}}
 ## Creating a standup
 
-To create a standup, I must be in a channel.  Then, say:
+To create a standup, I must be in a channel - you can invite me with
+`/invite @{{bot_name}}`.  Then, in that channel, say:
 
 ```
 @{{bot_name}} create standup <time> [days]
 ```
 
-in that channel.  The time is required and will be assumed to be in the
+The time is required and will be assumed to be in the
 {{timezone}} timezone.  Days are optional - if omitted, the standup will
 run every weekday.  If provided, days should be separated by spaces.  For
 example:
