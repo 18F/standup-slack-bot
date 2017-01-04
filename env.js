@@ -5,6 +5,9 @@ const cfenv = require('cfenv');
 const appEnv = cfenv.getAppEnv();
 
 const knownEnvs = [
+  'SLACK_CLIENT_ID',
+  'SLACK_CLIENT_SECRET',
+  'SLACK_VERIFICATION_CODE',
   'SLACK_TOKEN',
   'TIMEZONE',
   'URL'
