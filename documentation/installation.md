@@ -2,6 +2,8 @@
 
 ## Pre-requisites
 
+NOTE: If you are planning to run `standup-slack-bot`  in docker, please refer to the [Docker](#docker) section below.
+
 Before installing standup-bot, you'll need to have access to a:
 
 - PostgreSQL database; and
@@ -30,6 +32,20 @@ LOG_LEVEL    | Numeric value indicating the log level.  10 is verbose, 20 is inf
 ## Running
 
 Once everything is set up, to run standup-bot, simply run `npm start`.
+
+## Docker
+
+To skip all the manual steps above, you can run `standup-slack-bot` in [Docker](https://www.docker.com). The only pre-requisite after [installing docker](https://docs.docker.com/engine/installation/) would be [installing docker-compose](https://docs.docker.com/compose/install/).
+
+Also ensure that your `.env` file has your `SLACK_TOKEN` in it:
+
+    $ echo "SLACK_TOKEN=xoxb-<your slackbot API token>" > .env
+
+only `SLACK_TOKEN` is required in `.env`. The rest of the required env variables are already specified in `docker-compose.yaml`.
+
+Finally, to start with docker-compose:
+
+    $ docker-compose up -d
 
 ## Testing
 
