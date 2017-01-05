@@ -21,7 +21,7 @@
     "@erdc-itl/simple-logger": "^1.1.0",
     "async": "^2.1.4",
     "better-queue": "^3.8.4",
-    "botkit": "^0.4.2",
+    "botkit": "^0.4.7",
     "cfenv": "^1.0.3",
     "dotenv": "^2.0.0",
     "marked": "^0.3.5",
