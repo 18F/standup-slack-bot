@@ -71,6 +71,17 @@ controller.spawn({
   } else {
     log.info('Connected to RTM');
     bot.identifyBot(function(err,identity) {
+
+      // Persist the team ID in the controller's datastore. This is necessary
+      // for message button responses.
+      controller.storage.teams.save({ id: identity.team_id, bot: { name: identity.name, id: identity.id} }, (err) => {
+        if(err) {
+          log.error(err);
+        } else {
+          log.info(`Persisted team id: ${identity.team_id}`);
+        }
+      });
+
       // identity contains...
       // {name, id, team_id}
       log.info('Bot name: ' + identity.name);
@@ -115,6 +126,8 @@ controller.spawn({
 
       // Get a weekly user report
       botLib.userReport(controller);
+
+      botLib.interactive.interactive(controller, bot);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
