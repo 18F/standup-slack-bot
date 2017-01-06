@@ -60,8 +60,9 @@ var controller = Botkit.slackbot({
   }
 });
 
-startWebServer(controller);
-controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
+startWebServer(controller).then(() => {
+  controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
+});
 
 // Initialize the bot
 controller.spawn({
