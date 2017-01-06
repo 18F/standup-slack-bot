@@ -2,6 +2,9 @@
 
 require('./env');
 
+// If there's a client ID and secret, assume it's configured
+// to run as an app.  Set this flag before loading the other
+// modules as they may depend on it.
 process.env.IS_APP = false;
 if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
   process.env.IS_APP = true;
@@ -13,8 +16,6 @@ var schedule = require('node-schedule');
 var botLib = require('./lib/bot');
 var startWebServer = require('./lib/web/start');
 var cfenv = require('cfenv');
-
-var appEnv = cfenv.getAppEnv();
 
 // Database setup
 var models = require('./models');
@@ -28,6 +29,7 @@ if (!process.env.SLACK_TOKEN) {
   process.exit(1);
 }
 
+// Custom botkit logger
 var bkLogger = require('./getLogger')('botkit');
 function bkLog(level) {
   var args = [ ];
