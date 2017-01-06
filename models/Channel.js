@@ -46,6 +46,11 @@ module.exports = function (sequelize, DataTypes) {
     friday: {
       type: DataTypes.BOOLEAN
     }
+  }, {
+    indexes: [{
+      unique: true,
+      fields: ['name']
+    }]
   });
 
   return Channel;
