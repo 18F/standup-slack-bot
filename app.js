@@ -1,6 +1,12 @@
 'use strict';
 
 require('./env');
+
+process.env.IS_APP = false;
+if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
+  process.env.IS_APP = true;
+}
+
 var log = require('./getLogger')('app');
 var Botkit = require('botkit');
 var schedule = require('node-schedule');
@@ -60,11 +66,11 @@ var controller = Botkit.slackbot({
   }
 });
 
-process.env.IS_APP = false;
 let hookupEndpoints = () => { };
-if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
-  process.env.IS_APP = true;
+if(process.env.IS_APP) {
+  log.verbose('Running as a Slack app');
   hookupEndpoints = () => {
+    log.verbose('Attaching webhook endpoints');
     controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
   }
 }
