@@ -60,12 +60,17 @@ var controller = Botkit.slackbot({
   }
 });
 
-startWebServer(controller).then(() => {
-  // Only hook up the webhook endpoints if this is running as an app.
-  if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
+process.env.IS_APP = false;
+let hookupEndpoints = () => { };
+if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
+  process.env.IS_APP = true;
+  hookupEndpoints = () => {
     controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
   }
-});
+}
+
+// Only hook up the webhook endpoints if this is running as an app.
+startWebServer(controller).then(hookupEndpoints);
 
 // Initialize the bot
 controller.spawn({
