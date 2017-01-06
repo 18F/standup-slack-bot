@@ -56,9 +56,12 @@ var controller = Botkit.slackbot({
   debug: false,
   logger: { log: bkLog },
   webserver: {
-    static_dir: __dirname + '/lib/web/static'
+    static_dir: `${__dirname}/lib/web/static`
   }
 });
+
+startWebServer(controller);
+controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
 
 // Initialize the bot
 controller.spawn({
@@ -67,7 +70,7 @@ controller.spawn({
 }).startRTM(function(err, bot) {
   if (err) {
     log.error(err);
-    throw new Error(err);
+    process.exit(1);
   } else {
     log.info('Connected to RTM');
     bot.identifyBot(function(err,identity) {
@@ -127,7 +130,7 @@ controller.spawn({
       // Get a weekly user report
       botLib.userReport(controller);
 
-      botLib.interactive.interactive(controller, bot);
+      botLib.interactive.interactive(controller);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
@@ -136,7 +139,5 @@ controller.spawn({
 
       log.verbose('All bot functions initialized');
     });
-
-    startWebServer(controller, bot);
   }
 });
