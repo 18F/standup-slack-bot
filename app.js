@@ -146,7 +146,7 @@ controller.spawn({
       botLib.userReport(controller);
 
       // Interactive message handling
-      botLib.interactive.interactive(controller);
+      botLib.interactive.interactive(controller, bot);
 
       // I think that these aren't necessary because channel & user are stored as
       // unique id rather than display name
