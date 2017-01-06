@@ -61,7 +61,10 @@ var controller = Botkit.slackbot({
 });
 
 startWebServer(controller).then(() => {
-  controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
+  // Only hook up the webhook endpoints if this is running as an app.
+  if(process.env.SLACK_CLIENT_ID && process.env.SLACK_CLIENT_SECRET) {
+    controller.createWebhookEndpoints(controller.webserver, process.env.SLACK_VERIFICATION_CODE);
+  }
 });
 
 // Initialize the bot
@@ -131,6 +134,7 @@ controller.spawn({
       // Get a weekly user report
       botLib.userReport(controller);
 
+      // Interactive message handling
       botLib.interactive.interactive(controller);
 
       // I think that these aren't necessary because channel & user are stored as
