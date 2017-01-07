@@ -16,8 +16,15 @@ To get a Slack API token, you will need to create a bot integration from the Sla
 ```bash
 git clone https://github.com/18F/standup-bot.git
 cd standup-bot
+
+# install dependencies
 npm install
-createdb standup_bot_development
+
+# Create and migrate the database
+# You will want to do this for each application env:
+#     development, test
+createdb standup_bot_development # create your postgres database
+DATABASE_URL=postgresql://localhost/standup_bot_development npm run migrate
 ```
 
 To load your own environmental variables copy over the `.env.sample`
