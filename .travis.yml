@@ -1,8 +1,7 @@
 language: node_js
 node_js:
-- '4.6'
-- '5.12'
-- '6.7'
+- '6.9'
+- '7'
 env:
   global:
   - CF_USERNAME=121b2bf1-b49f-4483-8687-d445a1138b2f
@@ -20,4 +19,4 @@ deploy:
   skip_cleanup: true
   on:
     branch: release
-    node: '6.7'
+    node: '6.9'
