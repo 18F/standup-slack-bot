@@ -32,6 +32,11 @@ module.exports = function (sequelize, DataTypes) {
         goal: {
             type: DataTypes.STRING(1000)
         }
+    }, {
+      indexes: [{
+        unique: true,
+        fields: ['channel','date','user']
+      }]
     });
 
     return Standup;

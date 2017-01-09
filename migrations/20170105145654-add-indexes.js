@@ -15,7 +15,15 @@ module.exports = {
       {
         indicesType: 'UNIQUE'
       }
-    );
+    ).then(() => {
+      return queryInterface.addIndex(
+        'Standups',
+        ['channel', 'date', 'user'],
+        {
+          indicesType: 'UNIQUE'
+        }
+      )
+    });
   },
 
   down: function (queryInterface, Sequelize) {
