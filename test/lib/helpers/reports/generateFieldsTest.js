@@ -9,7 +9,7 @@ describe('generateFields', function() {
       title: 'mo',
       fields: [{title: 'Today', value: 'Out of Office'}],
       color: '#8a12d3',
-      Today: 'we have some <#two> and <#threeStooges> here'
+      Today: 'we have some <#two> and <#threeStooges> here. Also <#two>'
     },
     {
       title: 'larry',
