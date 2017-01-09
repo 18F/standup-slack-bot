@@ -13,6 +13,8 @@
   // Define globals exposed by Node.js.
   "node": true,
 
+  "mocha": true,
+
   // Allow ES6.
   "esnext": true,
 
