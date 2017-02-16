@@ -22,9 +22,20 @@ This project is built with Node version 6.7. We recommend [`nvm`](https://github
 
 ```bash
 npm install
+
+# Create and migrate the database
+# You will want to do this for each application env:
+#     development, test
+createdb standup_bot_development # create your postgres database
+DATABASE_URL=postgresql://localhost/standup_bot_development npm run migrate
 ```
 
-Then, provide some environment variables.  If you have a `.env` file in the base directory, standup-bot will read from that.  The variables are:
+To load your own environmental variables copy over the `.env.sample`
+file and modify to match your own variable.
+
+    cp .env.sample .env
+
+The variables in use are:
 
 Name         | Description
 ------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
