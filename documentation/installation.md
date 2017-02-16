@@ -16,8 +16,11 @@ To get a Slack API token, you will need to create a bot integration from the Sla
 ```bash
 git clone https://github.com/18F/standup-bot.git
 cd standup-bot
+```
 
-# install dependencies
+This project is built with Node version 6.7. We recommend [`nvm`](https://github.com/creationix/nvm) to help manage versions of Node on your machine. With that installed, you can install the project's dependencies:
+
+```bash
 npm install
 
 # Create and migrate the database
