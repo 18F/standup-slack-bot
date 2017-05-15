@@ -4,7 +4,7 @@
   "description": "a bot to handle periodic standup meetings in Slack",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/18f/standup-bot.git"
+    "url": "git+https://github.com/18f/standup-slack-bot.git"
   },
   "main": "app.js",
   "scripts": {
