@@ -4,7 +4,9 @@ jobs:
     docker:
       - image: circleci/node:6
     steps:
-      - run: echo "No tests yet :("
+      - noop:
+        name: no tests yet :(
+        command: echo "no tests"
   deploy:
     docker:
       - image: 18fgsa/cloud-foundry-cli
