@@ -4,7 +4,10 @@ jobs:
     docker:
       - image: circleci/node:6
     steps:
-      - run: echo "no tests"
+      - checkout
+      - run: npm install
+      - run: npm test
+      - run: ./node_modules/.bin/codecov
   deploy:
     docker:
       - image: 18fgsa/cloud-foundry-cli
