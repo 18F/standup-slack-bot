@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/18F/standup-slack-bot.svg?branch=develop)](https://travis-ci.org/18F/standup-slack-bot)
+[![Build Status](https://circleci.com/gh/18F/standup-slack-bot/tree/develop.svg?style=svg)](https://circleci.com/gh/18F/standup-slack-bot/tree/develop)
 [![codecov.io](https://codecov.io/github/18F/standup-slack-bot/coverage.svg?branch=develop)](https://codecov.io/github/18F/standup-slack-bot?branch=develop)
 [![Code Climate](https://codeclimate.com/github/18F/standup-slack-bot/badges/gpa.svg)](https://codeclimate.com/github/18F/standup-slack-bot)
 [![Dependencies](https://david-dm.org/18f/standup-slack-bot.svg)](https://david-dm.org/18f/standup-slack-bot)
