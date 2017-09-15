@@ -1,6 +1,8 @@
 version: 2
 jobs:
   test:
+    docker:
+      - image: circleci/node:6
     steps:
       - run:
         name: noop
