@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  test:
+    docker:
+      - image: circleci/node:6
+    steps:
+      - run: echo "no tests"
+  deploy:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+    steps:
+      - checkout
+      - deploy:
+          name: cf push
+          command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+      - deploy:
+          filters:
+            branches:
+              only:
+                - master
