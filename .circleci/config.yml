@@ -8,13 +8,6 @@ jobs:
   deploy:
     docker:
       - image: 18fgsa/cloud-foundry-cli
-        environment:
-          CF_API: https://api.fr.cloud.gov
-          CF_ORG: gsa-acq-proto
-          CF_SPACE: standup-bot
-          CF_APP: standup-slack-bot
-          CF_DEPLOY_USER: user
-          CF_DEPLOY_PASSWORD: boop
     steps:
       - checkout
       - deploy:
