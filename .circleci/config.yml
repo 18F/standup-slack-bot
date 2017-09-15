@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: circleci/node:6
     steps:
-      - noop:
+      - run:
         name: no tests yet :(
         command: echo "no tests"
   deploy:
