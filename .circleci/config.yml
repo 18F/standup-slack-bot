@@ -22,4 +22,4 @@ workflows:
           filters:
             branches:
               only:
-                - 135-migrate-to-circle
+                - master
