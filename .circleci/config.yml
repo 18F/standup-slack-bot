@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  test:
+    steps:
+      - run:
+        name: noop
+        command: echo "No tests yet :("
+  deploy:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+        environment:
+          CF_API: https://api.fr.cloud.gov
+          CF_ORG: gsa-acq-proto
+          CF_SPACE: standup-bot
+          CF_APP: standup-slack-bot
+    steps:
+      - checkout
+      - deploy:
+        name: cf push
+        command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE
+workflows:
+  version: 2
+  build:
+    jobs:
+      - test
+      - deploy:
+          filters:
+            branches:
+              only:
+                - development
