@@ -40,7 +40,8 @@ module.exports = function() {
 
     // Also stub the bot
     _bot = { };
-    _bot.say = sinon.spy();
+    _bot.say = sinon.stub().yields();
+    _bot.replyInThread = sinon.spy();
 
     // Kick off the reporter
     reportRunner(_bot)();
@@ -54,14 +55,18 @@ module.exports = function() {
   this.Then('the bot should report', function(done) {
     // Wait until the findAll and say stubs have been called
     common.wait(function() {
-      return _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called;
+      return _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called && _bot.replyInThread.called;
     }, function() {
-      // If the bot sent attachments, it tried to
-      // report correctly.
-      if(_bot.say.args[0][0].attachments.length) {
+      const sayMessage = _bot.say.args[0][0];
+      const threadedMessage = _bot.replyInThread.args[0][1];
+
+      // The bot should post that it's doing the report, and
+      // then reply to itself in a thread with the attachments
+      // of the actual report
+      if (sayMessage.text.startsWith(`Today's standup for`) && threadedMessage.attachments.length) {
         done();
       } else {
-        done(new Error('Expected bot to report with text and attachments'));
+        done(new Error('Expected bot to report with text and attachments in a thread'));
       }
     });
   });
