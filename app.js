@@ -1,21 +1,15 @@
-
-
 require('./env');
 const log = require('./getLogger')('app');
 const Botkit = require('botkit');
 const schedule = require('node-schedule');
 const botLib = require('./lib/bot');
 const startWebServer = require('./lib/web/start');
-const cfenv = require('cfenv');
-
-const appEnv = cfenv.getAppEnv();
 
 // Database setup
 const models = require('./models');
 
-models.sequelize.sync(
-  // Set to true to reset db on load
-  { force: false });
+// Set to true to reset db on load
+models.sequelize.sync({ force: false });
 
 if (!process.env.SLACK_TOKEN) {
   log.error('SLACK_TOKEN not set in environment.');
@@ -24,13 +18,9 @@ if (!process.env.SLACK_TOKEN) {
 
 const bkLogger = require('./getLogger')('botkit');
 
-function bkLog(level) {
-  const args = [];
-  for (let i = 1; i < arguments.length; i++) {
-    args.push(arguments[i]);
-  }
-
+function bkLog(inLevel, ...args) {
   // Remap botkit log levels
+  let level = inLevel;
   if (level === 'debug') {
     return;
   } else if (level === 'info') {
@@ -39,13 +29,14 @@ function bkLog(level) {
     level = 'info';
   }
 
-  let fn,
-    thisObj;
+  let fn;
+  let thisObj;
+
   if (bkLogger[level]) {
     fn = bkLogger[level];
     thisObj = bkLogger;
   } else {
-    fn = console.log;
+    fn = console.log; // eslint-disable-line no-console
     thisObj = console;
     args.unshift(`[${level}]`);
   }
@@ -65,13 +56,13 @@ const controller = Botkit.slackbot({
 controller.spawn({
   token: process.env.SLACK_TOKEN,
   retry: 5
-}).startRTM((err, bot) => {
-  if (err) {
-    log.error(err);
-    throw new Error(err);
+}).startRTM((startRTMerr, bot) => {
+  if (startRTMerr) {
+    log.error(startRTMerr);
+    throw new Error(startRTMerr);
   } else {
     log.info('Connected to RTM');
-    bot.identifyBot((err, identity) => {
+    bot.identifyBot((identifyBotErr, identity) => {
       // identity contains...
       // {name, id, team_id}
       log.info(`Bot name: ${identity.name}`);

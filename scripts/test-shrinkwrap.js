@@ -1,4 +1,4 @@
-
+/* eslint-disable no-console */
 
 const shrinkwrap = require('../npm-shrinkwrap.json');
 
@@ -16,13 +16,13 @@ function checkDependency(name, dependency) {
   }
 
   if (dependency.dependencies) {
-    for (const key in dependency.dependencies) {
+    for (const key of Object.keys(dependency.dependencies)) {
       checkDependency(key, dependency.dependencies[key]);
     }
   }
 }
 
-for (const key in shrinkwrap.dependencies) {
+for (const key of Object.keys(shrinkwrap.dependencies)) {
   checkDependency(key, shrinkwrap.dependencies[key]);
 }
 

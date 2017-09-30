@@ -1,35 +1,32 @@
-
 const sinon = require('sinon');
-const helpers = require('../../lib/helpers');
 const botLib = require('../../lib/bot');
 const models = require('../../models');
 const common = require('./common');
 
-module.exports = function () {
-  const _message = { };
-  const _getUserStandupFn = null;
-  let _findOneChannelStub;
-  let _findOrCreateStub;
-  let _findOneStandupStub;
-  let _getUserStub;
-  let _updateStandupStub;
-  let _updateChannelStub;
+module.exports = function sendStandupTests() {
+  const botMessage = { };
+  let findOneChannelStub;
+  let findOrCreateStub;
+  let findOneStandupStub;
+  let getUserStub;
+  let updateStandupStub;
+  let updateChannelStub;
 
   this.Given(/I want to send a standup for a ([^>]+) channel/, (visibility) => {
     if (visibility === 'public') {
-      _message.channel = 'CSomethingSaySomething';
+      botMessage.channel = 'CSomethingSaySomething';
     } else {
-      _message.channel = 'PnutButterJellyTime';
+      botMessage.channel = 'PnutButterJellyTime';
     }
   });
 
   this.Given(/^the channel (.+) have a standup/, (status) => {
     if (status === 'does') {
-      _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
+      findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
         time: '130', name: 'CSomethingSaySomething', audience: null, latestReport: '123467.01'
       });
-      _findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
-      _findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
+      findOrCreateStub = sinon.stub(models.Standup, 'findOrCreate').resolves({ });
+      findOneStandupStub = sinon.stub(models.Standup, 'findOne').resolves({
         user: 'U00000000',
         userRealName: 'Bob the Tester',
         yesterday: 'In the past',
@@ -43,58 +40,58 @@ module.exports = function () {
   this.When(/^I DM the bot with standup$/, (message, done) => {
     botLib.getUserStandupInfo(common.botController);
 
-    // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
-    _updateStandupStub = sinon.stub(models.Standup, 'update').resolves({ });
+    // getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+    updateStandupStub = sinon.stub(models.Standup, 'update').resolves({ });
 
-    _message.user = 'U7654321';
-    _message.match = [
-      `<#${_message.channel}> ${message}`, // whole message
+    botMessage.user = 'U7654321';
+    botMessage.match = [
+      `<#${botMessage.channel}> ${message}`, // whole message
       '', // optionally the word 'standup'
-      _message.channel,
+      botMessage.channel,
       '', // iOS channel tag has '|channelName' on the end
       message
     ];
 
-    common.botRepliesToHearing(_message, done);
+    common.botRepliesToHearing(botMessage, done);
   });
 
   this.When(/^I DM the bot with (valid|invalid) standup edit$/, (valid, done) => {
     botLib.getUserStandupInfo(common.botController);
 
-    _message.user = 'U7654321';
-    _message.match = [
-      `<#${_message.channel}> edit today`,
+    botMessage.user = 'U7654321';
+    botMessage.match = [
+      `<#${botMessage.channel}> edit today`,
       '', // optionally the word 'standup'
-      _message.channel,
+      botMessage.channel,
       '', // iOS channel tag has '|channelName' on the end
       'edit today'
     ];
 
     if (valid === 'valid') {
-      common.botStartsConvoWith(_message, common.botController.hears, done);
+      common.botStartsConvoWith(botMessage, common.botController.hears, done);
     } else {
-      common.botRepliesToHearing(_message, done);
+      common.botRepliesToHearing(botMessage, done);
     }
   });
 
   this.When('I edit a DM to the bot to say', (message, done) => {
     botLib.getUserStandupInfo(common.botController);
-    // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
-    _updateChannelStub = sinon.stub(models.Channel, 'update').resolves({ });
+    // getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+    updateChannelStub = sinon.stub(models.Channel, 'update').resolves({ });
 
     common.botRepliesToHearing({
       type: 'message',
       message: {
         type: 'message',
         user: 'U00000000',
-        text: `<#${_message.channel}> ${message}`,
+        text: `<#${botMessage.channel}> ${message}`,
         edited: { user: 'U00000000', ts: '1234567890.000000' },
         ts: '1234567890.000000'
       },
       subtype: 'message_changed',
       hidden: true,
       channel: 'Dchannel',
-      previous_message: {
+      previousbotMessage: {
         type: 'message',
         user: 'U00000000',
         text: 'Not really relevant...',
@@ -106,29 +103,29 @@ module.exports = function () {
   });
 
   this.After(() => {
-    if (_findOneChannelStub) {
-      _findOneChannelStub.restore();
-      _findOneChannelStub = null;
+    if (findOneChannelStub) {
+      findOneChannelStub.restore();
+      findOneChannelStub = null;
     }
-    if (_findOrCreateStub) {
-      _findOrCreateStub.restore();
-      _findOrCreateStub = null;
+    if (findOrCreateStub) {
+      findOrCreateStub.restore();
+      findOrCreateStub = null;
     }
-    if (_findOneStandupStub) {
-      _findOneStandupStub.restore();
-      _findOneStandupStub = null;
+    if (findOneStandupStub) {
+      findOneStandupStub.restore();
+      findOneStandupStub = null;
     }
-    if (_updateStandupStub) {
-      _updateStandupStub.restore();
-      _updateStandupStub = null;
+    if (updateStandupStub) {
+      updateStandupStub.restore();
+      updateStandupStub = null;
     }
-    if (_getUserStub) {
-      _getUserStub.restore();
-      _getUserStub = null;
+    if (getUserStub) {
+      getUserStub.restore();
+      getUserStub = null;
     }
-    if (_updateChannelStub) {
-      _updateChannelStub.restore();
-      _updateChannelStub = null;
+    if (updateChannelStub) {
+      updateChannelStub.restore();
+      updateChannelStub = null;
     }
   });
 };

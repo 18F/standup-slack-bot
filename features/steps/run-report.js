@@ -1,35 +1,33 @@
-
 const sinon = require('sinon');
-
 const common = require('./common');
 const time = require('./time');
 const models = require('../../models');
 const reportRunner = require('../../lib/bot/getReportRunner');
 
-module.exports = function () {
-  let _findAllChannelsStub;
-  let _findOneChannelStub;
-  let _findAllStandupsStub;
-  let _bot;
+module.exports = function runReportTests() {
+  let findAllChannelsStub;
+  let findOneChannelStub;
+  let findAllStandupsStub;
+  let bot;
 
   this.When('the scheduled time comes', () => {
     // Stub the models.Channel and models.Standup findAll
     // methods so we can guarantee behavior without worrying
     // about database contents.
-    _findAllChannelsStub = sinon.stub(models.Channel, 'findAll');
-    _findAllChannelsStub.resolves([{
+    findAllChannelsStub = sinon.stub(models.Channel, 'findAll');
+    findAllChannelsStub.resolves([{
       name: 'Test Channel',
       audience: null
     }]);
 
-    _findOneChannelStub = sinon.stub(models.Channel, 'findOne');
-    _findOneChannelStub.resolves({
+    findOneChannelStub = sinon.stub(models.Channel, 'findOne');
+    findOneChannelStub.resolves({
       name: 'Test Channel',
       audience: null
     });
 
-    _findAllStandupsStub = sinon.stub(models.Standup, 'findAll');
-    _findAllStandupsStub.resolves([{
+    findAllStandupsStub = sinon.stub(models.Standup, 'findAll');
+    findAllStandupsStub.resolves([{
       user: 'U00000000',
       userRealName: 'Bob the Tester',
       yesterday: 'In the past',
@@ -39,11 +37,11 @@ module.exports = function () {
     }]);
 
     // Also stub the bot
-    _bot = { };
-    _bot.say = sinon.spy();
+    bot = { };
+    bot.say = sinon.spy();
 
     // Kick off the reporter
-    reportRunner(_bot)();
+    reportRunner(bot)();
 
     // If fake timers have been setup, reset them now.
     // Otherwise, setTimeout won't behave correctly (i.e.,
@@ -53,10 +51,10 @@ module.exports = function () {
 
   this.Then('the bot should report', (done) => {
     // Wait until the findAll and say stubs have been called
-    common.wait(() => _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called, () => {
+    common.wait(() => findAllChannelsStub.called && findAllChannelsStub.called && bot.say.called, () => {
       // If the bot sent attachments, it tried to
       // report correctly.
-      if (_bot.say.args[0][0].attachments.length) {
+      if (bot.say.args[0][0].attachments.length) {
         done();
       } else {
         done(new Error('Expected bot to report with text and attachments'));
@@ -70,7 +68,7 @@ module.exports = function () {
     // anything, we can't just wait until things
     // have been called.
     setTimeout(() => {
-      if (_bot.say.called) {
+      if (bot.say.called) {
         done(new Error('Expected bot not to report'));
       } else {
         done();
@@ -80,14 +78,14 @@ module.exports = function () {
 
   // Teardown stubs
   this.After(() => {
-    if (_findAllChannelsStub) {
-      _findAllChannelsStub.restore();
+    if (findAllChannelsStub) {
+      findAllChannelsStub.restore();
     }
-    if (_findOneChannelStub) {
-      _findOneChannelStub.restore();
+    if (findOneChannelStub) {
+      findOneChannelStub.restore();
     }
-    if (_findAllStandupsStub) {
-      _findAllStandupsStub.restore();
+    if (findAllStandupsStub) {
+      findAllStandupsStub.restore();
     }
   });
 };

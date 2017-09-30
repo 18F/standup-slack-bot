@@ -1,14 +1,14 @@
-
 const sinon = require('sinon');
 const models = require('../../models');
+const { flush } = require('../../lib/helpers/doInterview');
 
-module.exports = function () {
+module.exports = function commonSteps() {
   this.Given('the bot is running', () => {
     module.exports.botController = { };
     module.exports.botController.hears = sinon.spy();
     module.exports.botController.on = sinon.spy();
 
-    require('../../lib/helpers/doInterview').flush();
+    flush();
 
     const bot = {
       reply: sinon.spy(),
@@ -37,8 +37,8 @@ module.exports = function () {
       }
     };
 
-    module.exports.botController.hears.__bot = bot;
-    module.exports.botController.on.__bot = bot;
+    module.exports.botController.hears.__bot = bot; // eslint-disable-line no-underscore-dangle
+    module.exports.botController.on.__bot = bot; // eslint-disable-line no-underscore-dangle
   });
 
   this.Given('I am in a room with the bot', () => {
@@ -46,7 +46,7 @@ module.exports = function () {
   });
 
   this.Then(/the bot should respond "([^"]+)"/, (responseContains) => {
-    let botReply = module.exports.botController.hears.__bot.reply.args[0][1];
+    let botReply = module.exports.botController.hears.__bot.reply.args[0][1]; // eslint-disable-line no-underscore-dangle
 
     if (typeof botReply === 'object' && (botReply.text || botReply.attachments[0].fallback)) {
       botReply = botReply.text || botReply.attachments[0].fallback;
@@ -55,23 +55,21 @@ module.exports = function () {
     if (botReply.match(RegExp(responseContains))) {
       return true;
     }
-    console.log(botReply);
     throw new Error(`Bot reply did not contain "${responseContains}"`);
   });
 
   this.Then(/the bot should start a private message with "([^"]+)"/, (responseContains) => {
-    const bot = module.exports.botController.on.__bot;
+    const bot = module.exports.botController.on.__bot; // eslint-disable-line no-underscore-dangle
 
     // First check if bot.say was called.  If it was, then the bot may have
     // sent a DM.  Check for that.
     if (bot.say.called) {
       const msg = bot.say.args[bot.say.args.length - 1][0];
       // If the target channel is a user, then it's a DM
-      if (msg.channel[0] == 'U') {
+      if (msg.channel[0] === 'U') {
         if (msg.text.indexOf(responseContains) >= 0) {
           return true;
         }
-        console.log(msg.text);
         throw new Error(`Bot reply did not contain "${responseContains}"`);
       }
     }
@@ -98,7 +96,7 @@ module.exports = function () {
   });
 
   this.Then(/the bot should start a private message with an attachment saying "([^"]+)"/, (responseContains) => {
-    const bot = module.exports.botController.on.__bot;
+    const bot = module.exports.botController.on.__bot; // eslint-disable-line no-underscore-dangle
 
     if (bot.say.called) {
       const msg = bot.say.args[bot.say.args.length - 1][0];
@@ -116,7 +114,7 @@ module.exports = function () {
   });
 
   this.Then('the bot should upload a post', () => {
-    const bot = module.exports.botController.on.__bot;
+    const bot = module.exports.botController.on.__bot; // eslint-disable-line no-underscore-dangle
 
     if (bot.api.files.upload.called && bot.api.files.upload.args.length > 0) {
       const file = bot.api.files.upload.args[0][0];
@@ -129,16 +127,16 @@ module.exports = function () {
     throw new Error('Bot did not upload anything');
   });
 
-  let _standupFindStub;
+  let standupFindStub;
   this.Given(/I( do not)? have previous standups/, (dont) => {
     const todayDate = new Date();
-    const yesterdayDate = new Date(new Date() - 24 * 60 * 60 * 1000);
+    const yesterdayDate = new Date(new Date() - (24 * 60 * 60 * 1000));
 
-    _standupFindStub = sinon.stub(models.Standup, 'findAll');
+    standupFindStub = sinon.stub(models.Standup, 'findAll');
     if (dont) {
-      _standupFindStub.resolves([]);
+      standupFindStub.resolves([]);
     } else {
-      _standupFindStub.resolves([
+      standupFindStub.resolves([
         {
           date: todayDate.toISOString(),
           yesterday: 'Did a thing',
@@ -158,48 +156,50 @@ module.exports = function () {
   });
 
   this.After(() => {
-    if (_standupFindStub) {
-      _standupFindStub.restore();
-      _standupFindStub = null;
+    if (standupFindStub) {
+      standupFindStub.restore();
+      standupFindStub = null;
     }
   });
 };
 
 module.exports.botController = null;
 
-module.exports.getHandler = function (fn) {
-  return fn.args[0][fn.args[0].length - 1];
-};
+module.exports.getHandler = fn => fn.args[0][fn.args[0].length - 1];
 
-module.exports.botRepliesToHearing = function (message, method, done) {
+module.exports.botRepliesToHearing = (message, inMethod, inDone) => {
+  let method = inMethod;
+  let done = inDone;
   if (!done && typeof method === 'function') {
     done = method;
     method = module.exports.botController.hears;
   }
 
   const fn = module.exports.getHandler(method);
-  fn(method.__bot, message);
+  fn(method.__bot, message); // eslint-disable-line no-underscore-dangle
 
-  module.exports.wait(() => method.__bot.reply.called, () => {
+  module.exports.wait(() => method.__bot.reply.called, () => { // eslint-disable-line no-underscore-dangle
     done();
   });
 };
 
-module.exports.botStartsConvoWith = function (message, method, done) {
+module.exports.botStartsConvoWith = (message, inMethod, inDone) => {
+  let method = inMethod;
+  let done = inDone;
   if (!done && typeof method === 'function') {
     done = method;
     method = module.exports.botController.on;
   }
 
   const fn = module.exports.getHandler(method);
-  fn(method.__bot, message);
+  fn(method.__bot, message); // eslint-disable-line no-underscore-dangle
 
-  module.exports.wait(() => method.__bot.startPrivateConversation.called, () => {
+  module.exports.wait(() => method.__bot.startPrivateConversation.called, () => { // eslint-disable-line no-underscore-dangle
     done();
   });
 };
 
-module.exports.wait = function (until, done) {
+module.exports.wait = (until, done) => {
   if (until()) {
     done();
   } else {

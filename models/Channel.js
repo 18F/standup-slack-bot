@@ -1,8 +1,6 @@
-
-
 const log = require('../getLogger')('Channel model');
 
-module.exports = function (sequelize, DataTypes) {
+module.exports = (sequelize, DataTypes) => {
   log.verbose('Initializing');
 
   const Channel = sequelize.define('Channel', {

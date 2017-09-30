@@ -1,4 +1,3 @@
-
 const moment = require('moment');
 const models = require('../models');
 const appEnv = require('cfenv').getAppEnv();
@@ -10,7 +9,7 @@ if (appEnv.getServices() && Object.keys(appEnv.getServices()).length) {
 const TIMEZONE = process.env.TIMEZONE || 'America/New_York';
 
 module.exports = {
-  up(queryInterface, Sequelize) {
+  up() {
     /*
       Add altering commands here.
       Return a promise to correctly handle asynchronicity.
@@ -18,7 +17,6 @@ module.exports = {
       Example:
       return queryInterface.createTable('users', { id: Sequelize.INTEGER });
     */
-    const db = queryInterface.sequelize;
     return new Promise((resolve) => {
       const updates = [];
 
@@ -45,7 +43,7 @@ module.exports = {
     });
   },
 
-  down(queryInterface, Sequelize) {
+  down() {
     /*
       Add reverting commands here.
       Return a promise to correctly handle asynchronicity.

@@ -1,13 +1,12 @@
-
 const sinon = require('sinon');
 const botLib = require('../../lib/bot');
 const common = require('./common');
 const models = require('../../models');
 
-module.exports = function () {
-  let _channelFindStub = null;
-  const _channelFindResolves = {
-    get(dayName) {
+module.exports = function getStandupTimeTests() {
+  let channelFindStub = null;
+  const channelFindResolves = {
+    get() {
       return false;
     }
   };
@@ -17,25 +16,24 @@ module.exports = function () {
     const plus12 = time.substr(-2, 2) === 'pm' ? 1200 : 0;
     const scheduledTime = Number(time.replace(':', '').substr(0, 4).trim()) + plus12;
 
-    _channelFindResolves.time = scheduledTime;
-    if (!_channelFindStub) {
-      _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(_channelFindResolves);
+    channelFindResolves.time = scheduledTime;
+    if (!channelFindStub) {
+      channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(channelFindResolves);
     }
   });
 
-  this.Given(/the standup is scheduled on (.*)/, (days) => {
-    days = days.split(' ').map(day => day.toLowerCase());
-    _channelFindResolves.get = function (dayName) {
-      return days.indexOf(dayName.toLowerCase()) >= 0;
-    };
-    if (!_channelFindStub) {
-      _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(_channelFindResolves);
+  this.Given(/the standup is scheduled on (.*)/, (daysFromSetup) => {
+    const days = daysFromSetup.split(' ').map(day => day.toLowerCase());
+    channelFindResolves.get = dayName => days.indexOf(dayName.toLowerCase()) >= 0;
+
+    if (!channelFindStub) {
+      channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(channelFindResolves);
     }
   });
 
   // TODO: move these functions to common.js
   this.Given('no standup is scheduled', () => {
-    _channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(null);
+    channelFindStub = sinon.stub(models.Channel, 'findOne').resolves(null);
   });
 
   this.When(/I say "@bot when"/, (done) => {
@@ -51,9 +49,9 @@ module.exports = function () {
   });
 
   this.After(() => {
-    if (_channelFindStub) {
-      _channelFindStub.restore();
-      _channelFindStub = null;
+    if (channelFindStub) {
+      channelFindStub.restore();
+      channelFindStub = null;
     }
   });
 };

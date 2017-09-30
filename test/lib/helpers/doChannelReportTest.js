@@ -1,5 +1,3 @@
-
-
 const assert = require('assert');
 const sinon = require('sinon');
 const mockBot = require('../../support/mockBot');
@@ -8,9 +6,9 @@ const dbHelper = require('../../support/persistenceHelper');
 const doChannelReport = require('../../../lib/helpers/doChannelReport');
 
 describe('doChannelReport', () => {
-  let bot,
-    channelName,
-    userName;
+  let bot;
+  let channelName;
+  let userName;
   let state;
 
   beforeEach(() => {
@@ -48,7 +46,7 @@ describe('doChannelReport', () => {
         doChannelReport(bot, channelName, true, userName, () => {
           assert(bot.say.calledOnce);
           const report = spy.args[0][0];
-          assert(report.text.match(/I\'ve updated the report with a standup from slackUserName/));
+          assert(report.text.match(/I've updated the report with a standup from slackUserName/));
           done();
         });
       });
@@ -68,4 +66,3 @@ describe('doChannelReport', () => {
     });
   });
 });
-

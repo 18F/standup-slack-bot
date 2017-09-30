@@ -1,6 +1,7 @@
 {
   "extends": "airbnb-base",
   "rules": {
+    "class-methods-use-this": 0,
     "comma-dangle": [
       1,
       "never"
@@ -10,6 +11,13 @@
       "error",
       "LabeledStatement",
       "WithStatement"
+    ],
+    "prefer-destructuring": [
+      "error",
+      {
+        "array": false,
+        "object": true
+      }
     ]
   },
   "env": {

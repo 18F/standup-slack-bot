@@ -1,5 +1,3 @@
-
-
 const defaultTeamInfoResponse = {
   team: { domain: 'mydomain' }
 };
@@ -17,8 +15,8 @@ const defaultSayResponse = { ts: new Date() };
 
 function say(sayResponse) {
   const response = sayResponse || defaultSayResponse;
-  return (report, callback) => {
-    callback = callback || function () {};
+  return (report, inCallback) => {
+    const callback = inCallback || (() => {});
     callback(null, response);
   };
 }
@@ -44,16 +42,14 @@ function chat() {
   };
 }
 
-module.exports = function (teamInfoResponse, sayResponse, channelInfoResponse) {
-  return {
-    api: {
-      team: team(teamInfoResponse),
-      channels: channels(channelInfoResponse),
-      chat: chat()
-    },
-    say: say(sayResponse)
-  };
-};
+module.exports = (teamInfoResponse, sayResponse, channelInfoResponse) => ({
+  api: {
+    team: team(teamInfoResponse),
+    channels: channels(channelInfoResponse),
+    chat: chat()
+  },
+  say: say(sayResponse)
+});
 
 module.exports.defaults = {
   teamInfoResponse: defaultTeamInfoResponse,

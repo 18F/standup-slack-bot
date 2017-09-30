@@ -1,18 +1,17 @@
-
 const sinon = require('sinon');
 const fedHolidays = require('@18f/us-federal-holidays');
 
 let fakeTimers = null;
 
-module.exports = function () {
+module.exports = function mockTimeSetup() {
   // Fake timers with sinon if they haven't been
   // setup already.  Set the internal time to now.
   // (Sinon defaults to the epoch).
-  const setupFakeTimers = (function () {
+  const setupFakeTimers = () => {
     if (!fakeTimers) {
       fakeTimers = sinon.useFakeTimers(Date.now());
     }
-  });
+  };
 
   this.Given('it is a weekday', () => {
     setupFakeTimers();
@@ -66,7 +65,7 @@ module.exports = function () {
   });
 
   // Reset fake timers
-  this.After = function () {
+  this.After = () => {
     if (fakeTimers) {
       fakeTimers.restore();
     }
@@ -75,7 +74,7 @@ module.exports = function () {
 
 // Provide a mechanism for manually resetting the
 // timers if needed.
-module.exports.resetTimers = function () {
+module.exports.resetTimers = () => {
   if (fakeTimers) {
     fakeTimers.restore();
     fakeTimers = null;

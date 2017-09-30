@@ -1,24 +1,22 @@
-
 const sinon = require('sinon');
 const models = require('../../models');
 const botLib = require('../../lib/bot');
 const common = require('./common');
 
-module.exports = function () {
-  const _message = { };
+module.exports = function startInterviewTests() {
+  const botMessage = { };
 
-  let _findAllStandupsStub;
-  let _findOneChannelStub;
-  const _expectConvo = true;
+  let findAllStandupsStub;
+  let findOneChannelStub;
 
-  const clearStubs = function () {
-    if (_findOneChannelStub) {
-      _findOneChannelStub.restore();
-      _findOneChannelStub = null;
+  const clearStubs = () => {
+    if (findOneChannelStub) {
+      findOneChannelStub.restore();
+      findOneChannelStub = null;
     }
-    if (_findAllStandupsStub) {
-      _findAllStandupsStub.restore();
-      _findAllStandupsStub = null;
+    if (findAllStandupsStub) {
+      findAllStandupsStub.restore();
+      findAllStandupsStub = null;
     }
   };
 
@@ -32,8 +30,8 @@ module.exports = function () {
       channel: 'COtherChannel'
     };
 
-    _findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
-    _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: message.channel, audience: null });
+    findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
+    findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: message.channel, audience: null });
 
     common.botStartsConvoWith(message, common.botController.hears, () => {
       clearStubs();
@@ -46,14 +44,14 @@ module.exports = function () {
     (message, done) => {
       botLib.startInterview(common.botController);
 
-      _message.user = 'U7654321';
-      _message.type = 'message';
-      _message.text = message;
-      _message.channel = _message.channel || 'CSomethingSaySomething';
+      botMessage.user = 'U7654321';
+      botMessage.type = 'message';
+      botMessage.text = message;
+      botMessage.channel = botMessage.channel || 'CSomethingSaySomething';
 
-      _findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
-      _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: _message.channel, audience: null });
-      common.botStartsConvoWith(_message, common.botController.hears, done);
+      findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
+      findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: botMessage.channel, audience: null });
+      common.botStartsConvoWith(botMessage, common.botController.hears, done);
     }
   );
 

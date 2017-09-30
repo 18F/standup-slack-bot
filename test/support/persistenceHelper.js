@@ -1,5 +1,3 @@
-
-
 require('dotenv').config();
 const models = require('../../models');
 const timeHelper = require('../../lib/helpers/time');
@@ -10,7 +8,8 @@ function deleteAll() {
     .then(() => models.Standup.destroy({ where: {} }));
 }
 
-function createRecords(channelName, state) {
+function createRecords(channelName, inState) {
+  const state = inState;
   return models.Channel
     .create({
       name: channelName,
