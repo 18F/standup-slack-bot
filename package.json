@@ -9,7 +9,7 @@
   "main": "app.js",
   "scripts": {
     "check-shrinkwrap": "node scripts/test-shrinkwrap.js",
-    "lint": "eslint '**/*.js'",
+    "lint": "eslint --fix '**/*.js'",
     "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
     "test": "npm run check-shrinkwrap && LOG_LEVEL=100 istanbul cover cucumberjs && codecov"

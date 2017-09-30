@@ -1,30 +1,30 @@
-'use strict';
-var sinon = require('sinon');
-var helpers = require('../../lib/helpers');
-var botLib = require('../../lib/bot');
-var models = require('../../models');
-var common = require('./common');
 
-module.exports = function() {
-  var _message = { };
-  var _getUserStandupFn = null;
-  var _findOneChannelStub;
-  var _findOrCreateStub;
-  var _findOneStandupStub;
-  var _getUserStub;
-  var _updateStandupStub;
-  var _updateChannelStub;
+const sinon = require('sinon');
+const helpers = require('../../lib/helpers');
+const botLib = require('../../lib/bot');
+const models = require('../../models');
+const common = require('./common');
 
-  this.Given(/I want to send a standup for a ([^>]+) channel/, function(visibility) {
-    if(visibility === 'public') {
+module.exports = function () {
+  const _message = { };
+  const _getUserStandupFn = null;
+  let _findOneChannelStub;
+  let _findOrCreateStub;
+  let _findOneStandupStub;
+  let _getUserStub;
+  let _updateStandupStub;
+  let _updateChannelStub;
+
+  this.Given(/I want to send a standup for a ([^>]+) channel/, (visibility) => {
+    if (visibility === 'public') {
       _message.channel = 'CSomethingSaySomething';
     } else {
       _message.channel = 'PnutButterJellyTime';
     }
   });
 
-  this.Given(/^the channel (.+) have a standup/, function(status) {
-    if(status === 'does') {
+  this.Given(/^the channel (.+) have a standup/, (status) => {
+    if (status === 'does') {
       _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({
         time: '130', name: 'CSomethingSaySomething', audience: null, latestReport: '123467.01'
       });
@@ -40,44 +40,44 @@ module.exports = function() {
     }
   });
 
-  this.When(/^I DM the bot with standup$/, function(message, done) {
-      botLib.getUserStandupInfo(common.botController);
+  this.When(/^I DM the bot with standup$/, (message, done) => {
+    botLib.getUserStandupInfo(common.botController);
 
-      // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
-      _updateStandupStub = sinon.stub(models.Standup, 'update').resolves({ });
+    // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
+    _updateStandupStub = sinon.stub(models.Standup, 'update').resolves({ });
 
-      _message.user = 'U7654321';
-      _message.match = [
-        '<#' + _message.channel + '> ' + message, // whole message
-        '', // optionally the word 'standup'
-        _message.channel,
-        '', // iOS channel tag has '|channelName' on the end
-        message
-      ];
+    _message.user = 'U7654321';
+    _message.match = [
+      `<#${_message.channel}> ${message}`, // whole message
+      '', // optionally the word 'standup'
+      _message.channel,
+      '', // iOS channel tag has '|channelName' on the end
+      message
+    ];
 
+    common.botRepliesToHearing(_message, done);
+  });
+
+  this.When(/^I DM the bot with (valid|invalid) standup edit$/, (valid, done) => {
+    botLib.getUserStandupInfo(common.botController);
+
+    _message.user = 'U7654321';
+    _message.match = [
+      `<#${_message.channel}> edit today`,
+      '', // optionally the word 'standup'
+      _message.channel,
+      '', // iOS channel tag has '|channelName' on the end
+      'edit today'
+    ];
+
+    if (valid === 'valid') {
+      common.botStartsConvoWith(_message, common.botController.hears, done);
+    } else {
       common.botRepliesToHearing(_message, done);
+    }
   });
 
-  this.When(/^I DM the bot with (valid|invalid) standup edit$/, function(valid, done) {
-      botLib.getUserStandupInfo(common.botController);
-
-      _message.user = 'U7654321';
-      _message.match = [
-        '<#' + _message.channel + '> edit today',
-        '', // optionally the word 'standup'
-        _message.channel,
-        '', // iOS channel tag has '|channelName' on the end
-        'edit today'
-      ];
-
-      if(valid === 'valid') {
-        common.botStartsConvoWith(_message, common.botController.hears, done);
-      } else {
-        common.botRepliesToHearing(_message, done);
-      }
-  });
-
-  this.When('I edit a DM to the bot to say', function(message, done) {
+  this.When('I edit a DM to the bot to say', (message, done) => {
     botLib.getUserStandupInfo(common.botController);
     // _getUserStub = sinon.stub(helpers, 'getUser').resolves({ real_name: 'Bob the Tester' });
     _updateChannelStub = sinon.stub(models.Channel, 'update').resolves({ });
@@ -87,46 +87,46 @@ module.exports = function() {
       message: {
         type: 'message',
         user: 'U00000000',
-        text: '<#' + _message.channel + '> ' + message,
+        text: `<#${_message.channel}> ${message}`,
         edited: { user: 'U00000000', ts: '1234567890.000000' },
         ts: '1234567890.000000'
       },
       subtype: 'message_changed',
       hidden: true,
       channel: 'Dchannel',
-      'previous_message': {
+      previous_message: {
         type: 'message',
         user: 'U00000000',
         text: 'Not really relevant...',
         ts: '1234567890.000000'
       },
-      'event_ts': '1234567890.000000',
+      event_ts: '1234567890.000000',
       ts: '1234567890.000000'
     }, common.botController.on, done);
   });
 
-  this.After(function() {
-    if(_findOneChannelStub) {
+  this.After(() => {
+    if (_findOneChannelStub) {
       _findOneChannelStub.restore();
       _findOneChannelStub = null;
     }
-    if(_findOrCreateStub) {
+    if (_findOrCreateStub) {
       _findOrCreateStub.restore();
       _findOrCreateStub = null;
     }
-    if(_findOneStandupStub) {
+    if (_findOneStandupStub) {
       _findOneStandupStub.restore();
       _findOneStandupStub = null;
     }
-    if(_updateStandupStub) {
+    if (_updateStandupStub) {
       _updateStandupStub.restore();
       _updateStandupStub = null;
     }
-    if(_getUserStub) {
+    if (_getUserStub) {
       _getUserStub.restore();
       _getUserStub = null;
     }
-    if(_updateChannelStub) {
+    if (_updateChannelStub) {
       _updateChannelStub.restore();
       _updateChannelStub = null;
     }

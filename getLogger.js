@@ -1,6 +1,7 @@
-'use strict';
 
-var Logger = require('@erdc-itl/simple-logger');
+
+const Logger = require('@erdc-itl/simple-logger');
+
 Logger.setOptions({
   level: (process.env.LOG_LEVEL || 10),
   console: true

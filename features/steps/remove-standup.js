@@ -1,15 +1,16 @@
-'use strict';
-var sinon = require('sinon');
-var models = require('../../models');
-var botLib = require('../../lib/bot');
-var common = require('./common');
 
-module.exports = function() {
-  var _message = { };
-  var _channelDestroyStub = null;
+const sinon = require('sinon');
+const models = require('../../models');
+const botLib = require('../../lib/bot');
+const common = require('./common');
 
-  this.When(/I say "@bot ((remove|delete) (standup))"/,
-    function(message, triggerWord, rest, done) {
+module.exports = function () {
+  const _message = { };
+  let _channelDestroyStub = null;
+
+  this.When(
+    /I say "@bot ((remove|delete) (standup))"/,
+    (message, triggerWord, rest, done) => {
       botLib.removeStandup(common.botController);
 
       _message.type = 'message';
@@ -23,10 +24,11 @@ module.exports = function() {
 
       _channelDestroyStub = sinon.stub(models.Channel, 'destroy').resolves({ });
       common.botRepliesToHearing(_message, done);
-  });
+    }
+  );
 
-  this.After(function() {
-    if(_channelDestroyStub) {
+  this.After(() => {
+    if (_channelDestroyStub) {
       _channelDestroyStub.restore();
       _channelDestroyStub = null;
     }

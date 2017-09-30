@@ -1,71 +1,70 @@
-'use strict';
 
-var timeHelper = require('../../lib/helpers').time;
 
-module.exports = function() {
-  var _timeString = '';
-  var _parsedValue = '';
-  var _baseTime = null;
-  var _formattedTime = '';
-  var _convertedTime = '';
+const timeHelper = require('../../lib/helpers').time;
 
-  this.Given(/^the string (.*)$/, function(timeString) {
+module.exports = function () {
+  let _timeString = '';
+  let _parsedValue = '';
+  let _baseTime = null;
+  let _formattedTime = '';
+  let _convertedTime = '';
+
+  this.Given(/^the string (.*)$/, (timeString) => {
     _timeString = timeString;
   });
 
-  this.Given(/^the input time (.*)$/, function(time) {
-    if(time !== '') {
+  this.Given(/^the input time (.*)$/, (time) => {
+    if (time !== '') {
       _baseTime = timeHelper.getTimeFromString(time).time;
     } else {
       _baseTime = null;
     }
   });
 
-  this.Given(/^the database time (.*)$/, function(time) {
-    if(time !== '') {
+  this.Given(/^the database time (.*)$/, (time) => {
+    if (time !== '') {
       _baseTime = time;
     } else {
       _baseTime = null;
     }
   });
 
-  this.When('I try to parse it', function() {
+  this.When('I try to parse it', () => {
     _parsedValue = timeHelper.getTimeFromString(_timeString);
   });
 
-  this.When('I ask for the schedule format', function() {
+  this.When('I ask for the schedule format', () => {
     _formattedTime = timeHelper.getScheduleFormat(_baseTime);
   });
 
-  this.When('I ask for the report format', function() {
+  this.When('I ask for the report format', () => {
     _formattedTime = timeHelper.getReportFormat(_baseTime);
   });
 
-  this.When('I ask for the display format', function() {
+  this.When('I ask for the display format', () => {
     _formattedTime = timeHelper.getDisplayFormat(_baseTime);
   });
 
-  this.When(/I set a reminder for (\S*) minutes/, function(minutes) {
+  this.When(/I set a reminder for (\S*) minutes/, (minutes) => {
     _convertedTime = timeHelper.getReminderFormat(_baseTime, minutes);
   });
 
-  this.Then(/^the time should( not)? parse$/, function(not) {
-    if((_parsedValue !== false && !not) || (_parsedValue === false && not)) {
+  this.Then(/^the time should( not)? parse$/, (not) => {
+    if ((_parsedValue !== false && !not) || (_parsedValue === false && not)) {
       return true;
-    } else {
-      throw new Error('Time failed to parse');
+    }
+    throw new Error('Time failed to parse');
+  });
+
+  this.Then(/^the result matches (.*)$/, (pattern) => {
+    if (!_formattedTime.match(new RegExp(pattern))) {
+      throw new Error(`Expected "${_formattedTime}" to match "${pattern}"`);
     }
   });
 
-  this.Then(/^the result matches (.*)$/, function(pattern) {
-    if(!_formattedTime.match(new RegExp(pattern))) {
-      throw new Error('Expected "' + _formattedTime + '" to match "' + pattern + '"');
-    }
-  });
-
-  this.Then(/^the result is (.*)$/, function(pattern) {
+  this.Then(/^the result is (.*)$/, (pattern) => {
     if (_convertedTime !== pattern) {
-      throw new Error('Expected "' + _convertedTime + '" to match "' + pattern + '"');
+      throw new Error(`Expected "${_convertedTime}" to match "${pattern}"`);
     }
   });
 };

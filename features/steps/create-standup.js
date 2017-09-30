@@ -1,20 +1,21 @@
-'use strict';
-var sinon = require('sinon');
-var botLib = require('../../lib/bot');
-var common = require('./common');
-var models = require('../../models');
 
-module.exports = function() {
-  var _message = { };
-  var _channelFindOrCreateStub = null;
+const sinon = require('sinon');
+const botLib = require('../../lib/bot');
+const common = require('./common');
+const models = require('../../models');
 
-  this.Given('I am in a private room with the bot', function() {
+module.exports = function () {
+  const _message = { };
+  let _channelFindOrCreateStub = null;
+
+  this.Given('I am in a private room with the bot', () => {
     botLib.createStandup(common.botController);
     _message.channel = 'PnutButterJellyTime';
   });
 
-  this.When(/I say "@bot ((create|schedule) (standup .*))"/,
-    function(message, triggerWord, rest, done) {
+  this.When(
+    /I say "@bot ((create|schedule) (standup .*))"/,
+    (message, triggerWord, rest, done) => {
       botLib.createStandup(common.botController);
 
       _message.type = 'message';
@@ -28,10 +29,11 @@ module.exports = function() {
 
       _channelFindOrCreateStub = sinon.stub(models.Channel, 'findOrCreate').resolves([{ name: message.channel }]);
       common.botRepliesToHearing(_message, done);
-  });
+    }
+  );
 
-  this.After(function() {
-    if(_channelFindOrCreateStub) {
+  this.After(() => {
+    if (_channelFindOrCreateStub) {
       _channelFindOrCreateStub.restore();
       _channelFindOrCreateStub = null;
     }

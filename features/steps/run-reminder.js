@@ -1,17 +1,17 @@
-'use strict';
 
-var sinon = require('sinon');
+
+const sinon = require('sinon');
 // var botLib = require('../../lib/bot');
-var common = require('./common');
-var models = require('../../models');
-var time = require('./time');
-var reminderRunner = require('../../lib/bot/getReminderRunner');
+const common = require('./common');
+const models = require('../../models');
+const time = require('./time');
+const reminderRunner = require('../../lib/bot/getReminderRunner');
 
-module.exports = function() {
-  var _findAllChannelsStub;
-  var _bot;
+module.exports = function () {
+  let _findAllChannelsStub;
+  let _bot;
 
-  this.When('the reminder time comes', function() {
+  this.When('the reminder time comes', () => {
     _findAllChannelsStub = sinon.stub(models.Channel, 'findAll').resolves([{
       name: 'Test Channel',
       audience: null
@@ -30,14 +30,12 @@ module.exports = function() {
     time.resetTimers();
   });
 
-  this.Then('the bot should send a reminder', function(done) {
+  this.Then('the bot should send a reminder', (done) => {
     // Wait until the findAll and say stubs have been called
-    common.wait(function() {
-      return _findAllChannelsStub.called && _bot.say.called;
-    }, function() {
+    common.wait(() => _findAllChannelsStub.called && _bot.say.called, () => {
       // If the bot sent text, it tried to
       // report correctly.
-      if(_bot.say.args[0][0].text) {
+      if (_bot.say.args[0][0].text) {
         done();
       } else {
         done(new Error('Expected bot to report with text'));
@@ -46,8 +44,8 @@ module.exports = function() {
   });
 
   // Teardown stubs
-  this.After(function() {
-    if(_findAllChannelsStub) {
+  this.After(() => {
+    if (_findAllChannelsStub) {
       _findAllChannelsStub.restore();
     }
   });

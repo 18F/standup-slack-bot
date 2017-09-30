@@ -1,21 +1,21 @@
-'use strict';
 
-var sinon = require('sinon');
-var botLib = require('../../lib/bot');
-var common = require('./common');
-var models = require('../../models');
-var helpers = require('../../lib/helpers');
 
-module.exports = function() {
-  var _message = { };
-  var now;
+const sinon = require('sinon');
+const botLib = require('../../lib/bot');
+const common = require('./common');
+const models = require('../../models');
+const helpers = require('../../lib/helpers');
+
+module.exports = function () {
+  const _message = { };
+  let now;
   _message.item = { };
-  var _getTimeStub;
-  var _findAllStandupsStub;
-  var _findOneChannelStub;
-  var _botId = '';
+  let _getTimeStub;
+  let _findAllStandupsStub;
+  let _findOneChannelStub;
+  let _botId = '';
 
-  this.Given(/it (.*) before the standup report has run for the day/, function(onTime) {
+  this.Given(/it (.*) before the standup report has run for the day/, (onTime) => {
     if (onTime === 'is') {
       now = '5:30 am EST';
     } else {
@@ -23,37 +23,38 @@ module.exports = function() {
     }
     _getTimeStub = sinon.stub(helpers.time, 'getDisplayFormat')
       .onFirstCall().returns(now)
-      .onSecondCall().returns('12:30 pm EST');
+      .onSecondCall()
+      .returns('12:30 pm EST');
   });
 
-  this.Given(/^the bot ID is 'U(\d+)'$/, function(botId) {
+  this.Given(/^the bot ID is 'U(\d+)'$/, (botId) => {
     _botId = botId;
   });
 
-  this.When('I add an emoji reaction to the bot\'s reminder message', function(done) {
-    botLib.startDmEmoji(common.botController, 'U'+_botId);
+  this.When('I add an emoji reaction to the bot\'s reminder message', (done) => {
+    botLib.startDmEmoji(common.botController, `U${_botId}`);
 
     _message.type = 'reaction_added';
     _message.item.channel = _message.channel || 'CSomethingSaySomething';
-    _message.item_user = 'U'+_botId;
+    _message.item_user = `U${_botId}`;
     _message.user = 'U7654321';
     _message.reaction = 'thumbsup';
 
-    _findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([ ]);
+    _findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
     _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: _message.item.channel, audience: null });
     common.botStartsConvoWith(_message, common.botController.on, done);
   });
 
-  this.After(function() {
-    if(_findOneChannelStub) {
+  this.After(() => {
+    if (_findOneChannelStub) {
       _findOneChannelStub.restore();
       _findOneChannelStub = null;
     }
-    if(_findAllStandupsStub) {
+    if (_findAllStandupsStub) {
       _findAllStandupsStub.restore();
       _findAllStandupsStub = null;
     }
-    if(_getTimeStub) {
+    if (_getTimeStub) {
       _getTimeStub.stub.restore();
       _getTimeStub = null;
     }

@@ -1,16 +1,17 @@
-'use strict';
+
 // var sinon = require('sinon');
-var botLib = require('../../lib/bot');
-var common = require('./common');
+const botLib = require('../../lib/bot');
+const common = require('./common');
 // var models = require('../../models');
 
-module.exports = function() {
-  var _message = { };
+module.exports = function () {
+  const _message = { };
   // var _findAllChannelsStub;
   // var _bot;
 
-  this.When(/I say "@bot ((reminder) (.*))"/,
-    function(message, triggerWord, rest, done) {
+  this.When(
+    /I say "@bot ((reminder) (.*))"/,
+    (message, triggerWord, rest, done) => {
       botLib.setReminder(common.botController);
 
       _message.type = 'message';
@@ -23,6 +24,6 @@ module.exports = function() {
       ];
 
       common.botRepliesToHearing(_message, done);
-  });
-
+    }
+  );
 };

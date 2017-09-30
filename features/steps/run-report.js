@@ -1,18 +1,18 @@
-'use strict';
-var sinon = require('sinon');
 
-var common = require('./common');
-var time = require('./time');
-var models = require('../../models');
-var reportRunner = require('../../lib/bot/getReportRunner');
+const sinon = require('sinon');
 
-module.exports = function() {
-  var _findAllChannelsStub;
-  var _findOneChannelStub;
-  var _findAllStandupsStub;
-  var _bot;
+const common = require('./common');
+const time = require('./time');
+const models = require('../../models');
+const reportRunner = require('../../lib/bot/getReportRunner');
 
-  this.When('the scheduled time comes', function() {
+module.exports = function () {
+  let _findAllChannelsStub;
+  let _findOneChannelStub;
+  let _findAllStandupsStub;
+  let _bot;
+
+  this.When('the scheduled time comes', () => {
     // Stub the models.Channel and models.Standup findAll
     // methods so we can guarantee behavior without worrying
     // about database contents.
@@ -51,14 +51,12 @@ module.exports = function() {
     time.resetTimers();
   });
 
-  this.Then('the bot should report', function(done) {
+  this.Then('the bot should report', (done) => {
     // Wait until the findAll and say stubs have been called
-    common.wait(function() {
-      return _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called;
-    }, function() {
+    common.wait(() => _findAllChannelsStub.called && _findAllChannelsStub.called && _bot.say.called, () => {
       // If the bot sent attachments, it tried to
       // report correctly.
-      if(_bot.say.args[0][0].attachments.length) {
+      if (_bot.say.args[0][0].attachments.length) {
         done();
       } else {
         done(new Error('Expected bot to report with text and attachments'));
@@ -66,13 +64,13 @@ module.exports = function() {
     });
   });
 
-  this.Then('the bot should not report', function(done) {
+  this.Then('the bot should not report', (done) => {
     // Wait a second to give the report runner time
     // to bail out.  Since it shouldn't be calling
     // anything, we can't just wait until things
     // have been called.
-    setTimeout(function() {
-      if(_bot.say.called) {
+    setTimeout(() => {
+      if (_bot.say.called) {
         done(new Error('Expected bot not to report'));
       } else {
         done();
@@ -81,14 +79,14 @@ module.exports = function() {
   });
 
   // Teardown stubs
-  this.After(function() {
-    if(_findAllChannelsStub) {
+  this.After(() => {
+    if (_findAllChannelsStub) {
       _findAllChannelsStub.restore();
     }
-    if(_findOneChannelStub) {
+    if (_findOneChannelStub) {
       _findOneChannelStub.restore();
     }
-    if(_findAllStandupsStub) {
+    if (_findAllStandupsStub) {
       _findAllStandupsStub.restore();
     }
   });

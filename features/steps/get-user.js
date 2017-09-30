@@ -1,23 +1,23 @@
-'use strict';
 
-var sinon = require('sinon');
-var request = require('request');
-var helpers = require('../../lib/helpers');
 
-module.exports = function() {
-  var _seen = false;
-  var _validUser = true;
-  var _fullUser;
-  var _requestPostMock;
+const sinon = require('sinon');
+const request = require('request');
+const helpers = require('../../lib/helpers');
 
-  var _postErr = null
-  var _postBody = null;
+module.exports = function () {
+  const _seen = false;
+  const _validUser = true;
+  let _fullUser;
+  let _requestPostMock;
 
-  this.Given(/^the network is (up|down)$/, function(status) {
+  let _postErr = null;
+  let _postBody = null;
+
+  this.Given(/^the network is (up|down)$/, (status) => {
     _postErr = null;
     _postBody = null;
 
-    if(status === 'up') {
+    if (status === 'up') {
       _postBody = {
         ok: true,
         user: {
@@ -34,19 +34,19 @@ module.exports = function() {
     _requestPostMock = sinon.stub(request, 'post').yieldsAsync(_postErr, null, JSON.stringify(_postBody));
   });
 
-  this.Given(/^I have a(n invalid| valid) user ID$/, function(valid) {
-    if(valid !== ' valid') {
+  this.Given(/^I have a(n invalid| valid) user ID$/, (valid) => {
+    if (valid !== ' valid') {
       _postBody.ok = false;
       delete _postBody.user;
       _requestPostMock.yieldsAsync(_postErr, null, JSON.stringify(_postBody));
     }
   });
 
-  this.Given(/^the user has( not)? been seen before$/, function(not, done) {
-    if(!not) {
-      helpers.getUser('some-id').then(function() {
+  this.Given(/^the user has( not)? been seen before$/, (not, done) => {
+    if (!not) {
+      helpers.getUser('some-id').then(() => {
         done();
-      }).catch(function() {
+      }).catch(() => {
         done();
       });
     } else {
@@ -54,37 +54,35 @@ module.exports = function() {
     }
   });
 
-  this.When('I ask for the full user', function(done) {
-    var fin = function(fullUser) {
+  this.When('I ask for the full user', (done) => {
+    const fin = function (fullUser) {
       _fullUser = fullUser;
       done();
     };
 
-    helpers.getUser('some-id').then(fin).catch(function() {
+    helpers.getUser('some-id').then(fin).catch(() => {
       fin('Error');
     });
   });
 
-  this.Then('I receive a complete user object', function() {
-    if(_fullUser && _fullUser.real_name) {
+  this.Then('I receive a complete user object', () => {
+    if (_fullUser && _fullUser.real_name) {
       return true;
-    } else {
-      throw new Error('Did not receive a complete user object as expected');
     }
+    throw new Error('Did not receive a complete user object as expected');
   });
 
-  this.Then('I receive an error', function() {
-    if(_fullUser === 'Error') {
+  this.Then('I receive an error', () => {
+    if (_fullUser === 'Error') {
       return true;
-    } else {
-      throw new Error('Did not receive an error');
     }
+    throw new Error('Did not receive an error');
   });
 
-  this.After(function() {
-    if(_requestPostMock) {
+  this.After(() => {
+    if (_requestPostMock) {
       _requestPostMock.restore();
       _requestPostMock = null;
     }
-  })
+  });
 };

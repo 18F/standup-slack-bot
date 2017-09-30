@@ -1,7 +1,8 @@
-'use strict';
+
 
 require('dotenv').config();
 const cfenv = require('cfenv');
+
 const appEnv = cfenv.getAppEnv();
 
 const knownEnvs = [
