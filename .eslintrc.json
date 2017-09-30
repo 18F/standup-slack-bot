@@ -1,0 +1,18 @@
+{
+  "extends": "airbnb-base",
+  "rules": {
+    "comma-dangle": [
+      1,
+      "never"
+    ],
+    "max-len": 0,
+    "no-restricted-syntax": [
+      "error",
+      "LabeledStatement",
+      "WithStatement"
+    ]
+  },
+  "env": {
+    "node": true
+  }
+}
