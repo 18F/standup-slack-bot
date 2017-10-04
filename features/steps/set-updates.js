@@ -11,6 +11,7 @@ module.exports = function() {
 
       _message.type = 'message';
       _message.text = message;
+      _message.match = [ message ];
       _message.channel = _message.channel || 'CSomethingSaySomething';
 
       common.botRepliesToHearing(_message, done);
