@@ -12,7 +12,6 @@ module.exports = function() {
       _message.type = 'message';
       _message.text = message;
       _message.channel = _message.channel || 'CSomethingSaySomething';
-      console.log(`sending: ${message}`)
 
       common.botRepliesToHearing(_message, done);
   });
