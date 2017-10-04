@@ -49,7 +49,7 @@ When new reports come in after the bot has posted the daily reports, by default 
 
 `@standup-bot enable updates`
 
-This will cause the bot to post a message in the channel for each new report after it's initial post.  To turn it back off, just disable updates:
+This will cause the bot to post a message in the channel for each new report after its initial post.  To turn it back off, just disable updates:
 
 `@standup-bot disable updates`
 
