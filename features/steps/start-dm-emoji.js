@@ -39,15 +39,12 @@ module.exports = function startDMEmojiTests() {
     botMessage.reaction = 'thumbsup';
 
     findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
-    findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: botMessage.item.channel, audience: null });
     common.botStartsConvoWith(botMessage, common.botController.on, done);
+    common.botReceivesMessage(_message, common.botController.on);
+    setTimeout(() => done(), 1000);
   });
 
   this.After(() => {
-    if (findOneChannelStub) {
-      findOneChannelStub.restore();
-      findOneChannelStub = null;
-    }
     if (findAllStandupsStub) {
       findAllStandupsStub.restore();
       findAllStandupsStub = null;

@@ -12,12 +12,13 @@
     "lint": "eslint --fix '**/*.js'",
     "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
-    "test": "npm run check-shrinkwrap && LOG_LEVEL=100 istanbul cover cucumberjs && codecov"
+    "test": "npm run check-shrinkwrap && LOG_LEVEL=100 istanbul cover cucumberjs && codecov",
+    "test-one": "cucumberjs --name"
   },
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "@18f/us-federal-holidays": "^1.1.0",
+    "@18f/us-federal-holidays": "^1.1.1",
     "@erdc-itl/simple-logger": "^1.1.0",
     "better-queue": "^3.8.4",
     "botkit": "^0.6.2",

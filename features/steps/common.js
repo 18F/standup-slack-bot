@@ -45,7 +45,12 @@ module.exports = function commonSteps() {
 
   });
 
-  this.Then(/the bot should respond "([^"]+)"/, (responseContains) => {
+  this.Then(/the bot should not respond/, function() {
+    const bot = module.exports.botController.hears.__bot;  // eslint-disable-line no-underscore-dangle
+    return (!bot.reply.called && !bot.say.called && !bot.startPrivateConversation.called);
+  });
+
+  this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {
     let botReply = module.exports.botController.hears.__bot.reply.args[0][1]; // eslint-disable-line no-underscore-dangle
 
     if (typeof botReply === 'object' && (botReply.text || botReply.attachments[0].fallback)) {
@@ -166,6 +171,15 @@ module.exports = function commonSteps() {
 module.exports.botController = null;
 
 module.exports.getHandler = fn => fn.args[0][fn.args[0].length - 1];
+
+module.exports.botReceivesMessage = (message, method) => {
+  if(!method) {
+    method = module.exports.botController.hears;
+  }
+
+  var fn = module.exports.getHandler(method);
+  fn(method.__bot, message);
+}
 
 module.exports.botRepliesToHearing = (message, inMethod, inDone) => {
   let method = inMethod;

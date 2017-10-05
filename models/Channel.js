@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
     },
     friday: {
       type: DataTypes.BOOLEAN
+    },
+    postUpdatesInChannel: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
     }
   });
 

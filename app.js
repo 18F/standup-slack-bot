@@ -105,13 +105,14 @@ controller.spawn({
       // Set a standup audience to a user group
       botLib.setAudience(controller);
 
+      // Configure in-channel updates
+      botLib.setInChannelUpdate(controller);
+
       // Get a weekly user report
       botLib.userReport(controller);
 
-      // I think that these aren't necessary because channel & user are stored as
-      // unique id rather than display name
-      // TODO: update channel name if it changes
-      // TODO: update user name if it changes
+      // Respond to all other direct messages
+      botLib.unhandledDM(controller);
 
       log.verbose('All bot functions initialized');
     });
