@@ -6,7 +6,7 @@ module.exports = function() {
   var _message = { };
 
   this.When(/I say "@bot ((.*)?(en|dis)able updates)"/,
-    function(message, maybeStuffBefore, which, done) {
+    function(message, maybeStuffBefore, enOrDis, done) {
       botLib.setInChannelUpdate(common.botController);
 
       _message.type = 'message';
