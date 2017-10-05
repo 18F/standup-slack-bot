@@ -12,7 +12,6 @@ module.exports = function() {
   _message.item = { };
   var _getTimeStub;
   var _findAllStandupsStub;
-  var _findOneChannelStub;
   var _botId = '';
 
   this.Given(/it (.*) before the standup report has run for the day/, function(onTime) {
@@ -40,15 +39,11 @@ module.exports = function() {
     _message.reaction = 'thumbsup';
 
     _findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([ ]);
-    _findOneChannelStub = sinon.stub(models.Channel, 'findOne').resolves({ time: '1230', name: _message.item.channel, audience: null });
-    common.botStartsConvoWith(_message, common.botController.on, done);
+    common.botReceivesMessage(_message, common.botController.on);
+    setTimeout(() => done(), 1000);
   });
 
   this.After(function() {
-    if(_findOneChannelStub) {
-      _findOneChannelStub.restore();
-      _findOneChannelStub = null;
-    }
     if(_findAllStandupsStub) {
       _findAllStandupsStub.restore();
       _findAllStandupsStub = null;

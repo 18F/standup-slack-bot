@@ -45,6 +45,11 @@ module.exports = function() {
 
   });
 
+  this.Then(/the bot should not respond/, function() {
+    const bot = module.exports.botController.hears.__bot;
+    return (!bot.reply.called && !bot.say.called && !bot.startPrivateConversation.called);
+  });
+
   this.Then(/the bot should respond "([^"]+)"/, function(responseContains) {
     var botReply = module.exports.botController.hears.__bot.reply.args[0][1];
 
@@ -174,6 +179,15 @@ module.exports.botController = null;
 module.exports.getHandler = function(fn) {
   return fn.args[0][fn.args[0].length - 1];
 };
+
+module.exports.botReceivesMessage = (message, method) => {
+  if(!method) {
+    method = module.exports.botController.hears;
+  }
+
+  var fn = module.exports.getHandler(method);
+  fn(method.__bot, message);
+}
 
 module.exports.botRepliesToHearing = function(message, method, done) {
   if(!done && typeof method === 'function') {
