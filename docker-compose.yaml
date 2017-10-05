@@ -1,24 +1,21 @@
-slackbot:
-  image: node:6
-  entrypoint: /app/entrypoint.sh
-  environment:
-    - DATABASE_URL=postgres://postgres:standup@database/standup
-    - PORT=3000
-    - LOG_LEVEL=10
-  expose:
-    - 3000
-  ports:
-    - 3000
-  working_dir: /app
-  volumes:
-    - ./:/app
-    - /app/node_modules
-  links:
-    - database:database
-database:
-  image: postgres:latest
-  environment:
-    - POSTGRES_DB=standup
-    - POSTGRES_PASSWORD=standup
-  expose:
-    - 5432
+version: "2"
+services:
+  database:
+    image: postgres:latest
+    environment:
+      - POSTGRES_DB=standup
+      - POSTGRES_PASSWORD=standup
+    expose:
+      - 5432
+  standup-bot:
+    build: .
+    entrypoint: /app/entrypoint.sh
+    environment:
+      - DATABASE_URL=postgres://postgres:standup@database/standup
+      - PORT=3000
+      - LOG_LEVEL=10
+    ports:
+      - 3000
+    volumes:
+      - ./:/app
+      - /app/node_modules

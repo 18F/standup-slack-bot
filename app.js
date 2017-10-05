@@ -113,6 +113,9 @@ controller.spawn({
       // Set a standup audience to a user group
       botLib.setAudience(controller);
 
+      // Configure in-channel updates
+      botLib.setInChannelUpdate(controller);
+
       // Get a weekly user report
       botLib.userReport(controller);
 
