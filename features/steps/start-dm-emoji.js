@@ -10,7 +10,6 @@ module.exports = function startDMEmojiTests() {
   botMessage.item = { };
   let getTimeStub;
   let findAllStandupsStub;
-  let findOneChannelStub;
   let botID = '';
 
   this.Given(/it (.*) before the standup report has run for the day/, (onTime) => {
@@ -39,8 +38,7 @@ module.exports = function startDMEmojiTests() {
     botMessage.reaction = 'thumbsup';
 
     findAllStandupsStub = sinon.stub(models.Standup, 'findAll').resolves([]);
-    common.botStartsConvoWith(botMessage, common.botController.on, done);
-    common.botReceivesMessage(_message, common.botController.on);
+    common.botReceivesMessage(botMessage, common.botController.on);
     setTimeout(() => done(), 1000);
   });
 

@@ -5,9 +5,9 @@
   "requires": true,
   "dependencies": {
     "@18f/us-federal-holidays": {
-      "version": "1.1.0",
-      "resolved": "https://registry.npmjs.org/@18f/us-federal-holidays/-/us-federal-holidays-1.1.0.tgz",
-      "integrity": "sha1-RLJdEdlaecTaQPSvO2+YEE8Y0bQ="
+      "version": "1.1.1",
+      "resolved": "https://registry.npmjs.org/@18f/us-federal-holidays/-/us-federal-holidays-1.1.1.tgz",
+      "integrity": "sha1-2UmeUUvLk3bPz6ykg10E4WqHgGo="
     },
     "@ciscospark/common": {
       "version": "1.8.0",
