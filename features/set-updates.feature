@@ -8,6 +8,8 @@ Feature: Set in-channel report updates
     Then the bot should respond "Okay, I <will-or-wont> update the channel with late reports"
 
     Examples:
-      | utc-time | toggle  | will-or-wont  |
-      | 9:30 am  | enable  | will          |
-      | 10:30 am | disable | won't         |
+      | utc-time | toggle         | will-or-wont  |
+      | 9:30 am  | enable         | will          |
+      | 9:30 am  | please enable  | will          |
+      | 10:30 am | disable        | won't         |
+      | 10:30 am | please disable | won't         |
