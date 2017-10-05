@@ -54,7 +54,7 @@ Or you can send the bot a DM and tell it which channel to automatically report i
 #channel out of the office for 3 days
 ```
 
-The bot understands over variations of these messages.  Here are some examples:
+The bot understands other variations of these messages.  Here are some examples:
 
 ```
 @standup-bot out of office 3 days
