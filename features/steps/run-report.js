@@ -38,7 +38,7 @@ module.exports = function runReportTests() {
 
     // Also stub the bot
     bot = { };
-    bot.say = sinon.spy();
+    bot.say = sinon.stub().yields();
     bot.replyInThread = sinon.spy();
 
     // Kick off the reporter
