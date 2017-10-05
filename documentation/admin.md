@@ -43,6 +43,16 @@ By default, whenever the bot sends a reminder or posts a report, it begins the m
 
 - You can also say "usergroup" instead of "audience"
 
+## Enabling in-channel updates
+
+When new reports come in after the bot has posted the daily reports, by default the bot doesn't notify anyone - it just updates the report in the thread.  You can have the bot post an update in the channel, though:
+
+`@standup-bot enable updates`
+
+This will cause the bot to post a message in the channel for each new report after its initial post.  To turn it back off, just disable updates:
+
+`@standup-bot disable updates`
+
 ## Deleting a standup
 
 To remove a standup and stop reporting on it, in the channel, say:

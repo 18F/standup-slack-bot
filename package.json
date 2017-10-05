@@ -17,7 +17,7 @@
   "author": "",
   "license": "CC0-1.0",
   "dependencies": {
-    "@18f/us-federal-holidays": "^1.1.0",
+    "@18f/us-federal-holidays": "^1.1.1",
     "@erdc-itl/simple-logger": "^1.1.0",
     "async": "^2.1.4",
     "better-queue": "^3.8.4",
