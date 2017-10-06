@@ -1,0 +1,8 @@
+---
+applications:
+- name: standup-slack-bot-staging
+  memory: 192M
+  instances: 1
+  services:
+  - standup-bot-db-staging
+  - standup-bot-cups-staging
