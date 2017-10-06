@@ -10,7 +10,7 @@
   "scripts": {
     "check-shrinkwrap": "node scripts/test-shrinkwrap.js",
     "lint": "jshint --config .jshintrc --exclude ./node_modules,./coverage .",
-    "migrate": "./node_modules/sequelize-cli/bin/sequelize db:migrate --url $DATABASE_URL",
+    "migrate": "sequelize db:migrate --url $DATABASE_URL",
     "start": "node app.js",
     "test": "npm run check-shrinkwrap && LOG_LEVEL=100 istanbul cover cucumberjs && codecov",
     "test-one": "cucumberjs --name"
