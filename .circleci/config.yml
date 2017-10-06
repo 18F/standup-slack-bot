@@ -8,31 +8,35 @@ jobs:
       - run: npm install
       - run: npm test
       - run: ./node_modules/.bin/codecov
-  deploy:
+  deploy-staging:
     docker:
       - image: 18fgsa/cloud-foundry-cli
     steps:
       - checkout
       - deploy:
           name: cf push
-          command: cf_deploy.sh # cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE $CF_MANIFEST
+          command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE manifest-staging.yml
+  deploy-release:
+    docker:
+      - image: 18fgsa/cloud-foundry-cli
+    steps:
+      - checkout
+      - deploy:
+          name: cf push
+          command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE manifest-release.yml
 workflows:
   version: 2
   build:
     jobs:
       - test
-      - deploy:
-          environment:
-            CF_MANIFEST: manifest-staging.yml
+      - deploy-staging:
           requires:
             - test
           filters:
             branches:
               only:
                 - develop
-      - deploy:
-          environment:
-            CF_MANIFEST: manifest.yml
+      - deploy-release:
           requires:
             - test
           filters:
