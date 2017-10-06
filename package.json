@@ -25,6 +25,7 @@
     "botkit": "^0.6.2",
     "cfenv": "^1.0.3",
     "dotenv": "^4.0.0",
+    "lodash": "^4.17.4",
     "marked": "^0.3.6",
     "moment": "^2.11.2",
     "moment-timezone": "^0.5.1",
