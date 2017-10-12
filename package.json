@@ -49,6 +49,6 @@
     "sinon-as-promised": "^4.0.0"
   },
   "engines": {
-    "node": "^8.7.0"
+    "node": "^8.5.0"
   }
 }
