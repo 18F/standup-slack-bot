@@ -15,7 +15,7 @@ jobs:
       - checkout
       - deploy:
           name: cf push
-          command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE manifest-staging.yml
+          command: cf_deploy.sh $CF_APP_STAGING $CF_ORG $CF_SPACE manifest-staging.yml
   deploy-release:
     docker:
       - image: 18fgsa/cloud-foundry-cli
@@ -23,7 +23,7 @@ jobs:
       - checkout
       - deploy:
           name: cf push
-          command: cf_deploy.sh $CF_APP $CF_ORG $CF_SPACE manifest-release.yml
+          command: cf_deploy.sh $CF_APP_PRODUCTION $CF_ORG $CF_SPACE manifest-release.yml
 workflows:
   version: 2
   build:
