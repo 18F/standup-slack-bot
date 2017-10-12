@@ -1,11 +1,10 @@
-FROM node:6
-
-RUN yarn global add npm@5
+FROM node:8.7
 
 RUN mkdir /app
 WORKDIR /app
 
 ADD ./package.json .
+ADD ./package-lock.json .
 
 RUN npm install
 
