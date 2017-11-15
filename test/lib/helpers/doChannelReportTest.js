@@ -33,7 +33,7 @@ describe('doChannelReport', () => {
           assert(bot.api.chat.update.calledOnce);
           let report = spy.args[0][0];
           let callback = spy.args[0][1];
-          assert(report.attachments.match(/Todays standup for <#channelName>/));
+          assert(report.attachments.match(/Today's standup for <#channelName>/));
           callback(); // just to make sure no errors, can't make assertions
           // because it does not use the callback argument
           done();
